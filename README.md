@@ -40,3 +40,8 @@ Install required Python packages:
 ```
 pip install -r requirements.txt
 ```
+
+Rund the development server:
+```
+python manage.py runserver
+```

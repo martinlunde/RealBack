@@ -7,6 +7,43 @@
 
 }
 
+body {
+	max-height: 100%;
+}
+
+.footer {
+  position: absolute;
+  border-top: 1px solid #007d70;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 80px;
+ background-color: #f2f2f2;
+}
+
+.logo {
+	margin-top: 15px;
+	width: 150px;
+	height: auto;
+	margin-left: 15px;
+}
+
+@media (max-width: 750px) {
+	.logo {
+		width: 125px;
+		margin-left: -20px;
+		margin-top: 19px;
+	}
+}
+
+.item {
+	position: absolute;
+	top:30px;
+	color: #007d70;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+	font-weight: 300;
+}
+
 #frontpage_background {
     position: absolute;
     height: 100%;
@@ -15,4 +52,6 @@
 
 /*Input field styling*/
 #hashForm {
+
 }
+

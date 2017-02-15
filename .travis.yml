@@ -5,3 +5,6 @@ python:
 script: 
     - pytest
     - flake8
+    - python manage.py test attendee
+    - coverage run --source=home manage.py test attendee
+after_success: coveralls

@@ -1,10 +1,52 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>RealBack</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'attendee.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <p1>Test</p1>
+
+    <div class="frontpage_container">
+        <div class="row">
+            <div class="col-md-12 frontpage_divider" ></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 frontpage_divider">
+                <form>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6" id="hashForm">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="hashInput" placeholder="Enter your lecture's hash here">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 frontpage_divider"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-10"></div>
+                <div class="col-md-2">
+                    <a href="/admin/">Admin</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>

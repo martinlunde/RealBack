@@ -1,0 +1,18 @@
+/*Bootstrap and styling of frontpage*/
+
+.frontpage_divider {
+    position: relative;
+/*    border: solid 1px black;  */
+    padding-bottom: 14%;
+
+}
+
+#frontpage_background {
+    position: absolute;
+    height: 100%;
+    z-index: -1;
+}
+
+/*Input field styling*/
+#hashForm {
+}

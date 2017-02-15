@@ -2,8 +2,6 @@ from django.test import Client, TestCase
 
 
 c = Client()
-response = c.get('/')
-print(response.status_code)
 
 
 class WebsiteStabilityTestCase(TestCase):

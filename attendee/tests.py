@@ -6,4 +6,4 @@ c = Client()
 
 class WebsiteStabilityTestCase(TestCase):
     def test_availability(self):
-        self.assertEqual(c.get('/lecturer/').status_code, 200)
+        self.assertEqual(c.get('/').status_code, 200)

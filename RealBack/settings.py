@@ -126,4 +126,4 @@ STATICFILES_DIRS = [
 ]
 
 # URL to redirect to when login is required
-LOGIN_URL = '/lecturer/login'
+LOGIN_URL = 'lecturer:login_page'

@@ -70,11 +70,12 @@ body {
 	margin-top: 10px;
 	left:50%;
 	transform: translateX(-50%);
-	background-image: linear-gradient(to bottom,#007d70 0,#00AF9C 100%);
+	background-image: linear-gradient(to bottom,#00AF9C 0,#007d70 100%);
+	border-color: #007d70;
 }
 
 .form-group .btn:hover {
-	background-color: #00AF9C;
+	background-color: #007d70;
 }
 
 .frontpage_background {

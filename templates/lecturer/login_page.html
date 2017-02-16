@@ -1,18 +1,8 @@
+{% extends '../base.html' %}
 {% load static %}
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>RealBack</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'lecturer.css' %}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<body>
+{% block content %}
     <div class="login_container">
         <div class="row">
             <div class="col-md-12 login_divider" ></div>
@@ -36,9 +26,5 @@
             <div class="col-md-12 login_divider"></div>
         </div>
     </div>
+{% endblock %}
 
-    <footer>
-    </footer>
-
-</body>
-</html>

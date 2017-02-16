@@ -47,7 +47,6 @@ body {
 .frontpage_container {
 	height: 100%;
 	width: 100%;
-	overflow: hidden;
 }
 
 .frontpage_background_container {
@@ -57,25 +56,18 @@ body {
 }
 
 .frontpage_background {
-	/*background: url('frontpage.jpg');
-	background-size: cover;
-	position: absolute;
-	*/
-
 	position: fixed;
     width: 100%;
     height: auto;
     min-width: 1024px;
     min-height: 100%; 
     z-index: -1;
-    overflow: hidden;
     top:0;
     left:0;
-
 }
-
 
 /*Input field styling*/
 #hashForm {
 
 }
+

@@ -5,11 +5,10 @@ from django.shortcuts import render
 
 @login_required
 def front_page(request):
-    # if already logged in:
+    # if already logged in
     pass
-    # else serve login page
-    # return render(request, 'templates/lecturer/login_page.html', {})
 
 
 def login(request):
+    """ Users are redirected here if login is required """
     return render(request, 'templates/lecturer/login_page.html', {})

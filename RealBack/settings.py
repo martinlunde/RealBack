@@ -124,3 +124,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+# URL to redirect to when login is required
+LOGIN_URL = '/lecturer/login'

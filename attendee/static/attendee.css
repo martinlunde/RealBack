@@ -18,7 +18,7 @@ body {
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 80px;
- background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 .logo {
@@ -44,14 +44,38 @@ body {
 	font-weight: 300;
 }
 
-#frontpage_background {
-    position: absolute;
-    height: 100%;
-    z-index: -1;
+.frontpage_container {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
 }
+
+.frontpage_background_container {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+.frontpage_background {
+	/*background: url('frontpage.jpg');
+	background-size: cover;
+	position: absolute;
+	*/
+
+	position: fixed;
+    width: 100%;
+    height: auto;
+    min-width: 1024px;
+    min-height: 100%; 
+    z-index: -1;
+    overflow: hidden;
+    top:0;
+    left:0;
+
+}
+
 
 /*Input field styling*/
 #hashForm {
 
 }
-

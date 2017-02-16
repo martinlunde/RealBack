@@ -11,7 +11,7 @@ class Course(models.Model):
 
 def _generate_pin():
     """ Generate a 6 character pin for attendee login """
-    charset = "ABCDEFGHIJKLMNPQRST123456789"
+    charset = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789"
     pin = [choice(charset) for i in range(6)]
     pin = ''.join(pin)
     # TODO check if exists in db after generating (or maybe not. exception is handled)

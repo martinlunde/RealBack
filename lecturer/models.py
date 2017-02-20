@@ -31,7 +31,7 @@ class Lecture(models.Model):
             try:
                 with transaction.atomic():
                     super(Lecture, self).save(*args, **kwargs)
-                done = True
+                    done = True
             except IntegrityError as err:
                 # TODO maybe log?
                 self.pin = _generate_pin()

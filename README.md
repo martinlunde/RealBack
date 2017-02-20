@@ -54,3 +54,9 @@ If you make changes to the `models.py` files you also need to run:
 python manage.py makemigrations
 python manage.py migrate
 ```
+
+## Run tests locally
+You can run the Django unittests locally with:
+```
+python manage.py test
+```

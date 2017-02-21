@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'attendee',
     'lecturer',
+    'emailauth',
 ]
 
 MIDDLEWARE = [
@@ -125,5 +126,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-# URL to redirect to when login is required
-LOGIN_URL = 'lecturer:login_page'
+
+# Auth redirect URLs
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'lecturer:front_page'
+LOGOUT_REDIRECT_URL = 'index'
+
+
+# Custom user model
+
+AUTH_USER_MODEL = 'emailauth.User'

@@ -1,6 +1,7 @@
 
 from django.test import Client, TestCase
 from lecturer import models
+from django.contrib.auth import get_user_model
 
 
 c = Client()
@@ -21,7 +22,8 @@ class ModelTestCase(TestCase):
 
     def test_lecture_save(self):
         """ Test if Lecture saves correctly to db """
-        c1 = models.Course()
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c1 = models.Course(user=user)
         c1.save()
         l1 = models.Lecture(course=c1)
         l1.save()

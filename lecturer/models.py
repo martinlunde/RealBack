@@ -1,11 +1,14 @@
+
 from django.db import models, IntegrityError, transaction
 from random import choice
+from RealBack import settings
 
 
 class Course(models.Model):
     """ Course model """
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 def _generate_pin():

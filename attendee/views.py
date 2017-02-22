@@ -5,7 +5,7 @@ from django.shortcuts import render
 def index(request):
     """ Main index page for RealBack """
     # TODO pass in PIN login form
-    return render(request, 'templates/attendee/index.html', {})
+    return render(request, 'attendee/index.html', {})
 
 
 def joined(request):

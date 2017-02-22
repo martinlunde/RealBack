@@ -10,7 +10,7 @@ def front_page(request):
     course_list = models.Course.objects.filter(user=request.user)
     lecture_list = models.Lecture.objects.filter(course__user=request.user)
     # TODO pass in list of existing lectures for this user
-    return render(request, 'lecturer/front_page.html', {'course_list':course_list, 'lecture_list':lecture_list})
+    return render(request, 'lecturer/front_page.html', {'course_list': course_list, 'lecture_list': lecture_list})
 
 
 @login_required

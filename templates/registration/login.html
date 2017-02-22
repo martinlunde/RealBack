@@ -15,25 +15,29 @@
         <div class="col-xs-1 col-sm-3 col-md-4"></div>
         <div class="row">
             <div class="col-xs-10 col-sm-6 col-md-4" id="login_lecturer">
-            <div class="form-group">
-            <h3>LOGIN AS LECTURER</h3>
-                <form action="{% url 'login' %}" method="POST">
-                    {% csrf_token %}
-                    {{ form.username }}
-                    {{ form.password }}
-                    <script type="text/javascript" >
-                        $(document).ready(function(){
-                            $("#id_username").attr('placeholder', 'Email');
-                            $("#id_password").attr('placeholder', 'Password');
-                        });
-                    </script>
-                    <input class="btn" type="submit" value="Login">
-                </form>
+                
+                <div class="form-group">
+                {% block form-login %}
+                    <h3>LOGIN AS LECTURER</h3>
+                    <form action="{% url 'login' %}" method="POST">
+                        {% csrf_token %}
+                        {{ form.username }}
+                        {{ form.password }}
+                        <script type="text/javascript" >
+                            $(document).ready(function(){
+                                $("#id_username").attr('placeholder', 'Email');
+                                $("#id_password").attr('placeholder', 'Password');
+                            });
+                        </script>
+                        <input class="btn" type="submit" value="Login">
+                    </form>
                 <div>
                     <p>NOT REGISTERED?</p>
                     <p><a href="{% url 'register' %}">REGISTER HERE!</a></p>
                 </div>
-            </div>
+                {% endblock %}
+                </div>
+                
             </div>
         </div>
         <div class="col-xs-1 col-sm-3 col-md-4"></div>

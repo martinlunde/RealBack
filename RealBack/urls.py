@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from emailauth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('attendee.urls')),
     url(r'^lecturer/', include('lecturer.urls')),
+    url(r'^', include('attendee.urls')),
+    url(r'^', include('django.contrib.auth.urls')),
+    url(r'^register/$', auth_views.register, name='register')
 ]

@@ -1,16 +1,38 @@
-
-
-.login_divider {
-    position: relative;
-/*    border: solid 1px black;  */
-    padding-bottom: 14%;
-
+#id_username, #id_password {
+    margin-top: 10px;
 }
 
-#email_login, #password_login{
-    margin-bottom: 1%;
+.form-control {
+    margin-top: 10px;
 }
 
+.form-group div {
+    margin-top: 70px;
+}
+
+.form-group div p, .form-group div p a {
+    color: white;
+}
+
+.form-group h3 {
+    color: white;
+}
+
+.form-group div p:last-child {
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+.lecturer_background {
+    min-width: 1024px;
+    min-height: 100%; 
+    position: fixed;
+    top:50%;
+    left:50%;
+    width: 100%;
+    height: auto;
+    transform:translate(-50%,-50%);}
+}
 
 /* Custom CSS for #00AF9C colored bootstrap buttons */
 .btn-custom {

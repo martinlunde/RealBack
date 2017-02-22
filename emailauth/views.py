@@ -1,17 +1,17 @@
 
-from django.shortcuts import render, HttpResponseRedirect
-from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+from . import forms
 
 
 def register(request):
     """ Register a new user """
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = forms.UserCreationForm(request.POST)
         if form.is_valid():
-            # TODO save user
-            return HttpResponseRedirect('lecturer:front_page')
+            form.save(commit=True)
+            return redirect('lecturer:front_page')
 
     else:
-        form = UserCreationForm()
+        form = forms.UserCreationForm()
 
     return render(request, 'registration/register.html', {'form': form})

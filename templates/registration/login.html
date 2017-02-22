@@ -23,6 +23,8 @@
                         {% csrf_token %}
                         {{ form.username }}
                         {{ form.password }}
+                        {{ form.username.errors }}
+                        {{ form.password.errors }}
                         <script type="text/javascript" >
                             $(document).ready(function(){
                                 $("#id_username").attr('placeholder', 'Email');

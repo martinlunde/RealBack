@@ -2,6 +2,11 @@
     margin-top: 10px;
 }
 
+.errorlist li {
+    margin-top: 10px;
+    color: white;
+}
+
 .form-control {
     margin-top: 10px;
 }

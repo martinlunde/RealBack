@@ -7,6 +7,9 @@
             {{ form.username }}
             {{ form.password1 }}
             {{ form.password2 }}
+            {{ form.username.errors }}
+            {{ form.password1.errors }}
+            {{ form.password2.errors }}
             <script type="text/javascript" >
                 $(document).ready(function(){
                     $("#id_username").attr('placeholder', 'Email');
@@ -14,7 +17,7 @@
                     $("#id_password2").attr('placeholder', 'Repeat password');
                 });
             </script>
-            <input class="btn" type="submit" value="Submit">
+            <input class="btn" type="submit" value="Register">
         </form>
     {% endblock %}
 

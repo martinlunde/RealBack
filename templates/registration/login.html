@@ -9,16 +9,10 @@
         </div>
         <div class="row">
             <div class="col-md-12 login_divider">
-                <form>
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6" id="login_lecturer">
-                        <div class="form-group">
-                            <input type="email" class="form-control" id="email_login" placeholder="email@example.com">
-                            <input type="password" class="form-control" id="password_login" placeholder="********">
-                            <button type="submit" class="btn btn-custom btn-block">Login</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3"></div>
+                <form action="{% url 'login' %}" method="POST">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" value="Submit">
                 </form>
             </div>
         </div>
@@ -27,4 +21,3 @@
         </div>
     </div>
 {% endblock %}
-

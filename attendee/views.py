@@ -11,6 +11,10 @@ def index(request):
 def joined(request):
     """ Temp demo stuff """
     # TODO check session OK
-    # TODO pass in lecture info
+    # TODO pass in lecture name
     # return render(request, 'attendee/joined.html', {})
     pass
+
+
+def about_us(request):
+    return render(request, 'attendee/about_us.html', {})

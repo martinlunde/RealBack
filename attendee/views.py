@@ -12,5 +12,5 @@ def joined(request):
     """ Temp demo stuff """
     # TODO check session OK
     # TODO pass in lecture info
-    # return render(request, 'templates/attendee/joined.html', {})
+    # return render(request, 'attendee/joined.html', {})
     pass

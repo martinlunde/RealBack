@@ -11,7 +11,9 @@
             <div class="col-md-12 login_divider">
                 <form action="{% url 'register' %}" method="POST">
                     {% csrf_token %}
-                    {{ form }}
+                    {{ form.username }}
+                    {{ form.password1 }}
+                    {{ form.password2 }}
                     <input type="submit" value="Submit">
                 </form>
             </div>

@@ -1,22 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-  {% block content %}
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
   {% for course in course_list%}
-    <h2>{{ course.title }}</h2>
-    <h3>{{ course.description }}</h3>
-    {% for lecture in lecture_list %}
-      {% if lecture.course == course %}
-        <p>{{ lecture.title }}</p>
-        <p>{{ lecture.description }}</p>
-        <p>{{ lecture.pin }}</p>
-      {% endif%}
-    {% endfor %}
+  <h3>{{ course.title }}</h3>
+  <h4>{{ course.description }}</h4>
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Pin</th>
+      </tr>
+      {% for lecture in lecture_list %}
+        {% if lecture.course == course %}
+        <tr>
+          <th>{{ lecture.title }}</th>
+          <th>{{ lecture.description }}</th>
+          <th>{{ lecture.pin }}</th>
+        </tr>
+        {% endif%}
+      {% endfor %}
+    </table>
   {% endfor %}
-  {% endblock %}
-</body>
-</html>
+{% endblock %}

@@ -28,6 +28,10 @@ body {
 	margin-left: 15px;
 }
 
+.row {
+	max-width: 100%;
+}
+
 @media (max-width: 750px) {
 	.logo {
 		width: 125px;

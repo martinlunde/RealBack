@@ -58,7 +58,9 @@
                     <a class="item" href="/lecturer/">ABOUT US</a>
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1">
-                    <a class="item" href="/lecturer/">LOGIN</a>
+                    {% block footerLinkChange %}
+                        <a class="item" href="/lecturer/">LOGIN</a>
+                    {% endblock %}
                 </div>
             </footer>
         {% endblock %}

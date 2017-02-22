@@ -7,9 +7,9 @@ from .models import Course, Lecture
 def front_page(request):
     """ Lecturer main page """
     course_list = Course.objects.filter(user=request.user)
-    lecture_list = Lecture.objects.filter(user=request.user)
+    lecture_list = (Lecture.objects.filter(course__user=request.user))
     # TODO pass in list of existing lectures for this user
-    return render(request, 'lecturer/front_page.html', {'courses':course_list, 'lectures':lecture_list})
+    return render(request, 'lecturer/front_page.html', {'course_list':course_list, 'lecture_list':lecture_list})
 
 
 # def login(request):

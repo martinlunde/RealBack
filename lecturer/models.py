@@ -16,7 +16,6 @@ def _generate_pin():
     charset = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789"
     pin = [choice(charset) for i in range(6)]
     pin = ''.join(pin)
-    # TODO check if exists in db after generating (or maybe not. exception is handled)
     return pin
 
 
@@ -26,6 +25,8 @@ class Lecture(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
     pin = models.CharField(max_length=6, default=_generate_pin, unique=True)
+    pin_user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    # TODO delete the related user with delete() override or post_delete signal
     # TODO free old pins that are not used anymore
 
     def save(self, *args, **kwargs):

@@ -1,14 +1,16 @@
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from . import forms
+from . import forms, models
 
 
 @login_required  # TODO check for group instead
 def front_page(request):
     """ Lecturer main page """
+    course_list = models.Course.objects.filter(user=request.user)
+    lecture_list = models.Lecture.objects.filter(course__user=request.user)
     # TODO pass in list of existing lectures for this user
-    return render(request, 'lecturer/front_page.html', {})
+    return render(request, 'lecturer/front_page.html', {'course_list': course_list, 'lecture_list': lecture_list})
 
 
 @login_required

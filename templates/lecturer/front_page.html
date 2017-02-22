@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-Welcome
-</body>
-</html>
+
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+  {% for course in course_list%}
+  <h3>{{ course.title }}</h3>
+  <h4>{{ course.description }}</h4>
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Pin</th>
+      </tr>
+      {% for lecture in lecture_list %}
+        {% if lecture.course == course %}
+        <tr>
+          <th>{{ lecture.title }}</th>
+          <th>{{ lecture.description }}</th>
+          <th>{{ lecture.pin }}</th>
+        </tr>
+        {% endif%}
+      {% endfor %}
+    </table>
+  {% endfor %}
+{% endblock %}

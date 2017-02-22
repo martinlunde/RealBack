@@ -5,6 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-
+  {% block content %}
+  {% for course in course_list%}
+    <h2>{{ course.title }}</h2>
+    <h3>{{ course.description }}</h3>
+    {% for lecture in lecture_list %}
+      {% if lecture.course == course %}
+        <p>{{ lecture.title }}</p>
+        <p>{{ lecture.description }}</p>
+        <p>{{ lecture.pin }}</p>
+      {% endif%}
+    {% endfor %}
+  {% endfor %}
+  {% endblock %}
 </body>
 </html>

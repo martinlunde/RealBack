@@ -8,7 +8,7 @@ def register(request):
     if request.method == 'POST':
         form = forms.UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=True)
+            form.save(commit=True)
             return redirect('lecturer:front_page')
 
     else:

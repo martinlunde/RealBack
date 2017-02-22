@@ -14,3 +14,7 @@ def joined(request):
     # TODO pass in lecture info
     # return render(request, 'attendee/joined.html', {})
     pass
+
+
+def about_us(request):
+    return render(request, 'attendee/about_us.html', {})

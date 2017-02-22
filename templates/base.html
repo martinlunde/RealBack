@@ -13,7 +13,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
 
-    <body>
+    <body style="background-color: #f2f2f2;">
         {% block navbar %}{% endblock %}
 
         {% block content %}
@@ -45,7 +45,7 @@
         {% block footer %}
             <footer class="footer col-xs-12 col-sm-12 col-md-12">
                 <div class="col-xs-1 col-sm-1 col-md-1">
-                    <a href="#">
+                    <a href="/">
                         <img class="logo" src="{% static 'realbackLogoHuge.png' %}">
                     </a>
                 </div>
@@ -54,7 +54,7 @@
                     <a class="item" href="/lecturer/">HELP</a>
                 </div>
                 <div class="col-xs-3 col-sm-2 col-md-2">
-                    <a class="item" href="/lecturer/">ABOUT US</a>
+                    <a class="item" href="/about_us/">ABOUT US</a>
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1">
                     <a class="item" href="/lecturer/">LOGIN</a>

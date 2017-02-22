@@ -1,16 +1,23 @@
-
-
-.login_divider {
-    position: relative;
-/*    border: solid 1px black;  */
-    padding-bottom: 14%;
-
+.form-control {
+    margin-top: 10px;
 }
 
-#email_login, #password_login{
-    margin-bottom: 1%;
+.form-group div {
+    margin-top: 70px;
 }
 
+.form-group div p, .form-group div p a {
+    color: white;
+}
+
+.form-group h3 {
+    color: white;
+}
+
+.form-group div p:last-child {
+    font-size: 10px;
+    margin-top: 5px;
+}
 
 /* Custom CSS for #00AF9C colored bootstrap buttons */
 .btn-custom {

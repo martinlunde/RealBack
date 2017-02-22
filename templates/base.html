@@ -11,6 +11,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'attendee.css' %}">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        {% block ex-head %}{% endblock %}
     </head>
 
     <body>
@@ -19,7 +20,7 @@
         {% block content %}
             <div class="frontpage_container">
                 <div class="frontpage_background_container">
-                    <img class="frontpage_background" src="{% static 'frontpage.jpg' %}">
+                    <img class="frontpage_background" src="{% static 'images/frontpage.jpg' %}">
                 </div>
                 <div class="row">
                     <div class="col-md-12 frontpage_divider" ></div>
@@ -46,7 +47,7 @@
             <footer class="footer col-xs-12 col-sm-12 col-md-12">
                 <div class="col-xs-1 col-sm-1 col-md-1">
                     <a href="#">
-                        <img class="logo" src="{% static 'realbackLogoHuge.png' %}">
+                        <img class="logo" src="{% static 'images/realbackLogoHuge.png' %}">
                     </a>
                 </div>
                 <div class="col-xs-4 col-sm-6 col-md-6"></div>

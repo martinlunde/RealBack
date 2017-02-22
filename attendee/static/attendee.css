@@ -61,7 +61,7 @@ body {
 	overflow: hidden;
 }
 
-.form-group h3 {
+.form-group h3, .form-group div {
 	text-align: center;
 }
 
@@ -72,6 +72,7 @@ body {
 	transform: translateX(-50%);
 	background-image: linear-gradient(to bottom,#00AF9C 0,#007d70 100%);
 	border-color: #007d70;
+	color:white;
 }
 
 .form-group .btn:hover {

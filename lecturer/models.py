@@ -13,6 +13,9 @@ class Course(models.Model):
     description = models.CharField(max_length=200)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.title
+
 
 def _generate_pin():
     """ Generate a 6 character pin for attendee login """
@@ -47,6 +50,9 @@ class Lecture(models.Model):
             except IntegrityError as err:
                 # TODO maybe log?
                 self.pin = _generate_pin()
+
+    def __str__(self):
+        return self.title
 
 
 # @receiver(post_save, sender=Lecture)

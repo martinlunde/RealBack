@@ -36,7 +36,7 @@ def new_lecture(request):
     if request.method == "POST":
         form = forms.NewLectureForm(request.POST)
         if form.is_valid():
-            models.lecture = form.save()
+            form.save()
             return redirect('lecturer:front_page')
 
     else:

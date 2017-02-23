@@ -1,26 +1,23 @@
-{% extends 'registration/login.html' %}
+{% extends '../base.html' %}
 {% load static %}
-    {% block form-login %}
-        <h3>REGISTRATION</h3>
-        <form action="{% url 'register' %}" method="POST">
-            {% csrf_token %}
-            {{ form.username }}
-            {{ form.password1 }}
-            {{ form.password2 }}
-            {{ form.username.errors }}
-            {{ form.password1.errors }}
-            {{ form.password2.errors }}
-            <script type="text/javascript" >
-                $(document).ready(function(){
-                    $("#id_username").attr('placeholder', 'Email');
-                    $("#id_password1").attr('placeholder', 'Password');
-                    $("#id_password2").attr('placeholder', 'Repeat password');
-                });
-            </script>
-            <input class="btn" type="submit" value="Register">
-        </form>
-    {% endblock %}
 
-{% block footerLinkChange %}
-    <a class="item" href="{% url 'lecturer:front_page' %}">LECTURER</a>
+
+{% block content %}
+    <div class="login_container">
+        <div class="row">
+            <div class="col-md-12 login_divider" ></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 login_divider">
+                <form action="{% url 'register' %}" method="POST">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 login_divider"></div>
+        </div>
+    </div>
 {% endblock %}

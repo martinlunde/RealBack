@@ -37,8 +37,13 @@
                                 {% block form-login %}
                                 <form>
                                     <h3>SESSION PIN</h3>
-                                    <input type="text" class="form-control" id="hashInput" placeholder="Enter your lecture's PIN here">
-                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <input type="text" class="form-control" id="pinInput" placeholder="Enter your lecture's PIN here">
+                                    <button type="button" class="btn btn-success" id="joinButton">Join</button>
+                                    <script>
+                                        $("#joinButton").click(function () {
+                                            window.location.replace('/lecture/' + $("#pinInput").val())
+                                        })
+                                    </script>
                                 </form>
                                 {% endblock %}
                                 </div>

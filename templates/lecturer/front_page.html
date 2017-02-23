@@ -3,6 +3,8 @@
 {% load static %}
 
 {% block content %}
+  <a href="course/new">new course</a>
+  <a href="course/new">new lecture</a>
   {% for course in course_list%}
   <h3>{{ course.title }}</h3>
   <h4>{{ course.description }}</h4>

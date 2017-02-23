@@ -20,9 +20,11 @@
 
         {% block content %}
             <div class="frontpage_container">
+                {% block image %}
                 <div class="frontpage_background_container">
                     <img class="frontpage_background" src="{% static 'images/frontpage.jpg' %}">
                 </div>
+                {% endblock %}
                 <div class="row">
                     <div class="col-md-12 frontpage_divider" ></div>
                 </div>
@@ -32,9 +34,11 @@
                             <div class="col-xs-1 col-sm-3 col-md-4"></div>
                             <div class="col-xs-10 col-sm-6 col-md-4" id="hashForm">
                                 <div class="form-group">
+                                {% block form-login %}
                                     <h3>SESSION PIN</h3>
                                     <input type="text" class="form-control" id="hashInput" placeholder="Enter your lecture's PIN here">
                                     <button type="submit" class="btn btn-success">Submit</button>
+                                {% endblock %}
                                 </div>
                             </div>
                             <div class="col-xs-1 col-sm-3 col-md-4"></div>

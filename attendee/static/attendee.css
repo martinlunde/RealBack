@@ -96,7 +96,7 @@ body {
 
 /* Bootstrap form-control. Used for applying same styles to #id_username and #id_password. */
 
-.form-control, #id_username, #id_password, #id_password1, #id_password2 {
+.form-control, #id_username, #id_password {
  display: block;
   width: 100%;
   height: 34px;
@@ -116,23 +116,23 @@ body {
 }
 
 
-.form-control:focus, #id_username:focus, #id_password:focus, #id_password1:focus, #id_password2:focus {
+.form-control:focus, #id_username:focus, #id_password:focus {
   border-color: #66afe9;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
           box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
 }
-.form-control::-moz-placeholder, #id_username::-moz-placeholder, #id_password::-moz-placeholder,#id_password1::-moz-placeholder, #id_password2::-moz-placeholder {
+.form-control::-moz-placeholder, #id_username::-moz-placeholder, #id_password::-moz-placeholder {
   color: #999;
   opacity: 1;
 }
-.form-control:-ms-input-placeholder, #id_username:-ms-input-placeholder, #id_password:-ms-input-placeholder, #id_password1:-ms-input-placeholder, #id_password2:-ms-input-placeholder {
+.form-control:-ms-input-placeholder, #id_username, #id_password {
   color: #999;
 }
-.form-control::-webkit-input-placeholder, #id_username::-webkit-input-placeholder, #id_password::-webkit-input-placeholder, #id_password2::-webkit-input-placeholder, #id_password1::-webkit-input-placeholder {
+.form-control::-webkit-input-placeholder, #id_username, #id_password {
   color: #999;
 }
-.form-control::-ms-expand, #id_username::-ms-expand, #id_password::-ms-expand, #id_password1::-ms-expand, #id_password2::-ms-expand {
+.form-control::-ms-expand, #id_username::-ms-expand, #id_password::-ms-expand {
   background-color: transparent;
   border: 0;
 }

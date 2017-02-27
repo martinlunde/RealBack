@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-md-12 frontpage_divider" ></div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 frontpage_divider">
                             <div class="col-xs-1 col-sm-3 col-md-4"></div>
@@ -58,17 +58,31 @@
                         <img class="logo" src="{% static 'images/realbackLogoHuge.png' %}">
                     </a>
                 </div>
-                <div class="col-xs-4 col-sm-6 col-md-6"></div>
-                <div class="col-xs-2 col-sm-2 col-md-2" >
-                    <a class="item" href="/lecturer/">HELP</a>
+                <div class="footerMenu">
+                    <div class="col-xs-4 col-sm-6 col-md-6"></div>
+                    <div class="col-xs-2 col-sm-2 col-md-2" >
+                        <a class="item" href="/lecturer/">HELP</a>
+                    </div>
+                    <div class="col-xs-3 col-sm-2 col-md-2">
+                        <a class="item" href="/about_us/">ABOUT US</a>
+                    </div>
+                    <div class="col-xs-1 col-sm-1 col-md-1">
+                        {% block footerLinkChange %}
+                            <a class="item" href="/lecturer/">LOGIN</a>
+                        {% endblock %}
+                    </div>
                 </div>
-                <div class="col-xs-3 col-sm-2 col-md-2">
-                    <a class="item" href="/about_us/">ABOUT US</a>
-                </div>
-                <div class="col-xs-1 col-sm-1 col-md-1">
-                    {% block footerLinkChange %}
-                        <a class="item" href="/lecturer/">LOGIN</a>
-                    {% endblock %}
+                <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                <div class="dropup">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <li><a href="/lecturer/">Help</a></li>
+                    <li><a href="/about_us/">About Us</a></li>
+                    <li><a href="/lecturer/">Login</a></li>
+                  </ul>
                 </div>
             </footer>
         {% endblock %}

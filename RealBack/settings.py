@@ -47,11 +47,9 @@ if os.getenv('DJANGO_PRODUCTION') is not None:  # Production settings
     # Static files storage
     STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-
 else:  # Development settings
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
-
 
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = '@3_u==ovt60o8d)jrxsz6ul-gn*20%b#er)j%e)iuy+jag73!l'

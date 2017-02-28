@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -19,17 +20,55 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@3_u==ovt60o8d)jrxsz6ul-gn*20%b#er)j%e)iuy+jag73!l'
+if os.getenv('DJANGO_PRODUCTION') is not None:  # Production settings
+    """
+    DJANGO_PRODUCTION must be set to something (like True)
+    DJANGO_SECRET_KEY should be a long random string
+    """
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = False
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
-ALLOWED_HOSTS = ['192.168.1.7','0.0.0.0','10.218.118.156','localhost', '10.22.4.212','10.22.52.175']
+    ALLOWED_HOSTS = ['*']
+
+    # Database
+    # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
+    # TODO set db to use PostgreSQL
+    # TODO might need to set further environment variables for db credentials
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+
+    # Static files storage
+    STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+
+else:  # Development settings
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = True
+
+
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = '@3_u==ovt60o8d)jrxsz6ul-gn*20%b#er)j%e)iuy+jag73!l'
+
+    ALLOWED_HOSTS = []
+
+    # Database
+    # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -73,17 +112,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'RealBack.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
@@ -121,6 +149,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),

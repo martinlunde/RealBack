@@ -41,7 +41,12 @@
                                 <form>
                                     <h3>SESSION PIN</h3>
                                     <input type="text" class="form-control" placeholder="Enter your lecture's PIN here">
-                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="button" class="btn btn-success" id="joinButton">Join</button>
+                                    <script>
+                                        $("#joinButton").click(function () {
+                                            window.location.replace('/lecture/' + $("#pinInput").val())
+                                        })
+                                    </script>
                                 </form>
                                 {% endblock %}
                                 </div>

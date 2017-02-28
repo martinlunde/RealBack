@@ -33,13 +33,10 @@ def new_course(request):
 @login_required  # TODO check for group instead
 def new_lecture(request):
     """ Create new lecture """
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.NewLectureForm(request.POST)
         if form.is_valid():
-            lecture = form.save(commit=False)
-            # TODO find correct course and put in lecture
-            # lecture.course = course
-            lecture.save()
+            form.save()
             return redirect('lecturer:front_page')
 
     else:

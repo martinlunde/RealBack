@@ -7,3 +7,4 @@ class NewOverallForm(forms.ModelForm):
     class Meta:
         model = models.Course
         fields = ['title']
+        

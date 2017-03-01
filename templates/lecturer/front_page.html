@@ -3,6 +3,7 @@
 {% load static %}
 
 {% block content %}
+  <a href="/logout">LOGOUT KNAPP TRYKK HER</a>
   <a href="course/new">new course</a>
   {% for course in course_list%}
   <h3><a href="{{ course.title }}">{{ course.title }}</a></h3>

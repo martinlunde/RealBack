@@ -3,10 +3,21 @@
 {% load static %}
 
 {% block content %}
-  <a href="/logout">LOGOUT KNAPP TRYKK HER</a>
-  <a href="course/new">new course</a>
-  {% for course in course_list%}
-  <h3><a href="{{ course.title }}">{{ course.title }}</a></h3>
-  <h4>{{ course.description }}</h4>
-  {% endfor %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    {%  for course in courses %}
+        <h3>{{ course.title }}</h3>
+
+        {% for lecture in lectures %}
+            {% if lecture.course == course %}
+                <h5>{{ lecture.title }}</h5>
+            {% endif %}
+        {% endfor %}
+
+    {% endfor %}
+
+  <a href="/logout">LOGOUT</a>
 {% endblock %}

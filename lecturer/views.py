@@ -4,45 +4,35 @@ from django.shortcuts import render, redirect
 from . import forms, models
 
 
-@login_required  # TODO check for group instead
-def front_page(request):
-    """ Lecturer main page """
-    course_list = models.Course.objects.filter(user=request.user)
-    # TODO pass in list of existing lectures for this user
-
-    return render(request, 'lecturer/front_page.html', {'course_list': course_list})
+def get_courses_and_lectures(request):
+    courses = models.Course.objects.filter(user=request.user)
+    lecture_list = models.Lecture.objects.filter(course__user=request.user)
+    return courses, lecture_list
 
 
 @login_required
-def new_course(request):
-    """ Create new course """
-    if request.method == 'POST':
-        form = forms.NewCourseForm(request.POST)
-        if form.is_valid():
-            course = form.save(commit=False)
-            course.user = request.user
-            course.save()
-            return redirect('lecturer:front_page')
-
-    else:
-        form = forms.NewCourseForm()
-
-    return render(request, 'lecturer/new_course.html', {'form': form})
-
-
-@login_required  # TODO check for group instead
-def new_lecture(request):
-    """ Create new lecture """
+def create_lecture_in_course(request):
+    """ Create new lecture in an existing course,
+    and creates a course if course does not exist"""
     if request.method == "POST":
-        form = forms.NewLectureForm(request.POST)
+        form = forms.NewOverallForm(request.POST)
         if form.is_valid():
-            form.save()
+            value = form.cleaned_data['title']
+            if not models.Course.objects.filter(title=value, user=request.user):
+                c = models.Course(title=value, user=request.user)
+                c.save()
+            else:
+                c = models.Course.objects.get(title=value, user=request.user)
+
+            t = len(models.Lecture.objects.filter(course__title=value, course__user=request.user))
+            l = models.Lecture(course=c, title=str(request.user) + "_" + str(c.title) + "_" + str(t + 1))
+            l.save()
             return redirect('lecturer:front_page')
-
     else:
-        form = forms.NewLectureForm()
+        form = forms.NewOverallForm()
+        courses, lectures = get_courses_and_lectures(request)
 
-    return render(request, 'lecturer/new_lecture.html', {'form': form})
+    return render(request, 'lecturer/front_page.html', {'form': form, 'courses': courses, 'lectures': lectures})
 
 
 @login_required  # TODO check for group instead

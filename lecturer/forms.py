@@ -12,4 +12,4 @@ class NewCourseForm(forms.ModelForm):
 class NewLectureForm(forms.ModelForm):
     class Meta:
         model = models.Lecture
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'course']

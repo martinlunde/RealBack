@@ -3,3 +3,4 @@ flake8
 gunicorn
 whitenoise
 psycopg2
+dj-database-url

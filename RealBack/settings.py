@@ -44,6 +44,11 @@ if os.getenv('DJANGO_PRODUCTION') is not None:  # Production settings
         }
     }
 
+    import dj_database_url
+
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+
     # Static files storage
     STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 

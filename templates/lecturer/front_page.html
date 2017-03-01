@@ -4,25 +4,8 @@
 
 {% block content %}
   <a href="course/new">new course</a>
-  <a href="course/new">new lecture</a>
   {% for course in course_list%}
-  <h3>{{ course.title }}</h3>
+  <h3><a href="{{ course.title }}">{{ course.title }}</a></h3>
   <h4>{{ course.description }}</h4>
-    <table>
-      <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Pin</th>
-      </tr>
-      {% for lecture in lecture_list %}
-        {% if lecture.course == course %}
-        <tr>
-          <th>{{ lecture.title }}</th>
-          <th>{{ lecture.description }}</th>
-          <th>{{ lecture.pin }}</th>
-        </tr>
-        {% endif%}
-      {% endfor %}
-    </table>
   {% endfor %}
 {% endblock %}

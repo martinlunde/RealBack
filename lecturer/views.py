@@ -9,7 +9,7 @@ def front_page(request):
     """ Lecturer main page """
     course_list = models.Course.objects.filter(user=request.user)
     # TODO pass in list of existing lectures for this user
-    
+
     return render(request, 'lecturer/front_page.html', {'course_list': course_list})
 
 
@@ -45,7 +45,7 @@ def new_lecture(request):
     return render(request, 'lecturer/new_lecture.html', {'form': form})
 
 
-@login_required # TODO check for group instead
+@login_required  # TODO check for group instead
 def course(request, course=None):
     if course is None:
         return redirect('front_page')
@@ -61,7 +61,7 @@ def course(request, course=None):
     return render(request, 'lecturer/course.html', {'course_current': course_current, 'lecture_list': lecture_list})
 
 
-@login_required # TODO check for group instead
+@login_required  # TODO check for group instead
 def lecture(request, course=None, lecture=None):
     if course is None or lecture is None:
         return redirect('front_page')

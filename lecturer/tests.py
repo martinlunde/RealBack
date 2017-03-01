@@ -28,7 +28,6 @@ class ModelTestCase(TestCase):
         l1 = models.Lecture(course=c1)
         l1.save()
         title = 'Test1'
-        description = 'Test description 1'
         l2 = models.Lecture(course=c1,
                             title=title,
                             pin=l1.pin)

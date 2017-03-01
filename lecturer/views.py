@@ -25,7 +25,7 @@ def create_lecture_in_course(request):
                 c = models.Course.objects.get(title=value, user=request.user)
 
             t = len(models.Lecture.objects.filter(course__title=value, course__user=request.user))
-            l = models.Lecture(course=c, title=str(request.user) + "_" + str(c.title) + "_" + str(t+1))
+            l = models.Lecture(course=c, title=str(request.user) + "_" + str(c.title) + "_" + str(t + 1))
             l.save()
             return redirect('lecturer:front_page')
     else:

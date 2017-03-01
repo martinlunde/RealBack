@@ -1,2 +1,6 @@
 Django==1.10.5
 flake8
+gunicorn
+whitenoise
+psycopg2
+dj-database-url

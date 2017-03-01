@@ -39,8 +39,8 @@ if os.getenv('DJANGO_PRODUCTION') is not None:  # Production settings
     # TODO might need to set further environment variables for db credentials
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.path.join(BASE_DIR, 'db.postgresql'),
         }
     }
 

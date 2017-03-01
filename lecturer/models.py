@@ -10,7 +10,6 @@ from RealBack import settings
 class Course(models.Model):
     """ Course model """
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -34,7 +33,6 @@ class Lecture(models.Model):
     #     )
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
     pin = models.CharField(max_length=6, default=_generate_pin, unique=True)
     # pin_user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     # TODO delete the related user with delete() override or post_delete signal

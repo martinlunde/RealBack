@@ -5,8 +5,9 @@ from . import views
 
 app_name = 'lecturer'
 urlpatterns = [
-    url(r'^$', views.front_page, name='front_page'),
+    url(r'^$', views.create_lecture_in_course, name='front_page'),
     # url(r'^login$', views.login, name='login_page'),
-    url(r'^lecture/new$', views.new_lecture, name='new_lecture'),
-    url(r'^course/new$', views.new_course, name='new_course'),
+    # skal et inni lecturer/course eller lecturer?
+    url(r'^(?P<course>[\s\S]*)/(?P<lecture>[\s\S]*)$', views.lecture, name='lecture'),
+    url(r'^(?P<course>[\s\S]*)$', views.course, name='course'),
 ]

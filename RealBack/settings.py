@@ -35,8 +35,6 @@ if os.getenv('DJANGO_PRODUCTION') is not None:  # Production settings
 
     # Database
     # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-    # TODO set db to use PostgreSQL
-    # TODO might need to set further environment variables for db credentials
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -82,6 +80,7 @@ INSTALLED_APPS = [
     'attendee',
     'lecturer',
     'emailauth',
+    'realback_api',
 ]
 
 MIDDLEWARE = [
@@ -117,7 +116,6 @@ WSGI_APPLICATION = 'RealBack.wsgi.application'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -136,7 +134,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 # TIME_ZONE = 'UTC'
@@ -151,7 +148,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -160,7 +156,6 @@ STATICFILES_DIRS = [
 
 
 # Auth redirect URLs
-
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'lecturer:front_page'
 LOGOUT_REDIRECT_URL = 'index'

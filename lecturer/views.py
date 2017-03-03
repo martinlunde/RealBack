@@ -1,7 +1,8 @@
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from . import forms, models
+from . import forms
+from realback_api import models
 
 
 def get_courses_and_lectures(request):

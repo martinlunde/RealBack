@@ -2,6 +2,7 @@
 from django.db import models, IntegrityError, transaction
 from random import choice
 from RealBack import settings
+from . import logger
 
 
 class Course(models.Model):
@@ -36,7 +37,7 @@ class Lecture(models.Model):
                     super(Lecture, self).save(*args, **kwargs)
                     done = True
             except IntegrityError as err:
-                # TODO maybe log?
+                logger.info("Generated PIN already existed")
                 self.pin = _generate_pin()
 
     def __str__(self):

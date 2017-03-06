@@ -6,7 +6,7 @@ from . import models
 class UserCreationForm(forms.ModelForm):
     class Meta:
         model = models.User
-        fields = ['username']
+        fields = ['email']
 
     password1 = forms.CharField(
         label="Password",

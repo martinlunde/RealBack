@@ -77,10 +77,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'attendee',
-    'lecturer',
-    'emailauth',
-    'realback_api',
+
+    'attendee.apps.AttendeeConfig',
+    'lecturer.apps.LecturerConfig',
+    'emailauth.apps.EmailauthConfig',
+    'realback_api.apps.RealbackApiConfig',
 ]
 
 MIDDLEWARE = [

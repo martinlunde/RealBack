@@ -110,6 +110,9 @@ class CourseLectures(View):
             title=str(request.user) + "_" + str(course.title) + "_" + str(lecture_count + 1)
         )
         lecture.save()
-        return JsonResponse({
+        response = JsonResponse({
             'success': True,
+            'lecture': lecture.as_dict(),
         })
+        # TODO set created status code
+        return response

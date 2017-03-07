@@ -13,6 +13,12 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
+    def as_dict(self):
+        return {
+            'course_id': self.id,
+            'course_title': self.title,
+        }
+
 
 def _generate_pin():
     """ Generate a 6 character pin for attendee login """
@@ -42,3 +48,9 @@ class Lecture(models.Model):
 
     def __str__(self):
         return self.title
+
+    def as_dict(self):
+        return {
+            'lecture_pin': self.pin,
+            'lecture_title': self.title,
+        }

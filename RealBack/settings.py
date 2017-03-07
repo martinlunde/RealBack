@@ -30,6 +30,11 @@ if os.getenv('DJANGO_PRODUCTION') is not None:  # Production settings
 
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+    SECURE_SSL_REDIRECT = True
+    # TODO may need this if continuous redirect on Heroku
+    # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
     ALLOWED_HOSTS = ['*']
 

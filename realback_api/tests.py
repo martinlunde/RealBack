@@ -38,3 +38,17 @@ class ModelTestCase(TestCase):
         self.assertEqual(test_course.title, "TDT4140")
         self.assertEqual(test_lecture.title, "Lecture1")
         self.assertEqual(test_lecture.course, test_course)
+
+    def test_questions(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4140")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1", pin=models._generate_pin())
+        lecture.save()
+
+        test_questions = models.Question(lecture=lecture, text="Why is the sky blue?")
+        test_questions.save()
+
+        self.assertEqual(test_questions.lecture, lecture)
+        self.assertEqual(test_questions.text, "Why is the sky blue?")
+        self.assertEqual(test_questions.votes, 0)

@@ -1,2 +1,65 @@
 {% extends '../base.html' %}
 {% load static %}
+
+{% block content %}
+<script>
+
+	$(document).ready(function() {
+	  	$('#landing_page').css( "visibility", "hidden" ),
+		$('#frontpage_attendee').css( "visibility", "visible" );
+	});
+
+	function onJoin(){
+		
+		var pinAPI = '/lectures/' + $('#pinInput').val();
+	  	$.getJSON( pinAPI, function(json) {
+	  		console.log(json.success);
+	  		if (json.success == false) {
+	  			$('#landing_page').css( "visibility", "hidden" ),
+				$('#frontpage_attendee').css( "visibility", "visible" );
+	  		} else if (json.success == true) {
+	  			$('#landing_page').css( "visibility", "visible" ),
+				$('#frontpage_attendee').css( "visibility", "hidden" );
+	  		}
+	  	})
+	}
+	  	
+</script>
+
+<div id="frontpage_attendee">
+	<div class="frontpage_container">
+        {% block image %}
+        <div class="frontpage_background_container">
+            <img class="frontpage_background" src="{% static 'images/frontpage.jpg' %}">
+        </div>
+        {% endblock %}
+        <div class="row">
+            <div class="col-md-12 frontpage_divider" ></div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 frontpage_divider">
+                <div class="col-xs-1 col-sm-3 col-md-4"></div>
+                <div class="col-xs-10 col-sm-6 col-md-4" id="hashForm">
+                    <div class="form-group">
+                    {% block form-login %}
+                    <form>
+                        <h3>SESSION PIN</h3>
+                        <input type="text" class="form-control" placeholder="Enter your lecture's PIN here" id="pinInput">
+                        <div id="join"></div>
+                        <button type="button" class="btn btn-success" id="joinButton" onclick="onJoin()">Join</button>
+                    </form>
+                    {% endblock %}
+                    </div>
+                </div>
+                <div class="col-xs-1 col-sm-3 col-md-4"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="landing_page">
+	<h1>HEYHEY</h1>
+	<h1>{{ lecture_name }}<h1>
+</div>
+{% endblock %}

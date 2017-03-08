@@ -14,6 +14,7 @@
         {% for lecture in lectures %}
             {% if lecture.course == course %}
                 <h5>{{ lecture.title }}</h5>
+                <h5>{{ lecture.pin }}</h5>
             {% endif %}
         {% endfor %}
 

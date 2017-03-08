@@ -4,34 +4,51 @@
     <link rel="stylesheet" type="text/css" href="{% static 'lecturer.css' %}">
 {% endblock %}
 
-{% block image %}
-<div class="frontpage_background_container">
-    <img class="lecturer_background" src="{% static 'images/blackboard.jpg' %}">
-</div>
-{% endblock %}
+{% block content %}
+    <div class="frontpage_container">
+        {% block image %}
+        <div class="frontpage_background_container">
+            <img class="lecturer_background" src="{% static 'images/blackboard.jpg' %}">
+        </div>
+        {% endblock %}
+        <div class="row">
+            <div class="col-md-12 frontpage_divider" ></div>
+        </div>
 
-{% block form-login %}
-    <h3>LOGIN AS LECTURER</h3>
-    <form action="{% url 'login' %}" method="POST">
-        {% csrf_token %}
-        {{ form.username }}
-        {{ form.password }}
-        {{ form.username.errors }}
-        {{ form.password.errors }}
-        <script type="text/javascript" >
-            $(document).ready(function(){
-                $("#id_username").attr('placeholder', 'E-mail address');
-                $("#id_password").attr('placeholder', 'Password');
-            });
-        </script>
-        <input class="btn" type="submit" value="Login">
-    </form>
-<div>
-    <p>NOT REGISTERED?</p>
-    <p><a href="{% url 'register' %}">REGISTER HERE!</a></p>
-</div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 frontpage_divider">
+                <div class="col-xs-1 col-sm-3 col-md-4"></div>
+                <div class="col-xs-10 col-sm-6 col-md-4" id="hashForm">
+                    <div class="form-group">
+                    {% block form-login %}
+                        <h3>LOGIN AS LECTURER</h3>
+                        <form action="{% url 'login' %}" method="POST">
+                            {% csrf_token %}
+                            {{ form.username }}
+                            {{ form.password }}
+                            {{ form.username.errors }}
+                            {{ form.password.errors }}
+                            <script type="text/javascript" >
+                                $(document).ready(function(){
+                                    $("#id_username").attr('placeholder', 'E-mail address');
+                                    $("#id_password").attr('placeholder', 'Password');
+                                });
+                            </script>
+                            <input class="btn" type="submit" value="Login">
+                        </form>
+                    <div>
+                        <p>NOT REGISTERED?</p>
+                        <p><a href="{% url 'register' %}">REGISTER HERE!</a></p>
+                    </div>
+                    {% endblock %}
+                    </div>
+                </div>
+                <div class="col-xs-1 col-sm-3 col-md-4"></div>
+            
+            </div>
+        </div>
+    </div>
 {% endblock %}
-
 
 {% block footerLinkChange %}
     <a class="item" href="{% url 'index' %}">ATTENDEE</a>

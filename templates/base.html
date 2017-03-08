@@ -8,55 +8,21 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}RealBack{% endblock %}</title>
-        <!-- Latest compiled and minified CSS -->
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Latest compiled and minified CSS BOOTSTRAP -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" type="text/css" href="{% static 'attendee.css' %}">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+        <!-- Stylesheet -->
+        <link rel="stylesheet" type="text/css" href="{% static 'attendee.css' %}">
         {% block ex-head %}{% endblock %}
     </head>
 
     <body>
         {% block navbar %}{% endblock %}
 
-        {% block content %}
-            <div class="frontpage_container">
-                {% block image %}
-                <div class="frontpage_background_container">
-                    <img class="frontpage_background" src="{% static 'images/frontpage.jpg' %}">
-                </div>
-                {% endblock %}
-                <div class="row">
-                    <div class="col-md-12 frontpage_divider" ></div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 frontpage_divider">
-                            <div class="col-xs-1 col-sm-3 col-md-4"></div>
-                            <div class="col-xs-10 col-sm-6 col-md-4" id="hashForm">
-                                <div class="form-group">
-                                {% block form-login %}
-                                <form>
-                                    <h3>SESSION PIN</h3>
-                                    <input type="text" class="form-control" placeholder="Enter your lecture's PIN here" id="pinInput">
-                                    <button type="button" class="btn btn-success" id="joinButton">Join</button>
-                                    <script>
-                                        $("#joinButton").click(function () {
-                                            window.location.replace('/lectures/' + $("#pinInput").val())
-                                        })
-                                    </script>
-                                </form>
-                                {% endblock %}
-                                </div>
-                            </div>
-                            <div class="col-xs-1 col-sm-3 col-md-4"></div>
-                        
-                    </div>
-                </div>
-            </div>
-        {% endblock %}
+        {% block content %}{% endblock %}
 
         {% block footer %}
             <footer class="footer col-xs-12 col-sm-12 col-md-12">

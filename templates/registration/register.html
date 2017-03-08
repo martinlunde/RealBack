@@ -4,15 +4,15 @@
         <h3>REGISTRATION</h3>
         <form action="{% url 'register' %}" method="POST">
             {% csrf_token %}
-            {{ form.username }}
+            {{ form.email }}
             {{ form.password1 }}
             {{ form.password2 }}
-            {{ form.username.errors }}
+            {{ form.email.errors }}
             {{ form.password1.errors }}
             {{ form.password2.errors }}
             <script type="text/javascript" >
                 $(document).ready(function(){
-                    $("#id_username").attr('placeholder', 'Email');
+                    $("#id_email").attr('placeholder', 'E-mail address');
                     $("#id_password1").attr('placeholder', 'Password');
                     $("#id_password2").attr('placeholder', 'Repeat password');
                 });

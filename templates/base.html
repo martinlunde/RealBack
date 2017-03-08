@@ -40,11 +40,11 @@
                                 {% block form-login %}
                                 <form>
                                     <h3>SESSION PIN</h3>
-                                    <input type="text" class="form-control" placeholder="Enter your lecture's PIN here">
+                                    <input type="text" class="form-control" placeholder="Enter your lecture's PIN here" id="pinInput">
                                     <button type="button" class="btn btn-success" id="joinButton">Join</button>
                                     <script>
                                         $("#joinButton").click(function () {
-                                            window.location.replace('/lecture/' + $("#pinInput").val())
+                                            window.location.replace('/lectures/' + $("#pinInput").val())
                                         })
                                     </script>
                                 </form>

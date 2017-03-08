@@ -1,6 +1,6 @@
 
 from django import forms
-from . import models
+from realback_api import models
 
 
 class NewOverallForm(forms.ModelForm):

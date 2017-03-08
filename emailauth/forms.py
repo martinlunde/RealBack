@@ -1,12 +1,13 @@
 
 from django import forms
+from django.contrib.auth.password_validation import validate_password
 from . import models
 
 
 class UserCreationForm(forms.ModelForm):
     class Meta:
         model = models.User
-        fields = ['username']
+        fields = ['email']
 
     password1 = forms.CharField(
         label="Password",
@@ -19,6 +20,11 @@ class UserCreationForm(forms.ModelForm):
         strip=False,
         help_text="Enter the same password as before, for verification.",
     )
+
+    def clean_password1(self):
+        password1 = self.cleaned_data['password1']
+        validate_password(password1)
+        return password1
 
     def clean_password2(self):
         password1 = self.cleaned_data['password1']

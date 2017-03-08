@@ -35,6 +35,7 @@ class Lecture(models.Model):
     title = models.CharField(max_length=50)
     start_datetime = models.DateTimeField(default=timezone.now)
     pin = models.CharField(max_length=6, default=_generate_pin, unique=True)
+    speed = models.IntegerField(default=0)
     # TODO free old pins that are not used anymore
 
     def save(self, *args, **kwargs):
@@ -57,6 +58,9 @@ class Lecture(models.Model):
             'lecture_title': self.title,
             'lecture_start_time': self.start_datetime,
         }
+
+    def reset_speed(self):
+        self.speed = 0
 
 
 class Question(models.Model):

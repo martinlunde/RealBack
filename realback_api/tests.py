@@ -25,3 +25,16 @@ class ModelTestCase(TestCase):
         l2.save()
         self.assertNotEqual(l2.pin, l1.pin)
         self.assertEqual(l2.title, title)
+
+    def test_lecture_and_course_creation(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        test_course = models.Course(user=user, title="TDT4140")
+        test_course.save()
+
+        pin = models._generate_pin()
+        test_lecture = models.Lecture(course=test_course, title="Lecture1", pin=pin)
+        test_lecture.save()
+
+        self.assertEqual(test_course.title, "TDT4140")
+        self.assertEqual(test_lecture.title, "Lecture1")
+        self.assertEqual(test_lecture.course, test_course)

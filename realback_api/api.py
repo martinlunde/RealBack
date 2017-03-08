@@ -62,11 +62,41 @@ class LectureQuestions(View):
 
 class LectureSpeed(View):
     def get(self, request, pin=None):
-        """ Read digest of lecture speed opinions """
-        pass
+        if pin is None:
+            return JsonResponse({'success': False, 'message': 'Missing PIN'})
 
-    def post(self, request, pin=None):
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Invalid PIN'})
+
+        return JsonResponse({
+            'success': True,
+            'speed': lecture.speed
+        })
+
+    def post(self, request, pin=None, faster=None):
         """ Create opinion on lecture speed """
+        if pin is None:
+            return JsonResponse({'success': False, 'message': 'Missing PIN'})
+        if faster is None:
+            return JsonResponse({'success': False, 'message': 'Missing bool value'})
+
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Invalid PIN'})
+
+        if faster:
+            lecture.speed += 1
+        else:
+            lecture.speed -= 1
+        lecture.update()
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Lecture speed updated'
+        })
         pass
 
 

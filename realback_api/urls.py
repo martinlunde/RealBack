@@ -17,7 +17,7 @@ urlpatterns = [
 
     ])),
     url(r'^courses/$', api.Courses.as_view(), name='courses'),
-    url(r'^courses/(P<course_id>[0-9]+)/', include([
+    url(r'^courses/(?P<course_id>[0-9]+)/', include([
 
         url(r'^$', api.CourseDetails.as_view(), name='course_details'),
         url(r'^lectures/$', api.CourseLectures.as_view(), name='course_lectures'),

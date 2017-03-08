@@ -5,9 +5,9 @@
 <script>
 
 	$(document).ready(function() {
-	  	$('#landing_page').css( "visibility", "hidden" ),
-		$('#frontpage_attendee').css( "visibility", "visible" );
-		$('.footer').css( "visibility", "visible" );
+	  	$('#landing_page').css( "display", "none" ),
+		$('#frontpage_attendee').css( "display", "block" );
+		$('.footer').css( "display", "block" );
 	});
 
 	function onJoin(){
@@ -15,13 +15,13 @@
 		var pinAPI = '/lectures/' + $('#pinInput').val();
 	  	$.getJSON( pinAPI, function(json) {
 	  		if (json.success == false) {
-	  			$('#landing_page').css( "visibility", "hidden" ),
-				$('#frontpage_attendee').css( "visibility", "visible" );
-				$('.footer').css( "visibility", "visible" );
+	  			$('#landing_page').css( "display", "none" ),
+				$('#frontpage_attendee').css( "display", "block" );
+				$('.footer').css( "display", "block" );
 	  		} else if (json.success == true) {
-	  			$('#landing_page').css( "visibility", "visible" ),
-				$('#frontpage_attendee').css( "visibility", "hidden" ),
-				$('.footer').css( "visibility", "hidden" );
+	  			$('#landing_page').css( "display", "block" ),
+				$('#frontpage_attendee').css( "display", "none" ),
+				$('.footer').css( "display", "none" );
 				lectureName = json.lecture.lecture_title;
 				$('.lecture_title').text(lectureName.toUpperCase());
 	  		}
@@ -64,20 +64,58 @@
 
 <div id="landing_page">
 	<header class="header col-xs-12 col-sm-12 col-md-12">
-                <div class="col-xs-2 col-sm-1 col-md-2">
-                    <a href="/">
-                        <img class="logo" src="{% static 'images/realbackLogoHuge.png' %}">
-                    </a>
-                </div>
-                <div class="footerMenu">
-                    <div class="col-xs-1 col-sm-2 col-md-4"></div>
-                    <div class="col-xs-1 col-sm-3 col-md-3"></div>
-                    <div class="col-xs-1 col-sm-2 col-md-2">
-                            <p class="item lecture_title" >HEY</p>
-                    </div>
-
-                </div>
-                </div>
+        <div class="col-xs-2 col-sm-1 col-md-2">
+            <a href="/">
+	            <img class="logo" src="{% static 'images/realbackLogoHuge.png' %}">
+	        </a>
+        </div>
+        <div class="footerMenu">
+        <div class="col-xs-1 col-sm-2 col-md-4"></div>
+        <div class="col-xs-1 col-sm-3 col-md-3"></div>
+        <div class="col-xs-1 col-sm-2 col-md-2">
+             <p class="item lecture_title"></p>
+        </div>
 	</header>
+
+	<div class="content container">
+		<div class="big-box">
+			
+		</div>
+		<div class="row ">
+			<div class="col-xs-6 col-sm-6 col-md-6">
+				<div class="box col-xs-12 col-sm-12 col-md-12">
+
+				</div>
+			</div>
+
+			<div class="col-xs-6 col-sm-6 col-md-6">
+				<div class="box col-xs-12 col-sm-12 col-md-12">
+					<h3 class="col-xs-6 col-sm-6 col-md-6">ASK A QUESTION 
+						<h3 class="col-xs-6 col-sm-6 col-md-6 glyphicon glyphicon-question-sign"></h3>
+						<form>
+							<textarea class="textfield" type="text" name="textfield"></textarea>
+							<button type="button" class="btn btn-success">Send</button>
+						</form>
+					</h3>
+				</div>
+			</div>
+		</div>
+
+		<div class="row ">
+			<div class="col-xs-6 col-sm-6 col-md-6">
+				<div class="box col-xs-12 col-sm-12 col-md-12">
+
+				</div>
+			</div>
+
+			<div class="col-xs-6 col-sm-6 col-md-6">
+				<div class="box col-xs-12 col-sm-12 col-md-12">
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
 </div>
 {% endblock %}

@@ -12,6 +12,6 @@ class User(AbstractUser):
         and django.contrib.auth.get_user_model() on runtime
     """
     email = models.EmailField('E-mail address', unique=True)
-    username = models.CharField('username', max_length=150, blank=True)
+    username = models.CharField('username', max_length=150, default='username')
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']

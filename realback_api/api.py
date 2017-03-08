@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from . import models
+from . import models, forms
 
 
 class LectureDetails(View):
@@ -22,7 +22,7 @@ class LectureDetails(View):
 
         return JsonResponse({
             'success': True,
-            'lecture_name': lecture.title,
+            'lecture': lecture.as_dict(),
         })
 
     @method_decorator(login_required)
@@ -35,11 +35,29 @@ class LectureDetails(View):
 class LectureQuestions(View):
     def get(self, request, pin=None):
         """ Read list of latest questions """
-        pass
+        question_list = models.Question.objects.filter(lecture__pin=pin)
+        return JsonResponse({
+            'success': True,
+            'questions': [question.as_dict() for question in question_list],
+        })
 
     def post(self, request, pin=None):
         """ Create new question """
-        pass
+        form = forms.QuestionForm(request.POST)
+        if form.is_valid():
+            lecture = models.Lecture.objects.get(pin=pin)
+            question = form.save(commit=False)
+            question.lecture = lecture
+            question.save()
+            return JsonResponse({
+                'success': True,
+                'question': question.as_dict(),
+            })
+
+        return JsonResponse({
+            'success': False,
+            'question_text': form.cleaned_data['text'],
+        })
 
 
 class LectureSpeed(View):
@@ -73,7 +91,17 @@ class CourseDetails(View):
     def get(self, request, course_id):
         """ Read course details for course_id """
         # TODO remember to check if user has access (owner) to course
-        pass
+        course = models.Course.objects.get(id=course_id)
+        if course.user != request.user:
+            return JsonResponse({
+                'success': False,
+                'message': 'Access denied',
+            })
+
+        return JsonResponse({
+            'success': True,
+            'course': course.as_dict(),
+        })
 
     @method_decorator(login_required)
     def put(self, request, course_id):

@@ -1,5 +1,6 @@
 
 from django.db import models, IntegrityError, transaction
+from django.utils import timezone
 from random import choice
 from RealBack import settings
 from . import logger
@@ -32,6 +33,7 @@ class Lecture(models.Model):
     """ Lecture model """
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
+    start_datetime = models.DateTimeField(default=timezone.now)
     pin = models.CharField(max_length=6, default=_generate_pin, unique=True)
     # TODO free old pins that are not used anymore
 
@@ -53,4 +55,19 @@ class Lecture(models.Model):
         return {
             'lecture_pin': self.pin,
             'lecture_title': self.title,
+            'lecture_start_time': self.start_datetime,
+        }
+
+
+class Question(models.Model):
+    """ Lecture questions model """
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE)
+    text = models.CharField(max_length=160)
+    votes = models.IntegerField(default=0)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def as_dict(self):
+        return {
+            'question_text': self.text,
+            'question_votes': self.votes,
         }

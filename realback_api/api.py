@@ -56,17 +56,47 @@ class LectureQuestions(View):
 
         return JsonResponse({
             'success': False,
-            'question_text': form.cleaned_data['text'],
-        })
+            'errors': form.errors,
+        }, status=201)
 
 
 class LectureSpeed(View):
     def get(self, request, pin=None):
-        """ Read digest of lecture speed opinions """
-        pass
+        if pin is None:
+            return JsonResponse({'success': False, 'message': 'Missing PIN'})
 
-    def post(self, request, pin=None):
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Invalid PIN'})
+
+        return JsonResponse({
+            'success': True,
+            'speed': lecture.speed
+        })
+
+    def post(self, request, pin=None, faster=None):
         """ Create opinion on lecture speed """
+        if pin is None:
+            return JsonResponse({'success': False, 'message': 'Missing PIN'})
+        if faster is None:
+            return JsonResponse({'success': False, 'message': 'Missing bool value'})
+
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Invalid PIN'})
+
+        if faster:
+            lecture.speed += 1
+        else:
+            lecture.speed -= 1
+        lecture.update()
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Lecture speed updated'
+        })
         pass
 
 
@@ -138,9 +168,7 @@ class CourseLectures(View):
             title=str(request.user) + "_" + str(course.title) + "_" + str(lecture_count + 1)
         )
         lecture.save()
-        response = JsonResponse({
+        return JsonResponse({
             'success': True,
             'lecture': lecture.as_dict(),
-        })
-        # TODO set created status code
-        return response
+        }, status=201)

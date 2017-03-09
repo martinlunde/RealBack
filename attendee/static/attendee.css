@@ -6,8 +6,9 @@
     width: 100%;
 }
 
-body {
+body, html {
 	max-height: 100%;
+  width: 100%;
 }
 
 .footer {
@@ -15,7 +16,6 @@ body {
   border-top: 1px solid #007d70;
   bottom: 0;
   width: 100%;
-  /* Set the fixed height of the footer here */
   height: 80px;
   background-color: #f2f2f2;
 }
@@ -83,6 +83,18 @@ body {
 	background-color: #007d70;
 }
 
+.btn {
+  background-image: linear-gradient(to bottom,#00AF9C 0,#007d70 100%);
+  border-color: #007d70;
+  color:white;
+  border-radius: 8px;
+  width: 15%;
+}
+
+.btn:hover {
+  background-color: #007d70;
+}
+
 .frontpage_background {
 	position: fixed;
     width: 100%;
@@ -107,7 +119,7 @@ body {
   background-color: #fff;
   background-image: none;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
   -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
@@ -193,4 +205,68 @@ body {
   }
 }
 
+/* ------------------- LANDINGPAGE INTERFACE ------------------- */
 
+.header {
+  position: absolute;
+  top:0px;
+  left:0px;
+  width: 100%;
+  border-bottom: 2px solid #007d70;
+  height: 80px;
+  background-color: #f2f2f2;
+}
+
+.lecture_title {
+  color:#b4b4b4;
+}
+
+.big-box, .box {
+  top:100px;
+  border-radius: 10px;
+  height: 180px;
+  background-color: #f2f2f2;
+  box-shadow: 7px 8px 16px rgba(00,00,00,0.14);
+}
+
+.content {
+  margin-top: 0px;
+  background-color: #ebebeb;
+}
+
+.big-box {
+    margin-top: 100px;
+}
+
+.box {
+  top: 0px;
+}
+
+.row {
+  margin-top: 40px;
+}
+
+.glyphicon-question-sign {
+  position: absolute;
+  text-align: right;
+}
+
+.textfield {
+  height: 70px;
+  width: 90%;
+  margin-left: 12px;
+  resize: none;
+  border-radius: 8px;
+  border-color: #555555;
+  background-color: #ebebeb;
+}
+
+.ask-q-btn {
+  margin-left: 12px;
+}
+
+#landing_page {
+  margin-top: 0px;
+  background-color: #ebebeb;
+  height: 100vh;
+}

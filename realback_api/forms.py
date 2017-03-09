@@ -7,6 +7,7 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = models.Question
         fields = ['text']
+        widgets = {'text': forms.Textarea()}
 
 
 class CourseForm(forms.ModelForm):

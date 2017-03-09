@@ -6,8 +6,9 @@
     width: 100%;
 }
 
-body {
+body, html {
 	max-height: 100%;
+  width: 100%;
 }
 
 .footer {
@@ -86,6 +87,8 @@ body {
   background-image: linear-gradient(to bottom,#00AF9C 0,#007d70 100%);
   border-color: #007d70;
   color:white;
+  border-radius: 8px;
+  width: 15%;
 }
 
 .btn:hover {
@@ -116,7 +119,7 @@ body {
   background-color: #fff;
   background-image: none;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
   -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
@@ -224,15 +227,15 @@ body {
   height: 180px;
   background-color: #f2f2f2;
   box-shadow: 7px 8px 16px rgba(00,00,00,0.14);
-
 }
 
 .content {
-  margin-top:100px;
+  margin-top: 0px;
+  background-color: #ebebeb;
 }
 
 .big-box {
-    margin-top: 0px;
+    margin-top: 100px;
 }
 
 .box {
@@ -251,5 +254,19 @@ body {
 .textfield {
   height: 70px;
   width: 90%;
+  margin-left: 12px;
+  resize: none;
+  border-radius: 8px;
+  border-color: #555555;
+  background-color: #ebebeb;
 }
 
+.ask-q-btn {
+  margin-left: 12px;
+}
+
+#landing_page {
+  margin-top: 0px;
+  background-color: #ebebeb;
+  height: 100vh;
+}

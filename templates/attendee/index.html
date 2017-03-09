@@ -88,62 +88,126 @@
 	</header>
 
 	<div class="content container">
-		<div class="big-box">
-			
+		<div class="col-md-12">
+			<div class="big-box">
+				<div class="row">
+					<div class="col-xs-2"></div>
+					<div class="col-xs-8">
+						<h3 class="did-you-h3">DID YOU UNDERSTAND?</h3>		
+					</div>
+					<div class="col-xs-2 text-right">
+							<span class="glyphicon glyphicon-record glyph-center"></span>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="row ">
-			<div class="col-xs-12 col-sm-6 col-md-6">
-				<div class="box col-xs-12 col-sm-12 col-md-12">
+			
 
+		<div class="row ">
+			<div class="col-sm-6">
+				<div class="box col-sm-12">
+					<div class="row">
+						<div class="col-xs-10">
+							<h3 class="soundlevel">OTHER STUDENTS ASKED</h3>
+						</div>
+						<div class="col-xs-2 text-right">
+							<span class="glyphicon glyphicon-question-sign glyph-center"></span>
+						</div>
+					</div>
+					<div class="row">
+					</div>
 				</div>
 			</div>
 
-			<div class="col-xs-12 col-sm-6 col-md-6">
-				<div class="box col-xs-12 col-sm-12 col-md-12">
-					<h3 class="col-xs-6 col-sm-6 col-md-6">ASK A QUESTION 
-						<h3 class="col-xs-6 col-sm-6 col-md-6 glyphicon glyphicon-question-sign"></h3>
+
+			<div class="col-sm-6">
+				<div class="box col-sm-12">
+					<div class="row">
+						<div class="col-xs-10">
+							<h3 class="soundlevel">ASK A QUESTION</h3>
+						</div>
+						<div class="col-xs-2 text-right">
+							<span class="glyphicon glyphicon-question-sign glyph-center"></span>
+						</div>
+					</div>
+					<div class="row">
 						<form>
 							<textarea class="textfield" type="text" name="textfield"></textarea>
 							<button type="button" class="btn btn-success ask-q-btn" onclick="sendQ()">Send</button>
 						</form>
-					</h3>
+					</div>
 				</div>
 			</div>
 		</div>
 
 		<div class="row ">
-			<div class="col-xs-12 col-sm-6 col-md-6">
-				<div class="box col-xs-12 col-sm-12 col-md-12">
-					<h3 class="col-xs-6 col-sm-6 col-md-6">SOUNDLEVEL 
-						<h3 class="col-xs-6 col-sm-6 col-md-6 glyphicon glyphicon-volume-up"></h3>
-						<form>
-							<div class="vol-container">
-								<div class="vol_name">
-									<button type="button" class="glyphicon vol-btn" onclick="sendQ()">
-										<h1 class="glyphicon glyphicon-menu-up"></h1>
-									</button>
-									<h3>HIGHER</h3>
-								</div>
-								<div class="vol_name">
-									<button type="button" class="glyphicon vol-btn" onclick="sendQ()">
-										<h1 class="glyphicon glyphicon-menu-down"></h1>
-									</button>
-									<h3>LOWER</h3>
+			<div class="col-sm-6">
+
+				<div class="box col-sm-12">
+					<div class="row">
+						<div class="col-xs-10">
+							<h3 class="soundlevel">SOUNDLEVEL</h3>
+						</div>
+						<div class="col-xs-2 text-right">
+							<span class="glyphicon glyphicon-volume-up glyph-center"></span>
+						</div>
+					</div>
+					<form>
+						<div class="row">
+							<div class="col-md-12 vol-container">
+								<div class="fit-vol-cont">
+									<div class="col-xs-6 vol_name">
+										<button type="button" class="glyphicon vol-btn" onclick="sendQ()">
+											<h1 class="glyphicon glyphicon-menu-up"></h1>
+										</button>
+										<h3 class="hidden-xs">HIGHER</h3>
+									</div>
+									<div class="col-xs-6 vol_name">
+										<button type="button" class="glyphicon vol-btn" onclick="sendQ()">
+											<h1 class="glyphicon glyphicon-menu-down"></h1>
+										</button>
+										<h3 class="hidden-xs">LOWER</h3>
+									</div>
 								</div>
 							</div>
-						</form>
-					</h3>
+						</div>
+					</form>
+
 				</div>
 			</div>
 
-			<div class="col-xs-12 col-sm-6 col-md-6">
-				<div class="box col-xs-12 col-sm-12 col-md-12">
-					<h3 class="col-xs-6 col-sm-6 col-md-6">SPEED OF LECTURE 
-						<h3 class="col-xs-6 col-sm-6 col-md-6 glyphicon glyphicon-forward"></h3>
-						<form>
-							
-						</form>
-					</h3>
+			<div class="col-sm-6">
+
+				<div class="box col-sm-12">
+					<div class="row">
+						<div class="col-xs-10">
+							<h3 class="soundlevel">PACE OF LECTURE</h3>
+						</div>
+						<div class="col-xs-2 text-right">
+							<span class="glyphicon glyphicon-forward glyph-center"></span>
+						</div>
+					</div>
+					<form>
+						<div class="row">
+							<div class="col-md-12 vol-container">
+								<div class="fit-vol-cont">
+									<div class="col-xs-6 vol_name">
+										<button type="button" class="glyphicon vol-btn" onclick="sendQ()">
+											<h1 class="glyphicon glyphicon-menu-up"></h1>
+										</button>
+										<h3 class="hidden-xs">HIGHER</h3>
+									</div>
+									<div class="col-xs-6 vol_name">
+										<button type="button" class="glyphicon vol-btn" onclick="sendQ()">
+											<h1 class="glyphicon glyphicon-menu-down"></h1>
+										</button>
+										<h3 class="hidden-xs">LOWER</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+
 				</div>
 			</div>
 		</div>

@@ -89,6 +89,8 @@ body, html {
   color:white;
   border-radius: 8px;
   width: 15%;
+  text-align: center;
+  padding: 7.5px;
 }
 
 .btn:hover {
@@ -173,16 +175,9 @@ body, html {
   transform: translateY(-50%);
 }
 
-@media (max-width: 1050px) {
-  .row {
-    margin-top: 7.5%;
-  }
-}
+
 
 @media (max-width: 550px) {
-  .row {
-    margin-top: 15%;
-  }
   .frontpage_background {
     margin-top: -125px;
   }
@@ -196,12 +191,6 @@ body, html {
     width: 125px;
     margin-left: 10px;
     margin-top: 19px;
-  }
-}
-
-@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
-  .row {
-    margin-top: 0px;
   }
 }
 
@@ -224,9 +213,10 @@ body, html {
 .big-box, .box {
   top:100px;
   border-radius: 10px;
-  height: 180px;
   background-color: #f2f2f2;
   box-shadow: 7px 8px 16px rgba(00,00,00,0.14);
+  padding: 20px;
+  height: 200px;
 }
 
 .content {
@@ -235,34 +225,27 @@ body, html {
 }
 
 .big-box {
-    margin-top: 100px;
+    margin-top: 90px;
+    margin-bottom: 10px;
 }
 
 .box {
   top: 0px;
+  margin: 10px 0px;
 }
 
-.row {
-  margin-top: 40px;
-}
-
-.glyphicon-question-sign, .glyphicon-forward, .glyphicon-volume-up {
-  position: absolute;
-  text-align: right;
+.glyph-center {
+  font-size: 28px;
 }
 
 .textfield {
+  margin-top: 10px;
   height: 70px;
   width: 90%;
-  margin-left: 12px;
   resize: none;
   border-radius: 8px;
   border-color: #555555;
   background-color: #ebebeb;
-}
-
-.ask-q-btn {
-  margin-left: 12px;
 }
 
 #landing_page {
@@ -282,12 +265,11 @@ body, html {
 
 .vol_name {
   max-width: 200px;
-
   float: left;
 }
 
 .vol-container {
-  margin-top: 57.5px;
+  margin-top: 0px;
   text-align: center;
 }
 
@@ -300,13 +282,32 @@ body, html {
   font-size: 20px;
 }
 
-.vol-container > .vol_name:first-of-type {
-  margin-left: 30%;
-  margin-right: 20px;
+.fit-vol-cont {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
 }
 
-.vol-container > .vol_name:nth-of-type(2) {
-  margin-right: 30%;
-  margin-left: 20px;
+.ask-q-btn {
+  margin-top: 10px;
 }
+
+.soundlevel {
+  margin-top: 0px;
+}
+
+.did-you-h3 {
+  margin-top: 0px;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .fit-vol-cont {
+    margin-top: 25px;
+  }
+}
+  .box {
+    margin-top: 0px;
+  }
+
 

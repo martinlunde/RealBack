@@ -55,7 +55,6 @@ class ModelTestCase(TestCase):
         self.assertEqual(question_values['question_text'], question.text)
         self.assertEqual(question_values['question_votes'], question.votes)
 
-
     def test_lecture_save(self):
         """ Test if Lecture saves correctly to db """
         user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')

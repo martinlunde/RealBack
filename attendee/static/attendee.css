@@ -238,7 +238,7 @@ body, html {
   font-size: 28px;
 }
 
-.textfield {
+#id_text {
   margin-top: 10px;
   height: 70px;
   width: 90%;

@@ -1,0 +1,6 @@
+# .coveragerc to control coverage.py
+[run]
+include =
+        realback_api/models.py
+        emailauth/models.py
+

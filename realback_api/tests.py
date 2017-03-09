@@ -76,12 +76,14 @@ class ModelTestCase(TestCase):
         test_course.save()
 
         pin = models._generate_pin()
-        test_lecture = models.Lecture(course=test_course, title="Lecture1", pin=pin)
+        test_lecture = models.Lecture(course=test_course, title="Lecture1", pin=pin, speed=5)
         test_lecture.save()
 
         self.assertEqual(test_course.title, "TDT4140")
         self.assertEqual(test_lecture.title, "Lecture1")
         self.assertEqual(test_lecture.course, test_course)
+        test_lecture.reset_speed()
+        self.assertEqual(test_lecture.speed, 0)
 
     def test_questions(self):
         user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')

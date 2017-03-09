@@ -10,31 +10,92 @@
 		$('.footer').css( "display", "block" );
 	});
 
-	function onJoin(){
-		var lectureName = "";
-		var pinAPI = '/lectures/' + $('#pinInput').val();
-	  	$.getJSON( pinAPI, function(json) {
-	  		if (json.success == false) {
-	  			$('#landing_page').css( "display", "none" ),
-				$('#frontpage_attendee').css( "display", "block" );
-				$('.footer').css( "display", "block" );
-	  		} else if (json.success == true) {
-	  			$('#landing_page').css( "display", "block" ),
-				$('#frontpage_attendee').css( "display", "none" ),
-				$('.footer').css( "display", "none" );
-				lectureName = json.lecture.lecture_title;
-				$('.lecture_title').text(lectureName.toUpperCase());
-	  		}
-	  	})
+	function onJoin() {
+        var lectureName = "";
+        var pinAPI = '/lectures/' + $('#pinInput').val();
+        $.getJSON(pinAPI, function (json) {
+            if (json.success == false) {
+                $('#landing_page').css("display", "none"),
+                    $('#frontpage_attendee').css("display", "block");
+                $('.footer').css("display", "block");
+            } else if (json.success == true) {
+                $('#landing_page').css("display", "block"),
+                    $('#frontpage_attendee').css("display", "none"),
+                    $('.footer').css("display", "none");
+                lectureName = json.lecture.lecture_title;
+                $('.lecture_title').text(lectureName.toUpperCase());
+            }
+        })
+    }
+
+    /**
+     * Find a cookie
+     *
+     * @param name  Name of the cookie to find
+     * @return      Cookie value as string or null if cookie does not exist
+     */
+    function getCookie(name) {
+        var cookieVal = null;
+        if (document.cookie && document.cookie !== "") {
+            var cookies = document.cookie.split(";");
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + '=') {
+                    console.log(cookie);
+                    cookieVal = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieVal;
+    }
+
+    /**
+     * POST a form with csrftoken header
+     *
+     * @param action    URL to post to
+     * @param form_el   DOM form element to send
+     * @param success   Function callback on received response
+     */
+    function csrfPOST(action, form_el, success) {
+	    var csrftoken = getCookie("csrftoken");
+	    if (csrftoken === null) {
+	        console.log("CSRF cookie not found!");
+	        return;
+        }
+	    $.ajax({
+		    url: action,
+            type: "POST",
+            headers: {"X-CSRFToken": csrftoken},
+            data: form_el.serialize(),
+            dataType: "json",
+            success: success
+		});
+    }
+
+	function sendQuestion () {
+		var form_action = '/lectures/' + $('#pinInput').val() + '/questions/';
+		var form_el = $("#question_form");
+		function success(data) {
+            console.log(data);
+            // Empty question text box
+            $("#id_text").val('');
+            // Reload question list
+            getQuestions();
+        }
+        csrfPOST(form_action, form_el, success);
 	}
 
-	function sendQ(){
-		var question = '/lectures/' + $('#pinInput').val() + '/questions/';
-		$.getJSON( question, function(json) {
-			console.log(json);
-		})
-	}
-	  	
+	function getQuestions () {
+        var api_url = '/lectures/' + $('#pinInput').val() + '/questions/';
+        $.getJSON(api_url, function (data) {
+            console.log(data);
+            if (data.success) {
+                // TODO Update question list
+            }
+        });
+    }
+
 </script>
 
 <!-- FRONT PAGE ATTENDEE -->
@@ -102,9 +163,10 @@
 				<div class="box col-xs-12 col-sm-12 col-md-12">
 					<h3 class="col-xs-6 col-sm-6 col-md-6">ASK A QUESTION 
 						<h3 class="col-xs-6 col-sm-6 col-md-6 glyphicon glyphicon-question-sign"></h3>
-						<form>
-							<textarea class="textfield" type="text" name="textfield"></textarea>
-							<button type="button" class="btn btn-success ask-q-btn" onclick="sendQ()">Send</button>
+						<form action="" method="POST" id="question_form">
+                            {% csrf_token %}
+                            {{ question_form.text }}
+							<button type="button" class="btn btn-success ask-q-btn" onclick="sendQuestion()">Send</button>
 						</form>
 					</h3>
 				</div>

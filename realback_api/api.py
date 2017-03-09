@@ -56,8 +56,8 @@ class LectureQuestions(View):
 
         return JsonResponse({
             'success': False,
-            'question_text': form.cleaned_data['text'],
-        })
+            'errors': form.errors,
+        }, status=201)
 
 
 class LectureSpeed(View):
@@ -168,9 +168,7 @@ class CourseLectures(View):
             title=str(request.user) + "_" + str(course.title) + "_" + str(lecture_count + 1)
         )
         lecture.save()
-        response = JsonResponse({
+        return JsonResponse({
             'success': True,
             'lecture': lecture.as_dict(),
-        })
-        # TODO set created status code
-        return response
+        }, status=201)

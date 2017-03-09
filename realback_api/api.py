@@ -113,7 +113,20 @@ class Courses(View):
     @method_decorator(login_required)
     def post(self, request):
         """ Create new course for user """
-        pass
+        form = forms.CourseForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            if models.Course.objects.filter(title=title, user=request.user).exists():
+                return JsonResponse({
+                    'success': False,
+                    'message': "Course already exists"
+                })
+
+            c = models.Course(title=title, user=request.user).save()
+            return JsonResponse({
+                'success': True,
+                'Course': c.as_dict()
+            })
 
 
 class CourseDetails(View):

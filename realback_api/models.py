@@ -35,7 +35,8 @@ class Lecture(models.Model):
     title = models.CharField(max_length=50)
     start_datetime = models.DateTimeField(default=timezone.now)
     pin = models.CharField(max_length=6, default=_generate_pin, unique=True)
-    speed = models.IntegerField(default=0)
+    pace = models.IntegerField(default=0)
+    volume = models.IntegerField(default=0)
     # TODO free old pins that are not used anymore
 
     def save(self, *args, **kwargs):
@@ -57,10 +58,15 @@ class Lecture(models.Model):
             'lecture_pin': self.pin,
             'lecture_title': self.title,
             'lecture_start_time': self.start_datetime,
+            'lecture_pace': self.pace,
+            'lecture_volume': self.volume,
         }
 
-    def reset_speed(self):
-        self.speed = 0
+    def reset_pace(self):
+        self.pace = 0
+
+    def reset_volume(self):
+        self.volume = 0
 
 
 class Question(models.Model):

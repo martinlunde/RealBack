@@ -14,3 +14,11 @@ class CourseForm(forms.ModelForm):
     class Meta:
         model = models.Course
         fields = ['title']
+
+
+class PaceForm(forms.Form):
+    pace = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'style': 'display: none;'}))
+
+
+class VolumeForm(forms.Form):
+    volume = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'style': 'display: none;'}))

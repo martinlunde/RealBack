@@ -10,33 +10,56 @@
 		$('.footer').css( "display", "block" );
 	});
 
+	/**
+     * Actions to perform after a lecture is joined
+     */
 	function onJoin() {
-        var lectureName = "";
-        var pinAPI = '/lectures/' + $('#pinInput').val();
-        $.getJSON(pinAPI, function (json) {
+        var PIN = $('#pinInput').val();
+        getLectureDetails(PIN, function (json) {
             if (json.success == false) {
-                $('#landing_page').css("display", "none"),
-                    $('#frontpage_attendee').css("display", "block");
+                $('#landing_page').css("display", "none");
+                $('#frontpage_attendee').css("display", "block");
                 $('.footer').css("display", "block");
 
             } else if (json.success == true) {
-                $('#landing_page').css("display", "block"),
-                    $('#frontpage_attendee').css("display", "none"),
-                    $('.footer').css("display", "none");
-                lectureName = json.lecture.lecture_title;
-                $('.lecture_title').text(lectureName.toUpperCase());
+                $('#landing_page').css("display", "block");
+                $('#frontpage_attendee').css("display", "none");
+                $('.footer').css("display", "none");
+
                 // Populate the page contents
-                updatePageContents();
+                updatePageContents(json.lecture);
                 // TODO add update timer
             }
         })
     }
 
+    function getLectureDetails(PIN, success) {
+        var URL = '/lectures/' + PIN + '/';
+        $.getJSON(URL, success);
+    }
+
     /**
      * Update the contents of the page
      */
-    function updatePageContents() {
+    function updatePageContents(lecture) {
+        // Populate question list
         getQuestions();
+        // TODO update other contents
+        // Lecture details
+        if (typeof lecture === 'undefined') {
+            getLectureDetails($('#pinInput').val(), function (data) {
+                if (data.success) {
+                    var lecture = data.lecture;
+                    $('.lecture_title').text(lecture.lecture_title.toUpperCase());
+                    $('#current_volume_value').text(lecture.lecture_volume);
+                    $('#current_pace_value').text(lecture.lecture_pace);
+                }
+            })
+        } else {
+            $('.lecture_title').text(lecture.lecture_title.toUpperCase());
+            $('#current_volume_value').text(lecture.lecture_volume);
+            $('#current_pace_value').text(lecture.lecture_pace);
+        }
     }
 
     /**
@@ -84,6 +107,9 @@
 		});
     }
 
+    /**
+     * Post a new question
+     */
 	function sendQuestion () {
 		var form_action = '/lectures/' + $('#pinInput').val() + '/questions/';
 		var form_el = $("#question_form");
@@ -97,6 +123,9 @@
         csrfPOST(form_action, form_el, success);
 	}
 
+	/**
+     * Get list of questions for lecture
+     */
 	function getQuestions () {
         var api_url = '/lectures/' + $('#pinInput').val() + '/questions/';
         $.getJSON(api_url, function (data) {
@@ -115,7 +144,7 @@
                         onclick: 'upvoteQuestion.call(this)',
                         value: question.question_id
                     });
-                    upvote_button.html(question.question_votes);
+                    upvote_button.text(question.question_votes);
                     list_element.append(upvote_button);
                     list_element.append(question.question_text);
                     $("#question_list").append(list_element);
@@ -125,9 +154,9 @@
     }
 
     /**
-     * Upvote a question
+     * Up vote a question
      *
-     * `this` will be the element that called the function
+     * `this` will be the element (button) that called the function
      */
     function upvoteQuestion() {
         console.log('upvote:' + $(this).val());
@@ -137,6 +166,46 @@
             if (data.success) {
                 // Reload question list
                 getQuestions();
+            }
+        });
+    }
+
+    /**
+     * Increase or decrease lecture volume preference
+     */
+    function updateVolume(increase) {
+        var form_action = '/lectures/' + $('#pinInput').val() + '/volume/';
+        var form = $('#volume_form');
+        var volume_element = $('#id_volume');
+
+        if (increase) volume_element.prop('checked', true);
+        else volume_element.prop('checked', false);
+
+        csrfPOST(form_action, form, function (data) {
+            console.log(data);
+            if (data.success) {
+                $('#current_volume_value').text(data.lecture.lecture_volume);
+            }
+        });
+    }
+
+    /**
+     * Increase or decrease lecture pace preference
+     */
+    function updatePace(increase) {
+        var form_action = '/lectures/' + $('#pinInput').val() + '/pace/';
+        var form = $('#pace_form');
+        var pace_element = $('#id_pace');
+
+        console.log('\nUpdate pace: ' + increase);
+        console.log(pace_element.val());
+        if (increase) pace_element.prop('checked', true);
+        else pace_element.prop('checked', false);
+
+        csrfPOST(form_action, form, function (data) {
+            console.log(data);
+            if (data.success) {
+                $('#current_pace_value').text(data.lecture.lecture_pace);
             }
         });
     }
@@ -241,7 +310,8 @@
 						<form action="" method="POST" id="question_form">
 							{% csrf_token %}
                             {{ question_form.text }}
-							<button type="button" class="btn btn-success ask-q-btn" onclick="sendQuestion()">Send</button>
+							<button type="button" class="btn btn-success ask-q-btn"
+                                    onclick="sendQuestion()">Send</button>
 						</form>
 					</div>
 				</div>
@@ -254,24 +324,29 @@
 				<div class="box col-sm-12">
 					<div class="row">
 						<div class="col-xs-10">
-							<h3 class="soundlevel">SOUNDLEVEL</h3>
+							<h3 class="soundlevel">SOUND LEVEL</h3>
 						</div>
 						<div class="col-xs-2 text-right">
 							<span class="glyphicon glyphicon-volume-up glyph-center"></span>
 						</div>
 					</div>
-					<form>
+					<form id="volume_form">
+                        {% csrf_token %}
+                        {{ volume_form.volume }}
 						<div class="row">
 							<div class="col-md-12 vol-container">
 								<div class="fit-vol-cont">
 									<div class="col-xs-6 vol_name">
-										<button type="button" class="glyphicon vol-btn" onclick="sendQ()">
+										<button type="button" class="glyphicon vol-btn"
+                                                onclick="updateVolume(true)">
 											<h1 class="glyphicon glyphicon-menu-up"></h1>
 										</button>
 										<h3 class="hidden-xs">HIGHER</h3>
 									</div>
+                                    <div class="col-xs-1" id="current_volume_value"></div>
 									<div class="col-xs-6 vol_name">
-										<button type="button" class="glyphicon vol-btn" onclick="sendQ()">
+										<button type="button" class="glyphicon vol-btn"
+                                                onclick="updateVolume(false)">
 											<h1 class="glyphicon glyphicon-menu-down"></h1>
 										</button>
 										<h3 class="hidden-xs">LOWER</h3>
@@ -295,18 +370,23 @@
 							<span class="glyphicon glyphicon-forward glyph-center"></span>
 						</div>
 					</div>
-					<form>
+					<form id="pace_form">
+                        {% csrf_token %}
+                        {{ pace_form.pace }}
 						<div class="row">
 							<div class="col-md-12 vol-container">
 								<div class="fit-vol-cont">
 									<div class="col-xs-6 vol_name">
-										<button type="button" class="glyphicon vol-btn" onclick="sendQ()">
+										<button type="button" class="glyphicon vol-btn"
+                                                onclick="updatePace(true)">
 											<h1 class="glyphicon glyphicon-menu-up"></h1>
 										</button>
 										<h3 class="hidden-xs">HIGHER</h3>
 									</div>
+                                    <div class="col-xs-1" id="current_pace_value"></div>
 									<div class="col-xs-6 vol_name">
-										<button type="button" class="glyphicon vol-btn" onclick="sendQ()">
+										<button type="button" class="glyphicon vol-btn"
+                                                onclick="updatePace(false)">
 											<h1 class="glyphicon glyphicon-menu-down"></h1>
 										</button>
 										<h3 class="hidden-xs">LOWER</h3>

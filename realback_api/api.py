@@ -35,7 +35,7 @@ class LectureDetails(View):
 class LectureQuestions(View):
     def get(self, request, pin=None):
         """ Read list of latest questions """
-        question_list = models.Question.objects.filter(lecture__pin=pin)
+        question_list = models.Question.objects.filter(lecture__pin=pin).order_by('-votes', '-timestamp')
         return JsonResponse({
             'success': True,
             'questions': [question.as_dict() for question in question_list],
@@ -58,6 +58,23 @@ class LectureQuestions(View):
             'success': False,
             'errors': form.errors,
         }, status=201)
+
+
+class LectureQuestionVotes(View):
+    def post(self, request, pin=None, question_id=None):
+        if question_id is None or pin is None:
+            return JsonResponse({'success': False, 'message': 'Missing question ID or lecture PIN'})
+
+        try:
+            question = models.Question.objects.get(id=question_id, lecture__pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Question ID does not exist for this lecture'})
+        question.votes += 1
+        question.save()
+        return JsonResponse({
+            'success': True,
+            'question': question.as_dict(),
+        })
 
 
 class LectureSpeed(View):

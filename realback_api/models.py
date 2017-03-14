@@ -74,4 +74,5 @@ class Question(models.Model):
         return {
             'question_text': self.text,
             'question_votes': self.votes,
+            'question_id': self.id,
         }

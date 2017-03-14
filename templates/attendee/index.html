@@ -18,14 +18,25 @@
                 $('#landing_page').css("display", "none"),
                     $('#frontpage_attendee').css("display", "block");
                 $('.footer').css("display", "block");
+
             } else if (json.success == true) {
                 $('#landing_page').css("display", "block"),
                     $('#frontpage_attendee').css("display", "none"),
                     $('.footer').css("display", "none");
                 lectureName = json.lecture.lecture_title;
                 $('.lecture_title').text(lectureName.toUpperCase());
+                // Populate the page contents
+                updatePageContents();
+                // TODO add update timer
             }
         })
+    }
+
+    /**
+     * Update the contents of the page
+     */
+    function updatePageContents() {
+        getQuestions();
     }
 
     /**
@@ -92,6 +103,40 @@
             console.log(data);
             if (data.success) {
                 // TODO Update question list
+                // Empty list of existing questions
+                $("#question_list").empty();
+                // Add questions to list
+                for (var i = 0; i < data.questions.length; i++) {
+                    var question = data.questions[i];
+                    var list_element = $("<li>");
+                    var upvote_button = $("<button>");
+                    upvote_button.attr({
+                        type: 'button',
+                        onclick: 'upvoteQuestion.call(this)',
+                        value: question.question_id
+                    });
+                    upvote_button.html(question.question_votes);
+                    list_element.append(upvote_button);
+                    list_element.append(question.question_text);
+                    $("#question_list").append(list_element);
+                }
+            }
+        });
+    }
+
+    /**
+     * Upvote a question
+     *
+     * `this` will be the element that called the function
+     */
+    function upvoteQuestion() {
+        console.log('upvote:' + $(this).val());
+        var form_action = '/lectures/' + $('#pinInput').val() + '/questions/' + $(this).val() + '/vote/';
+        csrfPOST(form_action, $("<form>"), function (data) {
+            console.log(data);
+            if (data.success) {
+                // Reload question list
+                getQuestions();
             }
         });
     }
@@ -146,6 +191,7 @@
         <div class="col-xs-1 col-sm-2 col-md-2">
              <p class="item lecture_title"></p>
         </div>
+        </div>
 	</header>
 
 	<div class="content container">
@@ -175,6 +221,8 @@
 						</div>
 					</div>
 					<div class="row">
+                        <ul id="question_list">
+                        </ul>
 					</div>
 				</div>
 			</div>

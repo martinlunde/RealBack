@@ -12,8 +12,13 @@ urlpatterns = [
 
         url(r'^$', api.LectureDetails.as_view(), name='lecture_details'),
         url(r'^questions/$', api.LectureQuestions.as_view(), name='lecture_questions'),
-        url(r'^speed/$', api.LectureSpeed.as_view(), name='lecture_speed'),
-        # TODO soundlevel
+        url(r'^questions/(?P<question_id>[0-9]+)/', include([
+
+            url(r'^vote/$', api.LectureQuestionVotes.as_view(), name='lecture_question_votes'),
+
+        ])),
+        url(r'^pace/$', api.LecturePace.as_view(), name='lecture_pace'),
+        url(r'^volume/$', api.LectureVolume.as_view(), name='lecture_volume'),
 
     ])),
     url(r'^courses/$', api.Courses.as_view(), name='courses'),

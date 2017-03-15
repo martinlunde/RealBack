@@ -13,12 +13,12 @@ class LectureDetails(View):
     def get(self, request, pin=None):
         """ Read lecture details from PIN """
         if pin is None:
-            return JsonResponse({'success': False, 'message': 'Missing PIN'})
+            return JsonResponse({'success': False, 'message': 'Missing lecture PIN'})
 
         try:
             lecture = models.Lecture.objects.get(pin=pin)
         except models.Lecture.DoesNotExist:
-            return JsonResponse({'success': False, 'message': 'Invalid PIN'})
+            return JsonResponse({'success': False, 'message': 'Lecture does not exist'})
 
         return JsonResponse({
             'success': True,
@@ -35,7 +35,7 @@ class LectureDetails(View):
 class LectureQuestions(View):
     def get(self, request, pin=None):
         """ Read list of latest questions """
-        question_list = models.Question.objects.filter(lecture__pin=pin)
+        question_list = models.Question.objects.filter(lecture__pin=pin).order_by('-votes', '-timestamp')
         return JsonResponse({
             'success': True,
             'questions': [question.as_dict() for question in question_list],
@@ -52,52 +52,123 @@ class LectureQuestions(View):
             return JsonResponse({
                 'success': True,
                 'question': question.as_dict(),
+            }, status=201)
+
+        return JsonResponse({
+            'success': False,
+            'errors': form.errors,
+        })
+
+
+class LectureQuestionVotes(View):
+    def post(self, request, pin=None, question_id=None):
+        """ Create vote on question """
+        if question_id is None or pin is None:
+            return JsonResponse({'success': False, 'message': 'Missing question ID or lecture PIN'})
+
+        try:
+            question = models.Question.objects.get(id=question_id, lecture__pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Question ID does not exist for this lecture'})
+
+        question.votes += 1
+        question.save()
+        return JsonResponse({
+            'success': True,
+            'question': question.as_dict(),
+        })
+
+
+class LecturePace(View):
+    def get(self, request, pin=None):
+        """ Read digest of lecture pace opinions """
+        if pin is None:
+            return JsonResponse({'success': False, 'message': 'Missing lecture PIN'})
+
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Lecture does not exist'})
+
+        return JsonResponse({
+            'success': True,
+            'lecture_pace': lecture.pace,
+        })
+
+    def post(self, request, pin=None):
+        """ Create opinion on lecture pace """
+        if pin is None:
+            return JsonResponse({'success': False, 'message': 'Missing lecture PIN'})
+
+        form = forms.PaceForm(request.POST)
+        if form.is_valid():
+            try:
+                lecture = models.Lecture.objects.get(pin=pin)
+            except models.Lecture.DoesNotExist:
+                return JsonResponse({'success': False, 'message': 'Lecture does not exist'})
+
+            pace = form.cleaned_data['pace']
+            if pace:
+                lecture.pace += 1
+            else:
+                lecture.pace -= 1
+            lecture.save()
+
+            return JsonResponse({
+                'success': True,
+                'lecture': lecture.as_dict(),
             })
 
         return JsonResponse({
             'success': False,
             'errors': form.errors,
-        }, status=201)
+        })
 
 
-class LectureSpeed(View):
+class LectureVolume(View):
     def get(self, request, pin=None):
+        """ Read digest of lecture volume opinions """
         if pin is None:
-            return JsonResponse({'success': False, 'message': 'Missing PIN'})
+            return JsonResponse({'success': False, 'message': 'Missing lecture PIN'})
 
         try:
             lecture = models.Lecture.objects.get(pin=pin)
         except models.Lecture.DoesNotExist:
-            return JsonResponse({'success': False, 'message': 'Invalid PIN'})
+            return JsonResponse({'success': False, 'message': 'Lecture does not exist'})
 
         return JsonResponse({
             'success': True,
-            'speed': lecture.speed
+            'lecture_pace': lecture.volume,
         })
 
-    def post(self, request, pin=None, faster=None):
-        """ Create opinion on lecture speed """
+    def post(self, request, pin=None):
+        """ Create opinion on lecture volume """
         if pin is None:
-            return JsonResponse({'success': False, 'message': 'Missing PIN'})
-        if faster is None:
-            return JsonResponse({'success': False, 'message': 'Missing bool value'})
+            return JsonResponse({'success': False, 'message': 'Missing lecture PIN'})
 
-        try:
-            lecture = models.Lecture.objects.get(pin=pin)
-        except models.Lecture.DoesNotExist:
-            return JsonResponse({'success': False, 'message': 'Invalid PIN'})
+        form = forms.VolumeForm(request.POST)
+        if form.is_valid():
+            try:
+                lecture = models.Lecture.objects.get(pin=pin)
+            except models.Lecture.DoesNotExist:
+                return JsonResponse({'success': False, 'message': 'Lecture does not exist'})
 
-        if faster:
-            lecture.speed += 1
-        else:
-            lecture.speed -= 1
-        lecture.update()
+            volume = form.cleaned_data['volume']
+            if volume:
+                lecture.volume += 1
+            else:
+                lecture.volume -= 1
+            lecture.save()
+
+            return JsonResponse({
+                'success': True,
+                'lecture': lecture.as_dict(),
+            })
 
         return JsonResponse({
-            'success': True,
-            'message': 'Lecture speed updated'
+            'success': False,
+            'errors': form.errors,
         })
-        pass
 
 
 class Courses(View):
@@ -119,14 +190,21 @@ class Courses(View):
             if models.Course.objects.filter(title=title, user=request.user).exists():
                 return JsonResponse({
                     'success': False,
-                    'message': "Course already exists"
+                    'message': "Course with this title already exists"
                 })
 
-            c = models.Course(title=title, user=request.user).save()
+            course = form.save(commit=False)
+            course.user = request.user
+            course.save()
             return JsonResponse({
                 'success': True,
-                'Course': c.as_dict()
-            })
+                'Course': course.as_dict()
+            }, status=201)
+
+        return JsonResponse({
+            'success': False,
+            'errors': form.errors,
+        })
 
 
 class CourseDetails(View):
@@ -168,12 +246,13 @@ class CourseLectures(View):
     def post(self, request, course_id):
         """ Create new lecture for course_id """
         # TODO remember to check if user has access (owner) to course
-        course = models.Course.objects.get(id=course_id)
+        try:
+            course = models.Course.objects.get(id=course_id)
+        except models.Course.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Course ID does not exist'})
+
         if course.user != request.user:
-            return JsonResponse({
-                'success': False,
-                'message': 'Access denied',
-            })
+            return JsonResponse({'success': False, 'message': 'Access denied'})
 
         lecture_count = models.Lecture.objects.count(course__id=course_id, course__user=request.user)
         lecture = models.Lecture(

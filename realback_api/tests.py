@@ -79,6 +79,8 @@ class ModelTestCase(TestCase):
         test_lecture = models.Lecture(course=test_course, title="Lecture1", pin=pin, pace=5, volume=10)
         test_lecture.save()
 
+        # Test if lectures and courses are created correctly, and if the relevant functions are
+        # working as intended.
         self.assertEqual(test_course.title, "TDT4140")
         self.assertEqual(test_lecture.title, "Lecture1")
         self.assertEqual(test_lecture.course, test_course)
@@ -97,6 +99,7 @@ class ModelTestCase(TestCase):
         test_questions = models.Question(lecture=lecture, text="Why is the sky blue?")
         test_questions.save()
 
+        # Test if questions attributes are functioning as intended.
         self.assertEqual(test_questions.lecture, lecture)
         self.assertEqual(test_questions.text, "Why is the sky blue?")
         self.assertEqual(test_questions.votes, 0)

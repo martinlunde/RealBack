@@ -2,5 +2,6 @@
 [run]
 include =
         realback_api/models.py
+        attendee/views.py
         emailauth/models.py
 

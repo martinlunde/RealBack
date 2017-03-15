@@ -2,6 +2,7 @@
 from django.test import Client, TestCase
 from django.contrib import auth
 from realback_api import models
+from django.contrib.auth import get_user_model
 
 
 c = Client()
@@ -9,7 +10,21 @@ c = Client()
 
 class WebsiteStabilityTestCase(TestCase):
     def test_availability(self):
-        self.assertEqual(c.get('/lecturer/').status_code, 302)  # We are getting redirect when not logged in, so 302
+        user = get_user_model().objects.create_user(
+            username='test_user',
+            email='test@user.com',
+            password='testpass1234'
+        )
+
+        course = models.Course(user=user, title="TDT4100")
+        course.save()
+        lecture = models.Lecture(course=course, title="test_lecture")
+        lecture.save()
+
+        # Testing if user is redirected properly if trying to access login-restricted pages.
+        self.assertEqual(c.get('/lecturer/').status_code, 302)
+        self.assertEqual(c.get('/lecturer/TDT4100/test_lecture').status_code, 302)
+        self.assertEqual(c.get('/lecturer/TDT4100').status_code, 302)
 
     def test_lecturer_login(self):
         user = auth.get_user_model().objects.create_user(

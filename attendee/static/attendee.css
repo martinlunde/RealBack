@@ -93,7 +93,7 @@ body, html {
   padding: 7.5px;
 }
 
-.btn:hover {
+.btn:hover, .btn-success:focus, .btn-success:active:focus {
   background-color: #007d70;
 }
 
@@ -309,5 +309,3 @@ body, html {
   .box {
     margin-top: 0px;
   }
-
-

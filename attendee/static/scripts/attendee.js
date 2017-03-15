@@ -1,6 +1,3 @@
-/**
- * Created by K on 15.03.2017.
- */
 
 $(document).ready(function () {
     $('#landing_page').css("display", "none");

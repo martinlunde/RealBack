@@ -175,7 +175,7 @@ class Courses(View):
     @method_decorator(login_required)
     def get(self, request):
         """ Read list of latest courses for user """
-        course_list = models.Course.objects.filter(user=request.user)
+        course_list = models.Course.objects.filter(user=request.user).order_by('-id')
         return JsonResponse({
             'success': True,
             'courses': [course.as_dict() for course in course_list],

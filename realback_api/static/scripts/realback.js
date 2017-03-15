@@ -77,7 +77,7 @@ function getQuestions() {
                 var upvote_button = $("<button>");
                 var glyphicon_up = $("<span>");
                 glyphicon_up.attr({
-                    class: 'glyphicon glyphicon-menu-up'
+                    class: 'glyphicon glyphicon-menu-up glyph-upvote'
                 });
                 upvote_button.attr({
                     type: 'button',

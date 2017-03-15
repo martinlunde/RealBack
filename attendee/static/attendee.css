@@ -273,8 +273,12 @@ body, html {
   text-align: center;
 }
 
-.glyphicon-menu-up, .glyphicon-menu-down  {
+.glyph-up  {
   margin-top: 12.5px;
+}
+
+.glyph-down {
+  margin-top: 7.5px;
 }
 
 .vol_name h3 {
@@ -307,15 +311,19 @@ body, html {
 
 #question_list li {
   color:black;
-  height: 40px;
+  padding:0px;
 }
 
 .upvote-button {
   width: 60px;
-  height: 25px;
   background-color: transparent;
   border:0px;
-  top:20%;
+  text-align: center;
+}
+
+.glyph-upvote {
+  margin-right: 10px;
+  color: #555555;
 }
 
 @media screen and (max-width: 768px) {

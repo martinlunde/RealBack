@@ -26,10 +26,26 @@ class LectureDetails(View):
         })
 
     @method_decorator(login_required)
-    def put(self, request, pin=None):
+    def post(self, request, pin=None):
         """ Update details for existing lecture """
-        # TODO remember to check if user has access (owner) to lecture
-        pass
+        form = forms.LectureForm(request.POST)
+        if form.is_valid():
+            try:
+                lecture = models.Lecture.objects.get(pin=pin, course__user=request.user)
+            except models.Lecture.DoesNotExist:
+                return JsonResponse({'success': False, 'message': 'Lecture with PIN does not exist for this user'})
+
+            lecture.title = form.cleaned_data['title']
+            lecture.save()
+            return JsonResponse({
+                'success': True,
+                'lecture': lecture.as_dict(),
+            })
+
+        return JsonResponse({
+            'success': False,
+            'errors': form.errors,
+        })
 
 
 class LectureQuestions(View):

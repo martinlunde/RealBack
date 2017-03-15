@@ -1,6 +1,7 @@
 
 from django.db import models, IntegrityError, transaction
 from django.utils import timezone
+from django.core import validators
 from random import choice
 from RealBack import settings
 from . import logger
@@ -8,7 +9,7 @@ from . import logger
 
 class Course(models.Model):
     """ Course model """
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, validators=[validators.MinLengthValidator(6)])
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -32,7 +33,7 @@ def _generate_pin():
 class Lecture(models.Model):
     """ Lecture model """
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, validators=[validators.MinLengthValidator(6)])
     start_datetime = models.DateTimeField(default=timezone.now)
     pin = models.CharField(max_length=6, default=_generate_pin, unique=True)
     pace = models.IntegerField(default=0)

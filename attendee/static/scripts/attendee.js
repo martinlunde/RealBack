@@ -88,18 +88,60 @@ function upvoteQuestion() {
 /**
  * Increase or decrease lecture volume preference
  */
+
+//Holder styr på om knappene er blitt trykket på
+volume_up = false;
+volume_down = false;
+
 function updateVolume(increase) {
     var form_action = '/lectures/' + $('#pinInput').val() + '/volume/';
     var form = $('#volume_form');
     var volume_element = $('#id_volume');
 
-    if (increase) volume_element.prop('checked', true);
-    else volume_element.prop('checked', false);
+    //Gir knappene radio butten funksjonalitet
+    if(increase) {
+      if(volume_up) {
+        volume_up = false;
+        document.getElementById("volume_up").style.backgroundColor = "#f2f2f2";
+        volume_element.prop('checked', false);
+      }else {
+        if (volume_down) {
+          volume_down = false
+          document.getElementById("volume_down").style.backgroundColor = "#f2f2f2";
+          volume_element.prop('checked', true);
+          //kjører det dobbelt
+          updateVolume(true)
+        }else {
+          volume_up = true
+          document.getElementById("volume_up").style.backgroundColor = "#cfcfcf";
+          volume_element.prop('checked', true);
+        }
+      }
+    }else {
+      if(volume_down) {
+        volume_down = false
+        document.getElementById("volume_down").style.backgroundColor = "#f2f2f2";
+        volume_element.prop('checked', true);
+      }else {
+        if (volume_up) {
+          volume_up = false
+          document.getElementById("volume_up").style.backgroundColor = "#f2f2f2";
+          volume_element.prop('checked', false);
+          //kjører det dobbelt
+          updateVolume(false)
+        }else {
+          volume_down = true;
+          document.getElementById("volume_down").style.backgroundColor = "#cfcfcf";
+          volume_element.prop('checked', false);
+        }
+      }
+    }
 
     csrfPOST(form_action, form, function (data) {
         console.log(data);
         if (data.success) {
             $('#current_volume_value').text(data.lecture.lecture_volume);
+            console.log(data.lecture.lecture_volume);
         }
     });
 }
@@ -107,15 +149,55 @@ function updateVolume(increase) {
 /**
  * Increase or decrease lecture pace preference
  */
+
+ //Holder styr på om knappene er blitt trykket på
+ pace_up = false;
+ pace_down = false;
+
 function updatePace(increase) {
     var form_action = '/lectures/' + $('#pinInput').val() + '/pace/';
     var form = $('#pace_form');
     var pace_element = $('#id_pace');
 
-    console.log('\nUpdate pace: ' + increase);
-    console.log(pace_element.val());
-    if (increase) pace_element.prop('checked', true);
-    else pace_element.prop('checked', false);
+    //Gir knappene radio butten funksjonalitet
+    if(increase) {
+      if(pace_up) {
+        pace_up = false;
+        document.getElementById("pace_up").style.backgroundColor = "#f2f2f2";
+        pace_element.prop('checked', false);
+      }else {
+        if (pace_down) {
+          pace_down = false
+          document.getElementById("pace_down").style.backgroundColor = "#f2f2f2";
+          pace_element.prop('checked', true);
+          //kjører det dobbelt
+          updatePace(true)
+        }else {
+          pace_up = true
+          document.getElementById("pace_up").style.backgroundColor = "#cfcfcf";
+          pace_element.prop('checked', true);
+        }
+      }
+    }else {
+      if(pace_down) {
+        pace_down = false
+        document.getElementById("pace_down").style.backgroundColor = "#f2f2f2";
+        pace_element.prop('checked', true);
+      }else {
+        if (pace_up) {
+          pace_up = false
+          document.getElementById("pace_up").style.backgroundColor = "#f2f2f2";
+          pace_element.prop('checked', false);
+          //kjører det dobbelt
+          updatePace(false)
+        }else {
+          pace_down = true;
+          document.getElementById("pace_down").style.backgroundColor = "#cfcfcf";
+          pace_element.prop('checked', false);
+        }
+      }
+    }
+
 
     csrfPOST(form_action, form, function (data) {
         console.log(data);

@@ -75,13 +75,20 @@ function getQuestions() {
                 var question = data.questions[i];
                 var list_element = $("<li>");
                 var upvote_button = $("<button>");
+                var glyphicon_up = $("<span>");
+                glyphicon_up.attr({
+                    class: 'glyphicon glyphicon-menu-up'
+                });
                 upvote_button.attr({
                     type: 'button',
+                    class: 'upvote-button',
                     onclick: 'upvoteQuestion.call(this)',
                     value: question.question_id
                 });
-                upvote_button.text(question.question_votes);
+                upvote_button.append(glyphicon_up);
+                upvote_button.append(question.question_votes);
                 list_element.append(upvote_button);
+                list_element.append('- ');
                 list_element.append(question.question_text);
                 $("#question_list").append(list_element);
             }

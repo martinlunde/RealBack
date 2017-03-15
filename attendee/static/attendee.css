@@ -93,7 +93,7 @@ body, html {
   padding: 7.5px;
 }
 
-.btn:hover {
+.btn:hover, .btn-success:focus, .btn-success:active:focus {
   background-color: #007d70;
 }
 
@@ -301,6 +301,23 @@ body, html {
   text-align: center;
 }
 
+#question_list {
+  list-style-type: none;
+}
+
+#question_list li {
+  color:black;
+  height: 40px;
+}
+
+.upvote-button {
+  width: 60px;
+  height: 25px;
+  background-color: transparent;
+  border:0px;
+  top:20%;
+}
+
 @media screen and (max-width: 768px) {
   .fit-vol-cont {
     margin-top: 25px;
@@ -309,5 +326,3 @@ body, html {
   .box {
     margin-top: 0px;
   }
-
-

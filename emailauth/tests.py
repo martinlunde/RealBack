@@ -1,8 +1,8 @@
 from django.test import Client, TestCase
 from emailauth import forms
-from django.contrib import auth
 
 c = Client()
+
 
 class FormTests(TestCase):
 
@@ -30,4 +30,3 @@ class FormTests(TestCase):
 
         # Testing if form is invalid when passwords are not matching.
         self.assertFalse(form.is_valid())
-

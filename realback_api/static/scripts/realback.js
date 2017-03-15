@@ -1,6 +1,3 @@
-/**
- * Created by K on 15.03.2017.
- */
 
 /**
  * Get details for lecture with PIN

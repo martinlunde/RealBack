@@ -2,23 +2,28 @@
 {% extends '../base.html' %}
 {% load static %}
 
+{% block ex-head %}
+    <script src="{% static 'scripts/lecturer.js' %}"></script>
+{% endblock %}
+
 {% block content %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
-    {%  for course in courses %}
-        <h3>{{ course.title }}</h3>
 
-        {% for lecture in lectures %}
-            {% if lecture.course == course %}
-                <h5>{{ lecture.title }}</h5>
-                <h5>{{ lecture.pin }}</h5>
-            {% endif %}
-        {% endfor %}
+    <div class="row">
+        <button type="button" id="new_course_button"> New course </button>
+        <form id="course_form" style="display: none;">
+            {% csrf_token %}
+            {{ course_form.title }}
+            <button type="submit" id="course_form_button"> Save </button>
+        </form>
+    </div>
 
-    {% endfor %}
+    <div id="prototype_course_div" class="" style="display: none;">
+        <button type="button">New lecture</button>
+    </div>
 
-  <a href="/logout">LOGOUT</a>
+    <div id="course_list" class="">
+    </div>
+
+    <a href="/logout/">LOGOUT</a>
+
 {% endblock %}

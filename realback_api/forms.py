@@ -16,6 +16,12 @@ class CourseForm(forms.ModelForm):
         fields = ['title']
 
 
+class LectureForm(forms.ModelForm):
+    class Meta:
+        model = models.Lecture
+        fields = ['title']
+
+
 class PaceForm(forms.Form):
     pace = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'style': 'display: none;'}))
 

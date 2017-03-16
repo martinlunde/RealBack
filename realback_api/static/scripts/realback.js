@@ -67,8 +67,7 @@ function getQuestions() {
             // Empty list of existing questions
             $("#question_list").empty();
             // Add questions to list
-            var iterations = Math.min(5, data.questions.length);
-            for (var i = 0; i < iterations; i++) {
+            for (var i = 0; i < data.questions.length; i++) {
                 var question = data.questions[i];
                 var list_element = $("<li>");
                 var upvote_button = $("<button>");

@@ -30,7 +30,7 @@
 
 .lecturer_background {
     min-width: 1024px;
-    min-height: 100%; 
+    min-height: 100%;
     position: fixed;
     top:50%;
     left:50%;
@@ -97,6 +97,10 @@ fieldset[disabled] .btn-custom.active {
 #course_form, #course_form_button {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+#course_error_message {
+    color: red;
 }
 
 .row_margin {

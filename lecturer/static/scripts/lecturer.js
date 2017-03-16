@@ -48,12 +48,24 @@ function updateCourseList() {
                 var course_div = prototype_course_div.clone();
                 course_div.attr({
                     id: '',
-                    style: '',
-                    value: course.course_id
+                    style: ''
                 });
                 course_div.prepend(course.course_title);
+                course_div.data('course_id', course.course_id);
                 course_list_div.append(course_div);
             }
         }
     });
+}
+
+function createLecture() {
+    var course_div = $(this).parent();
+    var URL = '/courses/' + course_div.data('course_id') + '/lectures/';
+
+    csrfPOST(URL, $("<form>"), function (data) {
+        console.log(data);
+        if (data.success) {
+            // TODO update lecture list for this course
+        }
+    })
 }

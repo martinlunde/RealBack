@@ -38,6 +38,7 @@
             <div class="row">
                 <form id="course_form" style="display: none;">
                     {% csrf_token %}
+                    <button type="button" id="course_form_back"><span class="glyphicon glyphicon-arrow-left"></span></button>
                     {{ course_form.title }}
                     <button type="submit" class="btn btn-custom" id="course_form_button"> Save </button>
                 </form>
@@ -47,7 +48,7 @@
                 <span class="glyphicon glyphicon-menu-right"></span>
                 <button type="button" class="btn btn-lecturer-stats"><p>DEL</p></button>
                 <button type="button" class="btn btn-lecturer-stats"><p>STAT</p></button>
-                <button type="button" class="btn btn-lecturer-stats">
+                <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
                     <span class="glyphicon glyphicon-plus"></span>
                     <p>NEW</p>
                 </button>

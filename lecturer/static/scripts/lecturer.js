@@ -79,7 +79,7 @@ function createLecture() {
 function toggleLectureList() {
     var course_div = $(this);
     var lecture_list = course_div.children('ul');
-    var glyph_span = course_div.children('span')[0];
+    var glyph_span = course_div.children('span').first();
 
     if (lecture_list.is(':visible')) {
         lecture_list.hide();

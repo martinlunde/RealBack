@@ -89,6 +89,7 @@ function getQuestions() {
                 list_element.append(question.question_text);
                 $("#question_list").append(list_element);
             }
+            markQuestion();
         }
     });
 }

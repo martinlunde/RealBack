@@ -73,7 +73,12 @@ function sendQuestion() {
  *
  * `this` will be the element (button) that called the function
  */
+
+//Keeps track of upvoted questions
+upvotedQuestions=[];
+
 function upvoteQuestion() {
+    upvotedQuestions.push($(this).val());
     console.log('upvote:' + $(this).val());
     var form_action = '/lectures/' + $('#pinInput').val() + '/questions/' + $(this).val() + '/vote/';
     csrfPOST(form_action, $("<form>"), function (data) {
@@ -88,8 +93,24 @@ function upvoteQuestion() {
 /**
  * Increase or decrease lecture volume preference
  */
+function markQuestion(){
+    var question_list = document.getElementById("question_list");
+    var list_item = question_list.getElementsByTagName("button");
 
-//Holder styr på om knappene er blitt trykket på
+    for (var i=0; i < list_item.length; i++) {
+        if (upvotedQuestions.includes(list_item[i].value)) {
+            list_item[i].disabled = true;
+            list_item[i].getElementsByTagName("span")[0].style.color = "#007d70";
+        }
+  }
+}
+
+
+/**
+ * Increase or decrease lecture volume preference
+ */
+
+//Keeps track if which buttons have been pressed
 volume_up = false;
 volume_down = false;
 
@@ -150,7 +171,7 @@ function updateVolume(increase) {
  * Increase or decrease lecture pace preference
  */
 
- //Holder styr på om knappene er blitt trykket på
+ //Keeps track of which buttons have been pressed
  pace_up = false;
  pace_down = false;
 

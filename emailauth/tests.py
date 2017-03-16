@@ -32,6 +32,8 @@ class FormTests(TestCase):
         self.assertFalse(form.is_valid())
 
     def test_register_by_post(self):
-
         # Testing register trough post-request
-        self.assertEqual(c.post('/register/', {'username': 'test@test.com', 'password1': 'test1234', 'password2': 'test1234'}).status_code, 200)
+        self.assertEqual(c.post('/register/', {'username': 'test@test.com',
+                                               'password1': 'test1234',
+                                               'password2': 'test1234'}
+                                ).status_code, 200)

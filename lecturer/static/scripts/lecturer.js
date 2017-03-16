@@ -77,8 +77,9 @@ function createLecture() {
 }
 
 function toggleLectureList() {
-    var glyph_span = $(this);
-    var lecture_list = glyph_span.parent().children('ul');
+    var course_div = $(this);
+    var lecture_list = course_div.children('ul');
+    var glyph_span = course_div.children('span')[0];
 
     if (lecture_list.is(':visible')) {
         lecture_list.hide();
@@ -87,7 +88,6 @@ function toggleLectureList() {
         lecture_list.show();
         glyph_span.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
     }
-
 
     console.log('Lecture list toggled');
 }

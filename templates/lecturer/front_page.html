@@ -44,19 +44,30 @@
                 </form>
             </div>
 
-            <div id="prototype_course_div" class="bars" style="display: none;">
-                <span class="glyphicon glyphicon-menu-right" onclick="toggleLectureList.call(this)"></span>
-                <button type="button" class="btn btn-lecturer-stats"><p>DEL</p></button>
-                <button type="button" class="btn btn-lecturer-stats"><p>STAT</p></button>
+            <div id="prototype_course_div" class="bars" style="display: none;" onclick="toggleLectureList.call(this)">
+                <span class="glyphicon glyphicon-menu-right"></span>
+                <button type="button" class="btn btn-lecturer-stats">
+                    <div>
+                        <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
+                        <p>DEL</p>
+                    </div>
+                </button>
+                <button type="button" class="btn btn-lecturer-stats">
+                    <div>
+                        <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
+                        <p>STAT</p>
+                    </div>
+                </button>
+
                 <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <p>NEW</p>
+                    <div>
+                        <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
+                        <p>NEW</p>
+                    </div>
                 </button>
 
                 <ul style="display: none;"></ul>
             </div>
-
-
 
             <div id="course_list" class="">
             </div>

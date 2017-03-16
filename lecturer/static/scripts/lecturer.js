@@ -75,3 +75,19 @@ function createLecture() {
         }
     })
 }
+
+function toggleLectureList() {
+    var glyph_span = $(this);
+    var lecture_list = glyph_span.parent().children('ul');
+
+    if (lecture_list.is(':visible')) {
+        lecture_list.hide();
+        glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-right');
+    } else {
+        lecture_list.show();
+        glyph_span.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
+    }
+
+
+    console.log('Lecture list toggled');
+}

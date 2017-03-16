@@ -45,14 +45,18 @@
             </div>
 
             <div id="prototype_course_div" class="bars" style="display: none;">
-                <span class="glyphicon glyphicon-menu-right"></span>
+                <span class="glyphicon glyphicon-menu-right" onclick="toggleLectureList.call(this)"></span>
                 <button type="button" class="btn btn-lecturer-stats"><p>DEL</p></button>
                 <button type="button" class="btn btn-lecturer-stats"><p>STAT</p></button>
                 <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
                     <span class="glyphicon glyphicon-plus"></span>
                     <p>NEW</p>
                 </button>
+
+                <ul style="display: none;"></ul>
             </div>
+
+
 
             <div id="course_list" class="">
             </div>

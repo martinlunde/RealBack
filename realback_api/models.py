@@ -9,7 +9,7 @@ from . import logger
 
 class Course(models.Model):
     """ Course model """
-    title = models.CharField(max_length=50, validators=[validators.MinLengthValidator(6)])
+    title = models.CharField(max_length=50, validators=[validators.MinLengthValidator(3)])
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -33,7 +33,7 @@ def _generate_pin():
 class Lecture(models.Model):
     """ Lecture model """
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50, validators=[validators.MinLengthValidator(6)])
+    title = models.CharField(max_length=50, validators=[validators.MinLengthValidator(3)])
     start_datetime = models.DateTimeField(default=timezone.now)
     pin = models.CharField(max_length=6, default=_generate_pin, unique=True)
     pace = models.IntegerField(default=0)

@@ -52,6 +52,7 @@
 .btn-custom.active {
     background-color: #009685;
     border-color: #007c6f;
+    color: white;
 }
 
 .btn-custom.disabled:hover,
@@ -68,5 +69,66 @@ fieldset[disabled] .btn-custom:active,
 fieldset[disabled] .btn-custom.active {
     background-color: #00AF9C;
     border-color: #00AF9C;
+    color: white;
 }
-/*****************************************************/
+
+#landingpage_lecturer {
+    margin-top: 0px;
+    background-color: #ebebeb;
+    height: 100vh;
+}
+
+.content_lecturer_landingpage {
+    position: absolute;
+    top:100px;
+    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.glyphwhite {
+    color:white;
+}
+
+.btn-lecturer {
+    width: 200px;
+}
+
+#course_form, #course_form_button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.row_margin {
+    margin-bottom: 10px;
+}
+
+.center {
+    text-align: center;
+}
+
+.bars {
+    top:100px;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    box-shadow: 7px 8px 16px rgba(00,00,00,0.14);
+    padding: 20px;
+    height: 60px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.btn-lecturer-stats {
+    text-align: center;
+    margin-top: -5px;
+    height: 30px;
+    width: 80px;
+    float: right;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.btn-lecturer-stats p {
+    color: white;
+
+}

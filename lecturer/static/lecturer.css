@@ -126,9 +126,19 @@ fieldset[disabled] .btn-custom.active {
     float: right;
     margin-left: 5px;
     margin-right: 5px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 .btn-lecturer-stats p {
     color: white;
+    width: 40px;
+    float: right;
+    margin-top: 5px;
+}
 
+.lecturer-glyph {
+    margin-top: 6px;
+    left:4px;
+    color: white;
 }

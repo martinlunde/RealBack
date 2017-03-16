@@ -23,7 +23,6 @@ function getCookie(name) {
         for (var i = 0; i < cookies.length; i++) {
             var cookie = cookies[i].trim();
             if (cookie.substring(0, name.length + 1) === name + '=') {
-                console.log(cookie);
                 cookieVal = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
             }

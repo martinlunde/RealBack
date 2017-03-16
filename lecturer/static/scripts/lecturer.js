@@ -16,7 +16,6 @@ function toggleShowCourseForm() {
     new_course_button.toggle();
     if (new_course_form.is(':visible')) {
         $('#course_form input').focus();
-        console.log('Focused on new course form input');
     } else {
         $('#course_form input').val('');
     }
@@ -57,7 +56,7 @@ function updateCourseList() {
                 });
                 course_div.data('course_id', course.course_id);
                 // Insert title after first glyph icon
-                course_div.children('.glyphicon')[0].after(course.course_title);
+                course_div.children('span').first().append(course.course_title);
                 course_list_div.append(course_div);
             }
         }
@@ -77,9 +76,9 @@ function createLecture() {
 }
 
 function toggleLectureList() {
-    var course_div = $(this);
+    var course_div = $(this).parent();
     var lecture_list = course_div.children('ul');
-    var glyph_span = course_div.children('span').first();
+    var glyph_span = $(this).children('span').first();
 
     if (lecture_list.is(':visible')) {
         lecture_list.hide();
@@ -87,7 +86,27 @@ function toggleLectureList() {
     } else {
         lecture_list.show();
         glyph_span.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
+        var course_id = course_div.data('course_id');
+        populateLectureList(course_id, lecture_list);
     }
+}
 
-    console.log('Lecture list toggled');
+function populateLectureList(course_id, lecture_ul) {
+    var URL = '/courses/' + course_id + '/lectures/';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+            lecture_ul.empty();
+            for (var i = 0; i < data.lectures.length; i++) {
+                var lecture = data.lectures[i];
+                var li_element = $('<li>');
+                li_element.attr({
+
+                });
+                li_element.text(lecture.lecture_title);
+                lecture_ul.append(li_element);
+            }
+        }
+    })
 }

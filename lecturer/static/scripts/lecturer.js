@@ -2,6 +2,7 @@
 $(document).ready(function () {
     // Add click listeners
     $('#new_course_button').click(toggleShowCourseForm);
+    $('#course_form_back').click(toggleShowCourseForm);
     $('#course_form_button').click(createCourse);
 
     updateCourseList();
@@ -9,8 +10,10 @@ $(document).ready(function () {
 
 function toggleShowCourseForm() {
     var new_course_form = $('#course_form');
+    var new_course_button = $('#new_course_button');
     // Toggle visibility
     new_course_form.toggle();
+    new_course_button.toggle();
     if (new_course_form.is(':visible')) {
         $('#course_form input').focus();
         console.log('Focused on new course form input');
@@ -25,8 +28,10 @@ function createCourse(event) {
 
     csrfPOST(form_action, form, function (data) {
         console.log(data);
-        toggleShowCourseForm();
-        updateCourseList();
+        if (data.success) {
+            toggleShowCourseForm();
+            updateCourseList();
+        }
     });
 
     event.preventDefault();
@@ -48,12 +53,25 @@ function updateCourseList() {
                 var course_div = prototype_course_div.clone();
                 course_div.attr({
                     id: '',
-                    style: '',
-                    value: course.course_id
+                    style: ''
                 });
-                course_div.prepend(course.course_title);
+                course_div.data('course_id', course.course_id);
+                // Insert title after first glyph icon
+                course_div.children('.glyphicon')[0].after(course.course_title);
                 course_list_div.append(course_div);
             }
         }
     });
+}
+
+function createLecture() {
+    var course_div = $(this).parent();
+    var URL = '/courses/' + course_div.data('course_id') + '/lectures/';
+
+    csrfPOST(URL, $("<form>"), function (data) {
+        console.log(data);
+        if (data.success) {
+            // TODO update lecture list for this course
+        }
+    })
 }

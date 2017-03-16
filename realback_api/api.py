@@ -263,18 +263,23 @@ class CourseLectures(View):
         """ Create new lecture for course_id """
         # TODO remember to check if user has access (owner) to course
         try:
-            course = models.Course.objects.get(id=course_id)
+            course = models.Course.objects.get(id=course_id, user=request.user)
         except models.Course.DoesNotExist:
-            return JsonResponse({'success': False, 'message': 'Course ID does not exist'})
+            return JsonResponse({'success': False, 'message': 'Course ID does not exist for this user'})
 
-        if course.user != request.user:
-            return JsonResponse({'success': False, 'message': 'Access denied'})
+        form = forms.LectureForm(request.POST)
+        if form.is_valid():
+            lecture = form.save(commit=False)
+            lecture.course = course
+            lecture.save()
 
-        lecture_count = models.Lecture.objects.count(course__id=course_id, course__user=request.user)
-        lecture = models.Lecture(
-            course=course,
-            title=str(request.user) + "_" + str(course.title) + "_" + str(lecture_count + 1)
-        )
+        else:
+            lecture_count = models.Lecture.objects.filter(course__id=course_id, course__user=request.user).count()
+            lecture = models.Lecture(
+                course=course,
+                title=str(request.user) + "_" + str(course.title) + "_" + str(lecture_count + 1)
+            )
+
         lecture.save()
         return JsonResponse({
             'success': True,

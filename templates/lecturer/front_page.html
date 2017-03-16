@@ -12,6 +12,7 @@
         <button type="button" id="new_course_button"> New course </button>
         <form id="course_form" style="display: none;">
             {% csrf_token %}
+            <button type="button" id="course_form_back"><span class="glyphicon glyphicon-arrow-left"></span></button>
             {{ course_form.title }}
             <button type="submit" id="course_form_button"> Save </button>
         </form>

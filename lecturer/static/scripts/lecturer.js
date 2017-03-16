@@ -2,6 +2,7 @@
 $(document).ready(function () {
     // Add click listeners
     $('#new_course_button').click(toggleShowCourseForm);
+    $('#course_form_back').click(toggleShowCourseForm);
     $('#course_form_button').click(createCourse);
 
     updateCourseList();
@@ -9,8 +10,10 @@ $(document).ready(function () {
 
 function toggleShowCourseForm() {
     var new_course_form = $('#course_form');
+    var new_course_button = $('#new_course_button');
     // Toggle visibility
     new_course_form.toggle();
+    new_course_button.toggle();
     if (new_course_form.is(':visible')) {
         $('#course_form input').focus();
         console.log('Focused on new course form input');
@@ -25,8 +28,10 @@ function createCourse(event) {
 
     csrfPOST(form_action, form, function (data) {
         console.log(data);
-        toggleShowCourseForm();
-        updateCourseList();
+        if (data.success) {
+            toggleShowCourseForm();
+            updateCourseList();
+        }
     });
 
     event.preventDefault();

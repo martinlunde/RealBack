@@ -31,7 +31,7 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <div class="row row_margin">
-                <button type="button" id="new_course_button" class="btn btn-custom btn-lecturer"> 
+                <button type="button" id="new_course_button" class="btn btn-custom btn-lecturer">
                     <span class="glyphicon glyphicon-plus glyphwhite"></span>
                 New course </button>
             </div>
@@ -40,6 +40,7 @@
                     {% csrf_token %}
                     <button type="button" id="course_form_back"><span class="glyphicon glyphicon-arrow-left"></span></button>
                     {{ course_form.title }}
+                    <div id="course_error_message"></div>
                     <button type="submit" class="btn btn-custom" id="course_form_button"> Save </button>
                 </form>
             </div>

@@ -110,3 +110,16 @@ function populateLectureList(course_id, lecture_ul) {
         }
     })
 }
+
+function deleteCourse() {
+    // TODO ask if sure!!!111
+    var course_div = $(this).parent();
+    var course_id = course_div.data('course_id');
+
+    csrfDELETE('/courses/' + course_id + '/', function (data) {
+        console.log(data);
+        if (data.success) {
+            updateCourseList();
+        }
+    });
+}

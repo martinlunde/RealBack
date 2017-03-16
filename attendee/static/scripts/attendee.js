@@ -68,15 +68,14 @@ function sendQuestion() {
     });
 }
 
+//Keeps track of upvoted questions
+upvotedQuestions=[];
+
 /**
  * Up vote a question
  *
  * `this` will be the element (button) that called the function
  */
-
-//Keeps track of upvoted questions
-upvotedQuestions=[];
-
 function upvoteQuestion() {
     upvotedQuestions.push($(this).val());
     console.log('upvote:' + $(this).val());
@@ -105,15 +104,13 @@ function markQuestion(){
   }
 }
 
-
-/**
- * Increase or decrease lecture volume preference
- */
-
 //Keeps track if which buttons have been pressed
 volume_up = false;
 volume_down = false;
 
+/**
+ * Increase or decrease lecture volume preference
+ */
 function updateVolume(increase) {
     var form_action = '/lectures/' + $('#pinInput').val() + '/volume/';
     var form = $('#volume_form');
@@ -167,14 +164,14 @@ function updateVolume(increase) {
     });
 }
 
+
+//Keeps track of which buttons have been pressed
+pace_up = false;
+pace_down = false;
+
 /**
  * Increase or decrease lecture pace preference
  */
-
- //Keeps track of which buttons have been pressed
- pace_up = false;
- pace_down = false;
-
 function updatePace(increase) {
     var form_action = '/lectures/' + $('#pinInput').val() + '/pace/';
     var form = $('#pace_form');

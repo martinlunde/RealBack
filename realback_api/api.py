@@ -228,11 +228,12 @@ class CourseDetails(View):
     def get(self, request, course_id):
         """ Read course details for course_id """
         # TODO remember to check if user has access (owner) to course
-        course = models.Course.objects.get(id=course_id)
-        if course.user != request.user:
+        try:
+            course = models.Course.objects.get(id=course_id, user=request.user)
+        except models.Course.DoesNotExist:
             return JsonResponse({
                 'success': False,
-                'message': 'Access denied',
+                'message': 'Course ID does not exist for this user',
             })
 
         return JsonResponse({
@@ -245,6 +246,24 @@ class CourseDetails(View):
         """ Update course details for course_id """
         # TODO remember to check if user has access (owner) to course
         pass
+
+    @method_decorator(login_required)
+    def delete(self, request, course_id):
+        """ Delete course with course_id """
+        # TODO remember to check if user has access (owner) to course
+        try:
+            course = models.Course.objects.get(id=course_id, user=request.user)
+        except models.Course.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'message': 'Course ID does not exist for this user',
+            })
+
+        course.delete()
+        return JsonResponse({
+            'success': True,
+            'course_id': course_id,
+        })
 
 
 class CourseLectures(View):

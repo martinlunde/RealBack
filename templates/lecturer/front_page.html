@@ -4,26 +4,63 @@
 
 {% block ex-head %}
     <script src="{% static 'scripts/lecturer.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'lecturer.css' %}">
 {% endblock %}
 
 {% block content %}
+<div id="landingpage_lecturer">
+    <header class="header col-xs-12 col-sm-12 col-md-12">
+        <div class="col-xs-2 col-sm-1 col-md-2">
+            <a href="/">
+                <img class="logo" src="{% static 'images/realbackLogoHuge.png' %}">
+            </a>
+        </div>
+        <div class="footerMenu">
+            <div class="col-xs-1 col-sm-2 col-md-4"></div>
+            <div class="col-xs-1 col-sm-3 col-md-3"></div>
+            <div class="col-xs-1 col-sm-2 col-md-2">
+                 <p class="item lecture_title"></p>
+            </div>
+        </div>
+    </header>
 
-    <div class="row">
-        <button type="button" id="new_course_button"> New course </button>
-        <form id="course_form" style="display: none;">
-            {% csrf_token %}
-            {{ course_form.title }}
-            <button type="submit" id="course_form_button"> Save </button>
-        </form>
+    <div class="content_lecturer_landingpage col-md-12">
+        <div class="col-md-12">
+            <h1 class="center">OVERVIEW</h1>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="row row_margin">
+                <button type="button" id="new_course_button" class="btn btn-custom btn-lecturer"> 
+                    <span class="glyphicon glyphicon-plus glyphwhite"></span>
+                New course </button>
+            </div>
+            <div class="row">
+                <form id="course_form" style="display: none;">
+                    {% csrf_token %}
+                    {{ course_form.title }}
+                    <button type="submit" class="btn btn-custom" id="course_form_button"> Save </button>
+                </form>
+            </div>
+
+            <div id="prototype_course_div" class="bars" style="display: none;">
+                <span class="glyphicon glyphicon-menu-right"></span>
+                <button type="button" class="btn btn-lecturer-stats"><p>DEL</p></button>
+                <button type="button" class="btn btn-lecturer-stats"><p>STAT</p></button>
+                <button type="button" class="btn btn-lecturer-stats">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <p>NEW</p>
+                </button>
+            </div>
+
+            <div id="course_list" class="">
+            </div>
+
+            <a href="/logout/">LOGOUT</a>
+        </div>
+        <div class="col-md-3"></div>
     </div>
-
-    <div id="prototype_course_div" class="" style="display: none;">
-        <button type="button">New lecture</button>
-    </div>
-
-    <div id="course_list" class="">
-    </div>
-
-    <a href="/logout/">LOGOUT</a>
+</div>
 
 {% endblock %}
+{% block footer %} {% endblock %}

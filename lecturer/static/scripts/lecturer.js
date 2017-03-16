@@ -29,8 +29,13 @@ function createCourse(event) {
     csrfPOST(form_action, form, function (data) {
         console.log(data);
         if (data.success) {
+            document.getElementById("course_error_message").innerHTML = ""
             toggleShowCourseForm();
             updateCourseList();
+        }else if (data.message == "Course with this title already exists") {
+            document.getElementById("course_error_message").innerHTML = "This course already exists"
+        }else if (data.errors.title[0].slice(0, 43) == "Ensure this value has at least 3 characters") {
+            document.getElementById("course_error_message").innerHTML = "Course name needs to be atleast 3 characters"
         }
     });
 

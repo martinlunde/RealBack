@@ -42,7 +42,7 @@ body, html {
 
 * {
 	color: #007d70;
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	font-weight: 300;
 }
 
@@ -50,7 +50,7 @@ body, html {
 	position: absolute;
 	top:30px;
 	color: #007d70;
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	font-weight: 300;
 }
 
@@ -102,7 +102,7 @@ body, html {
     width: 100%;
     height: auto;
     min-width: 1024px;
-    min-height: 100%; 
+    min-height: 100%;
     z-index: -1;
     top:0;
     left:0;
@@ -303,6 +303,11 @@ body, html {
 .did-you-h3 {
   margin-top: 0px;
   text-align: center;
+}
+
+#asked_questions {
+  overflow-y: auto;
+  height: 130px;
 }
 
 #question_list {

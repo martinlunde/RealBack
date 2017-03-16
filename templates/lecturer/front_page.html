@@ -45,7 +45,8 @@
                     <button type="submit" class="btn btn-custom" id="course_form_button"> Save </button>
                 </form>
             </div>
-            <div id="prototype_course_div" class="bars " style="display: none;" onclick="createLecture.call(this)">
+
+            <div id="prototype_course_div" class="bars" style="display: none;" onclick="toggleLectureList.call(this)">
                 <span class="glyphicon glyphicon-menu-right"></span>
                 <button type="button" class="btn btn-lecturer-stats">
                     <div>
@@ -66,8 +67,9 @@
                         <p>NEW</p>
                     </div>
                 </button>
-            </div>
 
+                <ul style="display: none;"></ul>
+            </div>
 
             <div id="course_list" class="">
             </div>

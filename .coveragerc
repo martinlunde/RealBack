@@ -7,4 +7,5 @@ include =
         attendee/views.py
         emailauth/views.py
         emailauth/forms.py
-
+        lecturer/forms.py
+        realback_api/forms.py

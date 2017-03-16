@@ -55,8 +55,9 @@ function updateCourseList() {
                     id: '',
                     style: ''
                 });
-                course_div.prepend(course.course_title);
                 course_div.data('course_id', course.course_id);
+                // Insert title after first glyph icon
+                course_div.children('.glyphicon')[0].after(course.course_title);
                 course_list_div.append(course_div);
             }
         }

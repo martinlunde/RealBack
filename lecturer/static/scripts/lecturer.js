@@ -8,6 +8,9 @@ $(document).ready(function () {
     updateCourseList();
 });
 
+/**
+ * Toggle between showing new course button or new course form
+ */
 function toggleShowCourseForm() {
     var new_course_form = $('#course_form');
     var new_course_button = $('#new_course_button');
@@ -21,6 +24,11 @@ function toggleShowCourseForm() {
     }
 }
 
+/**
+ * Create a new course
+ *
+ * @param event     Submit event object
+ */
 function createCourse(event) {
     var form_action = '/courses/';
     var form = $('#course_form');
@@ -41,6 +49,9 @@ function createCourse(event) {
     event.preventDefault();
 }
 
+/**
+ * Update list of courses
+ */
 function updateCourseList() {
     var URL = '/courses/';
 
@@ -60,6 +71,7 @@ function updateCourseList() {
                     style: ''
                 });
                 course_div.data('course_id', course.course_id);
+                course_div.data('delete_permission', false);
                 // Insert title after first glyph icon
                 course_div.children('span').first().append(course.course_title);
                 course_list_div.append(course_div);
@@ -68,6 +80,11 @@ function updateCourseList() {
     });
 }
 
+/**
+ * Create a new lecture for a course
+ *
+ * `this` will be the button that called the function
+ */
 function createLecture() {
     var course_div = $(this).parent();
     var URL = '/courses/' + course_div.data('course_id') + '/lectures/';
@@ -80,6 +97,11 @@ function createLecture() {
     })
 }
 
+/**
+ * Toggle visibility of the lecture list for a course
+ *
+ * `this` will be the span that called the function
+ */
 function toggleLectureList() {
     var course_div = $(this).parent();
     var lecture_list = course_div.children('ul');
@@ -96,6 +118,12 @@ function toggleLectureList() {
     }
 }
 
+/**
+ * Populate the list of lectures for course with course_id
+ *
+ * @param course_id     ID of the course to get lectures for
+ * @param lecture_ul    The list element to populate
+ */
 function populateLectureList(course_id, lecture_ul) {
     var URL = '/courses/' + course_id + '/lectures/';
 
@@ -113,18 +141,34 @@ function populateLectureList(course_id, lecture_ul) {
                 lecture_ul.append(li_element);
             }
         }
-    })
+    });
 }
 
+/**
+ * Delete a course (with all its associated lectures)
+ *
+ * `this` will be the delete button
+ */
 function deleteCourse() {
-    // TODO ask if sure!!!111
     var course_div = $(this).parent();
     var course_id = course_div.data('course_id');
 
-    csrfDELETE('/courses/' + course_id + '/', function (data) {
-        console.log(data);
-        if (data.success) {
-            updateCourseList();
-        }
-    });
+    if (course_div.data('delete_permission')) {
+        // Go ahead and delete
+        csrfDELETE('/courses/' + course_id + '/', function (data) {
+            console.log(data);
+            if (data.success) {
+                updateCourseList();
+            }
+        });
+
+    } else {
+        // Ask for permission
+        $(this).text('SURE?').css({
+            'animation-name': 'warning_text',
+            'animation-duration': '2s',
+            'animation-iteration-count': 'infinite'
+        });
+        course_div.data('delete_permission', true);
+    }
 }

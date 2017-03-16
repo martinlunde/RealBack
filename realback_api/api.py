@@ -19,8 +19,8 @@ class LectureDetails(View):
                 'success': False,
                 'errors': {
                     'message': ['Lecture does not exist'],
-                    },
-                })
+                },
+            })
 
         return JsonResponse({
             'success': True,
@@ -38,7 +38,7 @@ class LectureDetails(View):
                 return JsonResponse({
                     'success': False,
                     'errors': {
-                        'message': ['Lecture with PIN does not exist for this user']
+                        'message': ['Lecture with PIN does not exist for this user'],
                     },
                 })
 

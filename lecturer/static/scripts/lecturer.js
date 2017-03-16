@@ -93,28 +93,35 @@ function createLecture() {
         console.log(data);
         if (data.success) {
             // TODO update lecture list for this course
+            var context = course_div.children('span').first();
+            toggleLectureList(context, true);
         }
     })
 }
 
 /**
- * Toggle visibility of the lecture list for a course
+ * Toggle visibility of the lecture list for a course and update list if it's not visible
  *
- * `this` will be the span that called the function
+ * @param click_context       The element that called the function
+ * @param force_show    Force lecture list to be shown and updated
  */
-function toggleLectureList() {
-    var course_div = $(this).parent();
-    var lecture_list = course_div.children('ul');
-    var glyph_span = $(this).children('span').first();
+function toggleLectureList(click_context, force_show) {
+    // Set parameter default to false
+    force_show = (typeof force_show !== 'undefined') ? force_show : false;
 
-    if (lecture_list.is(':visible')) {
-        lecture_list.hide();
-        glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-right');
-    } else {
+    click_context = $(click_context);
+    var course_div = click_context.parent();
+    var lecture_list = course_div.children('ul');
+    var glyph_span = click_context.children('span').first();
+
+    if (force_show || ! lecture_list.is(':visible')) {
         lecture_list.show();
         glyph_span.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
         var course_id = course_div.data('course_id');
         populateLectureList(course_id, lecture_list);
+    } else {
+        lecture_list.hide();
+        glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-right');
     }
 }
 

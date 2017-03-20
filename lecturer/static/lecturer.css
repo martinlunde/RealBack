@@ -95,7 +95,7 @@ fieldset[disabled] .btn-custom.active {
 }
 
 #course_form, #course_form_button {
-    margin-top: 10px;
+
     margin-bottom: 10px;
 }
 
@@ -154,14 +154,16 @@ fieldset[disabled] .btn-custom.active {
 #course_form_back{
     position: absolute;
     height: 34px;
-    width: 50px;
+    width: 61px;
+    border-radius: 8px 0px 0px 8px;
 }
 
 #id_title {
-    width: 80%;
-    margin-left:50px;
+    width: 78.5%;
+    margin-left:61px;
     margin-right: 0px;
     position: absolute;
+    border-radius: 0px;
 }
 
 #course_form_button {
@@ -169,6 +171,7 @@ fieldset[disabled] .btn-custom.active {
     height: 34px;
     margin-top: 0px;
     float: right;
+    border-radius: 0px 8px 8px 0px;
 }
 
 

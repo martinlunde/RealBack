@@ -38,7 +38,7 @@
             <div class="row">
                 <form id="course_form" style="display: none;">
                     {% csrf_token %}
-                    <button type="button" id="course_form_back">
+                    <button type="button" id="course_form_back" class="btn btn-custom">
                         <span class="glyphicon glyphicon-arrow-left"></span>
                     </button>
                     {{ course_form.title }}

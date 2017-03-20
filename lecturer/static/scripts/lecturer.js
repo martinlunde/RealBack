@@ -93,6 +93,6 @@ function toggleLectureList() {
         lecture_list.show();
         glyph_span.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
     }
-
+    console.log(course_div.success);
     console.log('Lecture list toggled');
 }

@@ -157,6 +157,9 @@ fieldset[disabled] .btn-custom.active {
     width: 61px;
     border-radius: 8px 0px 0px 8px;
 }
+#course_form_back span {
+    top:0;
+}
 
 #id_title {
     width: 78.5%;
@@ -174,4 +177,9 @@ fieldset[disabled] .btn-custom.active {
     border-radius: 0px 8px 8px 0px;
 }
 
-
+#course_form_button span {
+    position: absolute;
+    color: white;
+    top:17px;
+    right:30px;
+}

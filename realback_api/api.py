@@ -55,6 +55,134 @@ class LectureDetails(View):
         })
 
 
+class LectureTopics(View):
+    def get(self, request, pin=None):
+        """ Read list of lecture topics """
+        topic_list = models.LectureTopic.objects.filter(lecture__pin=pin).order_by('order')
+        return JsonResponse({
+            'success': True,
+            'lecture_topics': [topic.as_dict() for topic in topic_list],
+        })
+
+    @method_decorator(login_required)
+    def post(self, request, pin=None):
+        """ Create lecture topic """
+        form = forms.LectureTopicForm(request.POST)
+        if form.is_valid():
+            lecture = models.Lecture.objects.get(pin=pin)
+            topic = form.save(commit=False)
+            topic.lecture = lecture
+            topic.save()
+            return JsonResponse({
+                'success': True,
+                'lecture_topic': topic.as_dict(),
+            }, status=201)
+
+        # Form is invalid so return errors
+        return JsonResponse({
+            'success': False,
+            'errors': form.errors,
+        })
+
+
+class LectureTopicDetails(View):
+    def get(self, request, pin=None, topic_id=None):
+        """ Read lecture topic details """
+        try:
+            topic = models.LectureTopic.objects.get(id=topic_id, lecture__pin=pin)
+        except models.LectureTopic.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Topic ID does not exist for this lecture'],
+                },
+            })
+
+        return JsonResponse({
+            'success': True,
+            'lecture_topic': topic.as_dict(),
+        })
+
+    @method_decorator(login_required)
+    def post(self, request, pin=None, topic_id=None):
+        """ Update lecture topic """
+        form = forms.LectureTopicForm(request.POST)
+        if form.is_valid():
+            try:
+                topic = models.LectureTopic.objects.get(id=topic_id, lecture__pin=pin)
+            except models.LectureTopic.DoesNotExist:
+                return JsonResponse({
+                    'success': False,
+                    'errors': {
+                        'message': ['Topic ID does not exist for this lecture'],
+                    },
+                })
+
+            topic.title = form.cleaned_data['title']
+            topic.order = form.cleaned_data['order']
+            topic.save()
+            return JsonResponse({
+                'success': True,
+                'lecture_topic': topic.as_dict(),
+            })
+
+        # Form is invalid so return errors
+        return JsonResponse({
+            'success': False,
+            'errors': form.errors,
+        })
+
+    @method_decorator(login_required)
+    def delete(self, request, pin=None, topic_id=None):
+        """ Delete lecture topic """
+        try:
+            topic = models.LectureTopic.objects.get(id=topic_id, lecture__pin=pin)
+        except models.LectureTopic.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Topic ID does not exist for this lecture'],
+                },
+            })
+
+        topic.delete()
+        return JsonResponse({
+            'success': True,
+            'lecture_topic_id': topic_id,
+        })
+
+
+class LectureTopicUnderstanding(View):
+    def post(self, request, pin=None, topic_id=None):
+        """ Create opinion on lecture topic understanding """
+        form = forms.TopicUnderstandingForm(request.POST)
+        if form.is_valid():
+            try:
+                topic = models.LectureTopic.objects.get(id=topic_id, lecture__pin=pin)
+            except models.LectureTopic.DoesNotExist:
+                return JsonResponse({
+                    'success': False,
+                    'errors': {
+                        'message': ['Topic ID does not exist for this lecture'],
+                    },
+                })
+
+            if form.cleaned_data['understanding']:
+                topic.understanding += 1
+            else:
+                topic.understanding -= 1
+            topic.save()
+            return JsonResponse({
+                'success': True,
+                'lecture_topic': topic.as_dict(),
+            })
+
+        return JsonResponse({
+            'success': False,
+            'errors': form.errors,
+        })
+
+
 class LectureQuestions(View):
     def get(self, request, pin=None):
         """ Read list of latest questions """
@@ -145,8 +273,7 @@ class LecturePace(View):
                     },
                 })
 
-            pace = form.cleaned_data['pace']
-            if pace:
+            if form.cleaned_data['pace']:
                 lecture.pace += 1
             else:
                 lecture.pace -= 1
@@ -195,8 +322,7 @@ class LectureVolume(View):
                     },
                 })
 
-            volume = form.cleaned_data['volume']
-            if volume:
+            if form.cleaned_data['volume']:
                 lecture.volume += 1
             else:
                 lecture.volume -= 1
@@ -272,10 +398,31 @@ class CourseDetails(View):
         })
 
     @method_decorator(login_required)
-    def put(self, request, course_id):
+    def post(self, request, course_id):
         """ Update course details for course_id """
         # TODO remember to check if user has access (owner) to course
-        pass
+        form = forms.CourseForm(request.POST)
+        if form.is_valid():
+            try:
+                course = models.Course.objects.get(id=course_id, user=request.user)
+            except models.Course.DoesNotExist:
+                return JsonResponse({
+                    'success': False,
+                    'errors': {
+                        'message': ['Course ID does not exist for this user'],
+                    },
+                })
+
+            course.title = form.cleaned_data['title']
+            return JsonResponse({
+                'success': True,
+                'course': course.as_dict(),
+            })
+
+        return JsonResponse({
+            'success': False,
+            'errors': form.errors,
+        })
 
     @method_decorator(login_required)
     def delete(self, request, course_id):

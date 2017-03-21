@@ -22,9 +22,28 @@ class LectureForm(forms.ModelForm):
         fields = ['title']
 
 
+class LectureTopicForm(forms.ModelForm):
+    class Meta:
+        model = models.LectureTopic
+        fields = ['title', 'order']
+
+
+class TopicUnderstandingForm(forms.Form):
+    understanding = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={'style': 'display: none;'})
+    )
+
+
 class PaceForm(forms.Form):
-    pace = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'style': 'display: none;'}))
+    pace = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={'style': 'display: none;'})
+    )
 
 
 class VolumeForm(forms.Form):
-    volume = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'style': 'display: none;'}))
+    volume = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={'style': 'display: none;'})
+    )

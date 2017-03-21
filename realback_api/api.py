@@ -30,6 +30,7 @@ class LectureDetails(View):
     @method_decorator(login_required)
     def post(self, request, pin=None):
         """ Update details for existing lecture """
+        # TODO remember to check if user has access (owner) to lecture
         form = forms.LectureForm(request.POST)
         if form.is_valid():
             try:
@@ -54,6 +55,26 @@ class LectureDetails(View):
             'errors': form.errors,
         })
 
+    @method_decorator(login_required)
+    def delete(self, request, pin=None):
+        """ Delete lecture with pin """
+        # TODO remember to check if user has access (owner) to lecture
+        try:
+            lecture = models.Lecture.objects.get(pin=pin, course__user=request.user)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture with PIN does not exist for this user'],
+                },
+            })
+
+        lecture.delete()
+        return JsonResponse({
+            'success': True,
+            'lecture_pin': pin,
+        })
+
 
 class LectureTopics(View):
     def get(self, request, pin=None):
@@ -67,9 +88,19 @@ class LectureTopics(View):
     @method_decorator(login_required)
     def post(self, request, pin=None):
         """ Create lecture topic """
+        # TODO remember to check if user has access (owner) to course
         form = forms.LectureTopicForm(request.POST)
         if form.is_valid():
-            lecture = models.Lecture.objects.get(pin=pin)
+            try:
+                lecture = models.Lecture.objects.get(pin=pin, course__user=request.user)
+            except models.Lecture.DoesNotExist:
+                return JsonResponse({
+                    'success': False,
+                    'errors': {
+                        'message': ['Lecture with PIN does not exist for this user'],
+                    },
+                })
+
             topic = form.save(commit=False)
             topic.lecture = lecture
             topic.save()
@@ -106,15 +137,20 @@ class LectureTopicDetails(View):
     @method_decorator(login_required)
     def post(self, request, pin=None, topic_id=None):
         """ Update lecture topic """
+        # TODO remember to check if user has access (owner) to course
         form = forms.LectureTopicForm(request.POST)
         if form.is_valid():
             try:
-                topic = models.LectureTopic.objects.get(id=topic_id, lecture__pin=pin)
+                topic = models.LectureTopic.objects.get(
+                    id=topic_id,
+                    lecture__pin=pin,
+                    lecture__course__user=request.user
+                )
             except models.LectureTopic.DoesNotExist:
                 return JsonResponse({
                     'success': False,
                     'errors': {
-                        'message': ['Topic ID does not exist for this lecture'],
+                        'message': ['Topic ID does not exist for this lecture and user'],
                     },
                 })
 
@@ -135,13 +171,18 @@ class LectureTopicDetails(View):
     @method_decorator(login_required)
     def delete(self, request, pin=None, topic_id=None):
         """ Delete lecture topic """
+        # TODO remember to check if user has access (owner) to course
         try:
-            topic = models.LectureTopic.objects.get(id=topic_id, lecture__pin=pin)
+            topic = models.LectureTopic.objects.get(
+                id=topic_id,
+                lecture__pin=pin,
+                lecture__course__user=request.user
+            )
         except models.LectureTopic.DoesNotExist:
             return JsonResponse({
                 'success': False,
                 'errors': {
-                    'message': ['Topic ID does not exist for this lecture'],
+                    'message': ['Topic ID does not exist for this lecture and user'],
                 },
             })
 
@@ -475,7 +516,6 @@ class CourseLectures(View):
         if form.is_valid():
             lecture = form.save(commit=False)
             lecture.course = course
-            lecture.save()
 
         else:
             lecture_count = models.Lecture.objects.filter(course__id=course_id, course__user=request.user).count()

@@ -116,12 +116,13 @@ function toggleLectureList(click_context, force_show) {
 
     if (force_show || ! lecture_list.is(':visible')) {
         lecture_list.show();
-        glyph_span.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
+        glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-up');
         var course_id = course_div.data('course_id');
         populateLectureList(course_id, lecture_list);
+
     } else {
         lecture_list.hide();
-        glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-right');
+        glyph_span.removeClass('glyphicon-menu-up').addClass('glyphicon-menu-down');
     }
 }
 
@@ -138,13 +139,16 @@ function populateLectureList(course_id, lecture_ul) {
         console.log(data);
         if (data.success) {
             lecture_ul.empty();
+            var prototype_li_el = $('#prototype_lecture_list li');
             for (var i = 0; i < data.lectures.length; i++) {
                 var lecture = data.lectures[i];
-                var li_element = $('<li>');
-                li_element.attr({
-
+                var li_element = prototype_li_el.clone();
+                // Store PIN so we can get it when lecture is clicked
+                li_element.data({
+                    'lecture_pin': lecture.lecture_pin,
+                    'delete_permission': false
                 });
-                li_element.text(lecture.lecture_title);
+                li_element.children('span').first().text(lecture.lecture_title);
                 lecture_ul.append(li_element);
             }
         }
@@ -160,6 +164,7 @@ function deleteCourse() {
     var course_div = $(this).parent();
     var course_id = course_div.data('course_id');
 
+    // Check if we have asked for permission
     if (course_div.data('delete_permission')) {
         // Go ahead and delete
         csrfDELETE('/courses/' + course_id + '/', function (data) {
@@ -178,4 +183,55 @@ function deleteCourse() {
         });
         course_div.data('delete_permission', true);
     }
+}
+
+/**
+ * Delete a lecture
+ *
+ * `this` will be the delete button
+ */
+function deleteLecture() {
+    var lecture_el = $(this).parent();
+    var lecture_pin = lecture_el.data('lecture_pin');
+
+    // Check if we have asked for permission
+    if (lecture_el.data('delete_permission')) {
+        // Go ahead and delete
+        csrfDELETE('/lectures/' + lecture_pin + '/', function (data) {
+            console.log(data);
+            if (data.success) {
+                // TODO update lecture list
+                lecture_el.remove();
+            }
+        });
+
+    } else {
+        // Ask for permission
+        $(this).text('SURE?').css({
+            'animation-name': 'warning_text',
+            'animation-duration': '2s',
+            'animation-iteration-count': 'infinite'
+        });
+        lecture_el.data('delete_permission', true);
+    }
+}
+
+/**
+ * Show the lecture page for a lecture
+ *
+ * `this` will be the clicked span element
+ */
+function showLecturePage() {
+    var lecture_pin = $(this).parent().data('lecture_pin');
+    console.log(lecture_pin);
+    $('#course_overview_page').hide();
+    $('#lecture_page').show();
+}
+
+/**
+ * Go back to course overview from lecture page
+ */
+function backToCourseList() {
+    $('#lecture_page').hide();
+    $('#course_overview_page').show();
 }

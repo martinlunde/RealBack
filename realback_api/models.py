@@ -70,6 +70,21 @@ class Lecture(models.Model):
         self.volume = 0
 
 
+class LectureTopic(models.Model):
+    """ Lecture topic model """
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50, validators=[validators.MinLengthValidator(3)])
+    understanding = models.IntegerField(default=0)
+    order = models.PositiveIntegerField(default=0)
+
+    def as_dict(self):
+        return {
+            'topic_title': self.title,
+            'topic_understanding': self.understanding,
+            'topic_order': self.order,
+        }
+
+
 class Question(models.Model):
     """ Lecture questions model """
     lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE)

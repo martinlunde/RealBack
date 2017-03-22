@@ -235,6 +235,7 @@ function showLecturePage() {
     $('#lecture_page').show();
 
     // Get lecture
+    populateLecturePage();
 }
 
 /**
@@ -242,6 +243,13 @@ function showLecturePage() {
  */
 function populateLecturePage() {
     var URL = '/lectures/'+ lecture_pin + '/';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+            $('#lecture_title').text(data.lecture.lecture_title);
+        }
+    })
 
 }
 

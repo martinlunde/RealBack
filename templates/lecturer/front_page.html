@@ -60,43 +60,30 @@
                 <span class="wraptext" onclick="toggleLectureList(this)">
                     <span class="glyphicon glyphicon-menu-right"></span>
                 </span>
-                <div class="lecturer-button-div">
-                    <button type="button" class="btn btn-lecturer-stats" onclick="deleteCourse.call(this)">
-                        <div>
-                            <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
-                            <p>DEL</p>
-                        </div>
-                    </button>
-                    <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage()">
-                        <div>
-                            <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
-                            <p>STAT</p>
-                        </div>
-                    </button>
+                    <div class="lecturer-button-div">
+                        <button type="button" class="btn btn-lecturer-stats" onclick="deleteCourse.call(this)">
+                            <div>
+                                <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
+                                <p>DEL</p>
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage.call(this)">
+                            <div>
+                                <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
+                                <p>STAT</p>
+                            </div>
+                        </button>
 
-                <button type="button" class="btn btn-lecturer-stats" onclick="deleteCourse.call(this)">
-                    <div>
-                        <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
-                        <p>DEL</p>
+                        <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
+                            <div>
+                                <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
+                                <p>NEW</p>
+                            </div>
+                        </button>
                     </div>
-                </button>
-                <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage.call(this)">
-                    <div>
-                        <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
-                        <p>STAT</p>
-                    </div>
-                </button>
-
-                <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
-                    <div>
-                        <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
-                        <p>NEW</p>
-                    </div>
-                </button>
                 </div>
-            </div>
 
-            <ul class="list-group-custom bars bars-gray" style="display: none;"></ul>
+                <ul class="list-group-custom bars bars-gray" style="display: none;"></ul>
             </div>
 
             <ul id="prototype_lecture_list" style="display: none;">

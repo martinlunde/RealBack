@@ -86,7 +86,7 @@ function updateCourseList() {
  * `this` will be the button that called the function
  */
 function createLecture() {
-    var course_div = $(this).parent().parent();
+    var course_div = $(this).parent().parent().parent();
     var URL = '/courses/' + course_div.data('course_id') + '/lectures/';
 
     csrfPOST(URL, $("<form>"), function (data) {
@@ -118,7 +118,7 @@ function toggleLectureList(click_context, force_show) {
         lecture_list.show();
         glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-up');
         var course_id = course_div.data('course_id');
-        populateLectureList(course_id, lecture_list);
+        updateLectureList(course_id, lecture_list);
 
     } else {
         lecture_list.hide();
@@ -132,7 +132,7 @@ function toggleLectureList(click_context, force_show) {
  * @param course_id     ID of the course to get lectures for
  * @param lecture_ul    The list element to populate
  */
-function populateLectureList(course_id, lecture_ul) {
+function updateLectureList(course_id, lecture_ul) {
     var URL = '/courses/' + course_id + '/lectures/';
 
     $.getJSON(URL, function (data) {
@@ -161,7 +161,7 @@ function populateLectureList(course_id, lecture_ul) {
  * `this` will be the delete button
  */
 function deleteCourse() {
-    var course_div = $(this).parent().parent();
+    var course_div = $(this).parent().parent().parent();
     var course_id = course_div.data('course_id');
 
     // Check if we have asked for permission
@@ -254,7 +254,7 @@ function populateLecturePage() {
  * Show the statistics page for a course
  */
 function showStatPage() {
-    var course_id = $(this).parent().parent().data('course_id');
+    var course_id = $(this).parent().parent().parent().data('course_id');
     $('#course_overview_page').hide();
     $('#stat_page').show();
     createCountChart(course_id);

@@ -3,61 +3,72 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}RealBack{% endblock %}</title>
-        <!-- jQuery -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <!-- Latest compiled and minified CSS BOOTSTRAP -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <!-- Stylesheet -->
-        <link rel="stylesheet" type="text/css" href="{% static 'attendee.css' %}">
-        <script src="{% static 'scripts/realback.js' %}"></script>
-        {% block ex-head %}{% endblock %}
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}RealBack{% endblock %}</title>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS BOOTSTRAP -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{% static 'attendee.css' %}">
+    <script src="{% static 'scripts/realback.js' %}"></script>
+    {% block ex-head %}{% endblock %}
+</head>
 
-    <body>
-        {% block navbar %}{% endblock %}
+<body>
+{% block navbar %}{% endblock %}
 
-        {% block content %}{% endblock %}
+{% block content %}{% endblock %}
 
-        {% block footer %}
-            <footer class="footer col-xs-12 col-sm-12 col-md-12">
-                <div class="col-xs-2 col-sm-1 col-md-1">
-                    <a href="/">
-                        <img class="logo" src="{% static 'images/realbackLogoHuge.png' %}">
-                    </a>
-                </div>
-                <div class="footerMenu">
-                    <div class="col-xs-4 col-sm-6 col-md-6"></div>
-                    <div class="col-xs-2 col-sm-2 col-md-2" >
-                        <a class="item" href="/lecturer/">HELP</a>
-                    </div>
-                    <div class="col-xs-3 col-sm-2 col-md-2">
-                        <a class="item" href="/about_us/">ABOUT US</a>
-                    </div>
-                    <div class="col-xs-1 col-sm-1 col-md-1">
-                        {% block footerLinkChange %}
-                            <a class="item" href="/lecturer/">LOGIN</a>
-                        {% endblock %}
-                    </div>
-                </div>
-                <div class="dropup col-xs-1 col-sm-0 col-md-0">
-                    <button class="btn" type="button" id="dropdownMenu2" data-toggle="dropdown"  aria-expanded="false">
-                        <span class="glyphicon glyphicon-menu-hamburger"></span>
-                    </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <li><a href="/lecturer/">Help</a></li>
-                    <li><a href="/about_us/">About Us</a></li>
-                    <li><a href="/lecturer/">Login</a></li>
-                  </ul>
-                </div>
-            </footer>
-        {% endblock %}
+{% block footer %}
+    <footer class="footer col-xs-12 col-sm-12 col-md-12">
+        <div class="col-xs-2 col-sm-1 col-md-1">
+            <a href="/">
+                <img class="logo" src="{% static 'images/realbackLogoHuge.png' %}">
+            </a>
+        </div>
+        <div class="footerMenu">
+            <div class="col-xs-4 col-sm-5 col-md-5"></div>
+            <div class="col-xs-2 col-sm-2 col-md-2">
+                <a class="item" href="/lecturer/">HELP</a>
+            </div>
+            <div class="col-xs-2 col-sm-2 col-md-2">
+                <a class="item" href="/about_us/">ABOUT US</a>
+            </div>
+            <div class="col-xs-2 col-sm-2 col-md-2">
+                {% block footerLinkChange %}
+                    {% if request.user.is_authenticated %}
+                        <a class="item" href="/lecturer/">LECTURER</a>
+                    {% else %}
+                        <a class="item" href="/lecturer/">LOGIN</a>
+                    {% endif %}
+                {% endblock %}
+            </div>
+        </div>
+        <div class="dropup col-xs-1 col-sm-0 col-md-0">
+            <button class="btn" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="false">
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li><a href="/lecturer/">HELP</a></li>
+                <li><a href="/about_us/">ABOUT US</a></li>
+                <li>
+                    {% if request.user.is_authenticated %}
+                        <a href="/lecturer/">LECTURER</a>
+                    {% else %}
+                        <a href="/lecturer/">LOGIN</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </footer>
+{% endblock %}
 
-    </body>
+</body>
 </html>

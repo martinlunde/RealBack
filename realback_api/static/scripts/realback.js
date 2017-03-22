@@ -23,7 +23,6 @@ function getCookie(name) {
         for (var i = 0; i < cookies.length; i++) {
             var cookie = cookies[i].trim();
             if (cookie.substring(0, name.length + 1) === name + '=') {
-                console.log(cookie);
                 cookieVal = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
             }
@@ -50,6 +49,27 @@ function csrfPOST(action, form_el, success) {
         type: "POST",
         headers: {"X-CSRFToken": csrftoken},
         data: form_el.serialize(),
+        dataType: "json",
+        success: success
+    });
+}
+
+/**
+ * DELETE something at URL
+ *
+ * @param URL       URL to item to delete
+ * @param success   Function callback on received response
+ */
+function csrfDELETE(URL, success) {
+    var csrftoken = getCookie("csrftoken");
+    if (csrftoken === null) {
+        console.log("CSRF cookie not found!");
+        return;
+    }
+    $.ajax({
+        url: URL,
+        type: "DELETE",
+        headers: {"X-CSRFToken": csrftoken},
         dataType: "json",
         success: success
     });

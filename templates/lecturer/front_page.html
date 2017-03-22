@@ -24,7 +24,9 @@
         </div>
     </header>
 
-    <div class="content_lecturer_landingpage col-md-12">
+<!-- COURSE OVERVIEW PAGE -->
+
+    <div class="content_lecturer_landingpage col-md-12" id="course_overview_page">
         <div class="col-md-12">
             <h1 class="center">OVERVIEW</h1>
         </div>
@@ -51,9 +53,12 @@
                 </form>
             </div>
 
-            <div id="prototype_course_div" class="bars" style="display: none;" onclick="toggleLectureList.call(this)">
-                <span class="glyphicon glyphicon-menu-right"></span>
-                <button type="button" class="btn btn-lecturer-stats">
+            <div id="prototype_course_div" class="bars" style="display: none;">
+                <span onclick="toggleLectureList(this)">
+                    <span class="glyphicon glyphicon-menu-down"></span>
+                </span>
+
+                <button type="button" class="btn btn-lecturer-stats" onclick="deleteCourse.call(this)">
                     <div>
                         <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
                         <p>DEL</p>
@@ -75,6 +80,15 @@
 
                 <ul style="display: none;"></ul>
             </div>
+            <ul id="prototype_lecture_list" style="display: none;">
+                <li>
+                    <span onclick="showLecturePage.call(this)"></span>
+                    <button type="button" onclick="deleteLecture.call(this)">
+                        <span class="glyphicon glyphicon-minus"></span>
+                        <p>DEL</p>
+                    </button>
+                </li>
+            </ul>
 
             <div id="course_list" class="">
             </div>
@@ -83,6 +97,16 @@
         </div>
         <div class="col-md-3"></div>
     </div>
+
+<!-- LECTURE PAGE -->
+
+    <div id="lecture_page" class="row" style="display: none;">
+        <button type="button" class="btn" onclick="backToCourseList()">
+            <span class="glyphicon glyphicon-arrow-left"></span> BACK
+        </button>
+
+    </div>
+
 </div>
 
 {% endblock %}

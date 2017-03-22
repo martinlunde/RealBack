@@ -36,7 +36,7 @@
     left:50%;
     width: 100%;
     height: auto;
-    transform:translate(-50%,-50%);}
+    transform:translate(-50%,-50%);
 }
 
 /* Custom CSS for #00AF9C colored bootstrap buttons */
@@ -182,4 +182,11 @@ fieldset[disabled] .btn-custom.active {
     color: white;
     top:17px;
     right:30px;
+}
+
+/* Animation for warning text */
+@keyframes warning_text {
+    0%      {color: red;}
+    50%     {color: white;}
+    100%    {color: red;}
 }

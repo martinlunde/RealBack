@@ -22,6 +22,8 @@ class LectureDetails(View):
                 },
             })
 
+        lecture.attendee_counter += 1
+        lecture.save()
         return JsonResponse({
             'success': True,
             'lecture': lecture.as_dict(),

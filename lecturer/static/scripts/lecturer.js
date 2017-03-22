@@ -73,7 +73,7 @@ function updateCourseList() {
                 course_div.data('course_id', course.course_id);
                 course_div.data('delete_permission', false);
                 // Insert title after first glyph icon
-                course_div.children('span').first().append(course.course_title);
+                course_div.find('span').first().append(course.course_title);
                 course_list_div.append(course_div);
             }
         }
@@ -86,14 +86,14 @@ function updateCourseList() {
  * `this` will be the button that called the function
  */
 function createLecture() {
-    var course_div = $(this).parent();
+    var course_div = $(this).parent().parent();
     var URL = '/courses/' + course_div.data('course_id') + '/lectures/';
 
     csrfPOST(URL, $("<form>"), function (data) {
         console.log(data);
         if (data.success) {
             // TODO update lecture list for this course
-            var context = course_div.children('span').first();
+            var context = course_div.find('span').first();
             toggleLectureList(context, true);
         }
     })
@@ -110,7 +110,7 @@ function toggleLectureList(click_context, force_show) {
     force_show = (typeof force_show !== 'undefined') ? force_show : false;
 
     click_context = $(click_context);
-    var course_div = click_context.parent();
+    var course_div = click_context.parent().parent();
     var lecture_list = course_div.children('ul');
     var glyph_span = click_context.children('span').first();
 
@@ -161,7 +161,7 @@ function populateLectureList(course_id, lecture_ul) {
  * `this` will be the delete button
  */
 function deleteCourse() {
-    var course_div = $(this).parent();
+    var course_div = $(this).parent().parent();
     var course_id = course_div.data('course_id');
 
     // Check if we have asked for permission

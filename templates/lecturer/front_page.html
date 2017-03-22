@@ -36,7 +36,7 @@
         <div class="col-md-1 col-lg-2"></div>
         <div class="col-md-10 col-lg-8">
             <div class="row row_margin">
-                <button type="button" id="new_course_button" class="btn btn-custom btn-lecturer">
+                <button type="button" id="new_course_button" class="btn btn-custom btn-lecturer btn-success">
                     <span class="glyphicon glyphicon-plus glyphwhite"></span>
                 New course </button>
             </div>
@@ -44,12 +44,12 @@
                 <form id="course_form" style="display: none;">
                     <div>
                     {% csrf_token %}
-                    <button type="button" id="course_form_back" class="btn btn-custom">
+                    <button type="button" id="course_form_back" class="btn btn-custom btn-success">
                         <span class="glyphicon glyphicon-arrow-left glyphwhite"></span>
                     </button>
                     {{ course_form.title }}
                     <div id="course_error_message"></div>
-                    <button type="submit" class="btn btn-custom" id="course_form_button">
+                    <button type="submit" class="btn btn-custom btn-success" id="course_form_button">
                         <span>ADD</span>
                     </button>
                     </div>
@@ -57,25 +57,25 @@
             </div>
 
             <div id="prototype_course_div" class="bar-content" style="display: none;">
-                <div class="bars">
+                <div class="bars bars-hover" onclick="toggleLectureListParent(this)">
                 <span class="wraptext" onclick="toggleLectureList(this)">
                     <span class="glyphicon glyphicon-menu-right"></span>
                 </span>
                     <div class="lecturer-button-div">
-                        <button type="button" class="btn btn-lecturer-stats" onclick="deleteCourse.call(this)">
+                        <button type="button" class="btn btn-lecturer-stats btn-success" onclick="deleteCourse.call(this)">
                             <div>
                                 <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
                                 <p>DEL</p>
                             </div>
                         </button>
-                        <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage.call(this)">
+                        <button type="button" class="btn btn-lecturer-stats btn-success" onclick="showStatPage.call(this)">
                             <div>
                                 <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
                                 <p>STAT</p>
                             </div>
                         </button>
 
-                        <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
+                        <button type="button" class="btn btn-lecturer-stats btn-success" onclick="createLecture.call(this)">
                             <div>
                                 <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
                                 <p>NEW</p>
@@ -88,7 +88,7 @@
             </div>
 
             <ul id="prototype_lecture_list" style="display: none;">
-                <li class="list-group-item-custom">
+                <li class="list-group-item-custom" onclick="showLecturePage.call(this)">
                     <span onclick="showLecturePage.call(this)"></span>
                     <button type="button" class="btn btn-lecturer-del" onclick="deleteLecture.call(this)">
                         <span class="glyphicon glyphicon-minus lecturer-glyph-del"></span>
@@ -121,11 +121,16 @@
         </button>
         <div class="row">
             <div class="col-md-4">
-                <h3>Last 10 lectures attendees</h3>
+                <h3>Attendee count</h3>
                 <canvas id="countChart" width="400" height="400"></canvas>
-                <script src="{% static 'scripts/statCharts.js' %}"></script>
             </div>
-            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <h3>Lecture Activity</h3>
+                <canvas id="activityChart" width="400" height="400"></canvas>
+            </div>
+            <div class="col-md-4">
+            </div>
+            <script src="{% static 'scripts/statCharts.js' %}"></script>
         </div>
     </div>
     </div>

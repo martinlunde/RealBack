@@ -50,7 +50,7 @@
 .btn-custom:focus,
 .btn-custom:active,
 .btn-custom.active {
-    background-color: #009685;
+    background-color: #007c6f;
     border-color: #007c6f;
     color: white;
 }
@@ -67,8 +67,8 @@ fieldset[disabled] .btn-custom:hover,
 fieldset[disabled] .btn-custom:focus,
 fieldset[disabled] .btn-custom:active,
 fieldset[disabled] .btn-custom.active {
-    background-color: #00AF9C;
-    border-color: #00AF9C;
+    background-color: #007c6f;
+    border-color: #007c6f;
     color: white;
 }
 
@@ -186,9 +186,9 @@ fieldset[disabled] .btn-custom.active {
 
 /* Animation for warning text */
 @keyframes warning_text {
-    0%      {color: red;}
+    0%      {color: #F75D59;}
     50%     {color: white;}
-    100%    {color: red;}
+    100%    {color: #F75D59;}
 }
 
 .list-group-custom {
@@ -258,10 +258,19 @@ fieldset[disabled] .btn-custom.active {
     word-wrap: break-word;
 }
 
+.bars-hover:hover {
+    background-color: #fefefe;
+    cursor: pointer;
+}
+
+.list-group-item-custom:hover {
+    background-color: #fefefe;
+}
+
 @media (max-width: 780px) {
 
     .bars .btn-lecturer-stats {
-        float: left;
+        float: right;
     }
 
     .lecturer-button-div {

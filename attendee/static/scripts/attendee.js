@@ -3,12 +3,15 @@ $(document).ready(function () {
     $('#landing_page').css("display", "none");
     $('#frontpage_attendee').css("display", "block");
     $('.footer').css("display", "block");
+
+    $('#joinButton').click(onJoin);
+    $('#question_submit_button').click(sendQuestion);
 });
 
 /**
  * Actions to perform after a lecture is joined
  */
-function onJoin() {
+function onJoin(event) {
     var PIN = $('#pinInput').val();
     getLectureDetails(PIN, function (json) {
         if (json.success == false) {
@@ -25,7 +28,21 @@ function onJoin() {
             updatePageContents(json.lecture);
             // TODO add update timer
         }
-    })
+    });
+
+    var question_input = $('#question_form textarea');
+    question_input.keypress(function (event) {
+        if (event.key == 'Enter' && !event.shiftKey) {
+            $('#question_submit_button').click();
+            event.preventDefault();
+        }
+    });
+    question_input.keyup(function (event) {
+        $('#question_length').text(question_input.val().length + '/160')
+    });
+    question_input.keyup();
+
+    event.preventDefault();
 }
 
 /**
@@ -41,21 +58,54 @@ function updatePageContents(lecture) {
             if (data.success) {
                 var lecture = data.lecture;
                 $('.lecture_title').text(lecture.lecture_title.toUpperCase());
-                $('#current_volume_value').text(lecture.lecture_volume);
-                $('#current_pace_value').text(lecture.lecture_pace);
             }
         })
     } else {
         $('.lecture_title').text(lecture.lecture_title.toUpperCase());
-        $('#current_volume_value').text(lecture.lecture_volume);
-        $('#current_pace_value').text(lecture.lecture_pace);
     }
+}
+
+/**
+ * Get list of questions for lecture
+ */
+function getQuestions() {
+    var api_url = '/lectures/' + $('#pinInput').val() + '/questions/';
+    $.getJSON(api_url, function (data) {
+        console.log(data);
+        if (data.success) {
+            // TODO Update question list
+            // Empty list of existing questions
+            $("#question_list").empty();
+            // Add questions to list
+            for (var i = 0; i < data.questions.length; i++) {
+                var question = data.questions[i];
+                var list_element = $("<li>");
+                var upvote_button = $("<button>");
+                var glyphicon_up = $("<span>");
+                glyphicon_up.attr({
+                    class: 'glyphicon glyphicon-menu-up glyph-upvote'
+                });
+                upvote_button.attr({
+                    type: 'button',
+                    class: 'upvote-button',
+                    onclick: 'upvoteQuestion.call(this)',
+                    value: question.question_id
+                });
+                upvote_button.append(glyphicon_up);
+                upvote_button.append(question.question_votes);
+                list_element.append(upvote_button);
+                list_element.append('- ' + question.question_text);
+                $("#question_list").append(list_element);
+            }
+            markQuestion();
+        }
+    });
 }
 
 /**
  * Post a new question
  */
-function sendQuestion() {
+function sendQuestion(event) {
     var form_action = '/lectures/' + $('#pinInput').val() + '/questions/';
     var form_el = $("#question_form");
 
@@ -63,9 +113,11 @@ function sendQuestion() {
         console.log(data);
         // Empty question text box
         $("#id_text").val('');
+        $("#id_text").keyup();
         // Reload question list
         getQuestions();
     });
+    event.preventDefault();
 }
 
 //Keeps track of upvoted questions

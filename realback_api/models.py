@@ -39,6 +39,7 @@ class Lecture(models.Model):
     pace = models.IntegerField(default=0)
     volume = models.IntegerField(default=0)
     attendee_counter = models.IntegerField(default=0)
+    lecture_activity = models.IntegerField(default=0)
     # TODO free old pins that are not used anymore
 
     def save(self, *args, **kwargs):
@@ -63,6 +64,7 @@ class Lecture(models.Model):
             'lecture_pace': self.pace,
             'lecture_volume': self.volume,
             'attendee_counter': self.attendee_counter,
+            'lecture_activity': self.lecture_activity,
         }
 
     def reset_pace(self):

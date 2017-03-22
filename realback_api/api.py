@@ -248,7 +248,8 @@ class LectureQuestions(View):
                         'message': ['Lecture does not exist'],
                     },
                 })
-
+            lecture.lecture_activity += 1
+            lecture.save()
             question = form.save(commit=False)
             question.lecture = lecture
             question.save()
@@ -276,6 +277,8 @@ class LectureQuestionVotes(View):
                 },
             })
 
+        question.lecture.lecture_activity += 1
+        question.lecture.save()
         question.votes += 1
         question.save()
         return JsonResponse({
@@ -316,6 +319,7 @@ class LecturePace(View):
                     },
                 })
 
+            lecture.lecture_activity += 1
             if form.cleaned_data['pace']:
                 lecture.pace += 1
             else:
@@ -365,6 +369,7 @@ class LectureVolume(View):
                     },
                 })
 
+            lecture.lecture_activity += 1
             if form.cleaned_data['volume']:
                 lecture.volume += 1
             else:
@@ -543,9 +548,13 @@ class LectureStats(View):
         attendees = {}
         for lecture in lecture_list:
             attendees[lecture.title] = lecture.attendee_counter
+        activity = {}
+        for lecture in lecture_list:
+            activity[lecture.title] = lecture.lecture_activity
 
         return JsonResponse({
             'success': True,
             'attendee_count': attendees,
             'course_id': course_id,
+            'lecture_activity': activity,
         })

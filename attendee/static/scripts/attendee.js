@@ -5,6 +5,7 @@ $(document).ready(function () {
     $('.footer').css("display", "block");
 
     $('#joinButton').click(onJoin);
+    $('#question_submit_button').click(sendQuestion);
 });
 
 /**
@@ -28,6 +29,19 @@ function onJoin(event) {
             // TODO add update timer
         }
     });
+
+    var question_input = $('#question_form textarea');
+    question_input.keypress(function (event) {
+        if (event.key == 'Enter' && !event.shiftKey) {
+            $('#question_submit_button').click();
+            event.preventDefault();
+        }
+    });
+    question_input.keyup(function (event) {
+        $('#question_length').text(question_input.val().length + '/160')
+    });
+    question_input.keyup();
+
     event.preventDefault();
 }
 
@@ -44,14 +58,10 @@ function updatePageContents(lecture) {
             if (data.success) {
                 var lecture = data.lecture;
                 $('.lecture_title').text(lecture.lecture_title.toUpperCase());
-                $('#current_volume_value').text(lecture.lecture_volume);
-                $('#current_pace_value').text(lecture.lecture_pace);
             }
         })
     } else {
         $('.lecture_title').text(lecture.lecture_title.toUpperCase());
-        $('#current_volume_value').text(lecture.lecture_volume);
-        $('#current_pace_value').text(lecture.lecture_pace);
     }
 }
 
@@ -95,7 +105,7 @@ function getQuestions() {
 /**
  * Post a new question
  */
-function sendQuestion() {
+function sendQuestion(event) {
     var form_action = '/lectures/' + $('#pinInput').val() + '/questions/';
     var form_el = $("#question_form");
 
@@ -103,9 +113,11 @@ function sendQuestion() {
         console.log(data);
         // Empty question text box
         $("#id_text").val('');
+        $("#id_text").keyup();
         // Reload question list
         getQuestions();
     });
+    event.preventDefault();
 }
 
 //Keeps track of upvoted questions

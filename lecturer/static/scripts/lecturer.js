@@ -270,7 +270,7 @@ function showStatPage() {
     var course_id = $(this).parent().parent().parent().data('course_id');
     $('#course_overview_page').hide();
     $('#stat_page').show();
-    createCountChart(course_id);
+    createCharts(course_id);
 }
 
 /**

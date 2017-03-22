@@ -271,4 +271,7 @@ function backToCourseList() {
 
     // Clear necessary data
     lecture_pin = '';
+    // Clear header
+    $('#lecture_title').text('');
+    $('#lecture_pin').text('');
 }

@@ -30,7 +30,7 @@
                         <h3>SESSION PIN</h3>
                         <input type="text" class="form-control" placeholder="Enter your lecture's PIN here" id="pinInput">
                         <div id="join"></div>
-                        <button type="button" class="btn btn-success" id="joinButton" onclick="onJoin()">Join</button>
+                        <button type="submit" class="btn btn-success" id="joinButton">Join</button>
                     </form>
                     {% endblock %}
                     </div>
@@ -102,11 +102,12 @@
 						</div>
 					</div>
 					<div class="row">
-						<form action="" method="POST" id="question_form">
+						<form id="question_form">
 							{% csrf_token %}
                             {{ question_form.text }}
-							<button type="button" class="btn btn-success ask-q-btn"
-                                    onclick="sendQuestion()">Send</button>
+							<button type="submit" id="question_submit_button"
+                                    class="btn btn-success ask-q-btn">Send</button>
+                            <div id="question_length"></div>
 						</form>
 					</div>
 				</div>

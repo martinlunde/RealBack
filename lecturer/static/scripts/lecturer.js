@@ -86,7 +86,7 @@ function updateCourseList() {
  * `this` will be the button that called the function
  */
 function createLecture() {
-    var course_div = $(this).parent().parent();
+    var course_div = $(this).parent().parent().parent();
     var URL = '/courses/' + course_div.data('course_id') + '/lectures/';
     event.stopImmediatePropagation();
 
@@ -107,6 +107,7 @@ function createLecture() {
  * @param force_show    Force lecture list to be shown and updated
  */
 function toggleLectureList(click_context, force_show) {
+    event.stopImmediatePropagation()
     // Set parameter default to false
     force_show = (typeof force_show !== 'undefined') ? force_show : false;
 
@@ -114,19 +115,19 @@ function toggleLectureList(click_context, force_show) {
     var course_div = click_context.parent().parent();
     var lecture_list = course_div.children('ul');
     var glyph_span = click_context.children('span').first();
-    var first_bar = course_div.children('div').first();
+    var border_radius = course_div.children('div').first();
 
     if (force_show || ! lecture_list.is(':visible')) {
         lecture_list.show();
         glyph_span.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
-        first_bar.addClass('bars-change-border-radius');
+        border_radius.addClass('bars-change-border-radius');
         var course_id = course_div.data('course_id');
-        populateLectureList(course_id, lecture_list);
+        updateLectureList(course_id, lecture_list);
 
     } else {
         lecture_list.hide();
         glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-right');
-        first_bar.removeClass('bars-change-border-radius');
+        border_radius.removeClass('bars-change-border-radius');
     }
 }
 
@@ -141,7 +142,7 @@ function toggleLectureListParent(click_context, force_show) {
  * @param course_id     ID of the course to get lectures for
  * @param lecture_ul    The list element to populate
  */
-function populateLectureList(course_id, lecture_ul) {
+function updateLectureList(course_id, lecture_ul) {
     var URL = '/courses/' + course_id + '/lectures/';
 
     $.getJSON(URL, function (data) {
@@ -170,7 +171,7 @@ function populateLectureList(course_id, lecture_ul) {
  * `this` will be the delete button
  */
 function deleteCourse() {
-    var course_div = $(this).parent().parent();
+    var course_div = $(this).parent().parent().parent();
     var course_id = course_div.data('course_id');
     event.stopImmediatePropagation()
 
@@ -227,26 +228,49 @@ function deleteLecture() {
     }
 }
 
+var lecture_pin = '';
+
 /**
  * Show the lecture page for a lecture
  *
  * `this` will be the clicked span element
  */
 function showLecturePage() {
-    var lecture_pin = $(this).parent().data('lecture_pin');
+    lecture_pin = $(this).parent().data('lecture_pin');
     console.log(lecture_pin);
+
+    // Show and hide elements
     $('#course_overview_page').hide();
     $('#lecture_page').show();
+
+    // Get lecture
+    populateLecturePage();
+}
+
+/**
+ * Fill in contents in lecture page
+ */
+function populateLecturePage() {
+    var URL = '/lectures/'+ lecture_pin + '/';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+            $('#lecture_title').text(data.lecture.lecture_title);
+            $('#lecture_pin').text(data.lecture.lecture_pin);
+        }
+    })
 }
 
 /**
  * Show the statistics page for a course
  */
-
 function showStatPage() {
     event.stopImmediatePropagation()
+    var course_id = $(this).parent().parent().parent().data('course_id');
     $('#course_overview_page').hide();
     $('#stat_page').show();
+    createCountChart(course_id);
 }
 
 /**
@@ -257,4 +281,6 @@ function backToCourseList() {
     $('#lecture_page').hide();
     $('#course_overview_page').show();
 
+    // Clear necessary data
+    lecture_pin = '';
 }

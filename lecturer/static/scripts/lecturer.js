@@ -216,22 +216,35 @@ function deleteLecture() {
     }
 }
 
+var lecture_pin = '';
+
 /**
  * Show the lecture page for a lecture
  *
  * `this` will be the clicked span element
  */
 function showLecturePage() {
-    var lecture_pin = $(this).parent().data('lecture_pin');
+    lecture_pin = $(this).parent().data('lecture_pin');
     console.log(lecture_pin);
+
+    // Show and hide elements
     $('#course_overview_page').hide();
     $('#lecture_page').show();
+
+    // Get lecture
+}
+
+/**
+ * Fill in contents in lecture page
+ */
+function populateLecturePage() {
+    var URL = '/lectures/'+ lecture_pin + '/';
+
 }
 
 /**
  * Show the statistics page for a course
  */
-
 function showStatPage() {
     $('#course_overview_page').hide();
     $('#stat_page').show();
@@ -245,4 +258,6 @@ function backToCourseList() {
     $('#lecture_page').hide();
     $('#course_overview_page').show();
 
+    // Clear necessary data
+    lecture_pin = '';
 }

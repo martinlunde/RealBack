@@ -245,6 +245,7 @@ function populateLecturePage() {
         console.log(data);
         if (data.success) {
             $('#lecture_title').text(data.lecture.lecture_title);
+            $('#lecture_pin').text(data.lecture.lecture_pin);
         }
     })
 

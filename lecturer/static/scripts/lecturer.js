@@ -229,9 +229,19 @@ function showLecturePage() {
 }
 
 /**
- * Go back to course overview from lecture page
+ * Show the statistics page for a course
+ */
+
+function showStatPage() {
+    $('#course_overview_page').hide();
+    $('#stat_page').show();
+}
+
+/**
+ * Go back to course overview from lecture page or statistics page
  */
 function backToCourseList() {
+    $('#stat_page').hide();
     $('#lecture_page').hide();
     $('#course_overview_page').show();
 

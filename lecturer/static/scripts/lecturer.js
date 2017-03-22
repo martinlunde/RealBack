@@ -88,6 +88,7 @@ function updateCourseList() {
 function createLecture() {
     var course_div = $(this).parent().parent();
     var URL = '/courses/' + course_div.data('course_id') + '/lectures/';
+    event.stopImmediatePropagation();
 
     csrfPOST(URL, $("<form>"), function (data) {
         console.log(data);
@@ -129,6 +130,11 @@ function toggleLectureList(click_context, force_show) {
     }
 }
 
+function toggleLectureListParent(click_context, force_show) {
+    event.stopImmediatePropagation()
+    toggleLectureList(jQuery(click_context).find(".wraptext"),force_show);
+}
+
 /**
  * Populate the list of lectures for course with course_id
  *
@@ -166,6 +172,7 @@ function populateLectureList(course_id, lecture_ul) {
 function deleteCourse() {
     var course_div = $(this).parent().parent();
     var course_id = course_div.data('course_id');
+    event.stopImmediatePropagation()
 
     // Check if we have asked for permission
     if (course_div.data('delete_permission')) {
@@ -196,6 +203,7 @@ function deleteCourse() {
 function deleteLecture() {
     var lecture_el = $(this).parent();
     var lecture_pin = lecture_el.data('lecture_pin');
+    event.stopImmediatePropagation()
 
     // Check if we have asked for permission
     if (lecture_el.data('delete_permission')) {
@@ -236,6 +244,7 @@ function showLecturePage() {
  */
 
 function showStatPage() {
+    event.stopImmediatePropagation()
     $('#course_overview_page').hide();
     $('#stat_page').show();
 }

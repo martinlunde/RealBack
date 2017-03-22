@@ -10,12 +10,14 @@ function createCountChart(course_id) {
                 attendees_list_count.push(data.attendee_count[count]);
                 lecture_list.push(count);
             };
+                attendees_list_count = attendees_list_count.reverse();
+                lecture_list = lecture_list.reverse();
                 var countChart = new Chart(ctx, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: lecture_list,
                     datasets: [{
-                        label: '# of Votes',
+                        label: '# of attendants',
                         data: attendees_list_count,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -33,7 +35,7 @@ function createCountChart(course_id) {
                             'rgba(153, 102, 255, 1)',
                             'rgba(255, 159, 64, 1)'
                         ],
-                        borderWidth: 1
+                        borderWidth: 2,
                     }]
                 },
                 options: {

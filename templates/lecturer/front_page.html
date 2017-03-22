@@ -72,12 +72,25 @@
                         </div>
                     </button>
 
-                    <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
-                        <div>
-                            <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
-                            <p>NEW</p>
-                        </div>
-                    </button>
+                <button type="button" class="btn btn-lecturer-stats" onclick="deleteCourse.call(this)">
+                    <div>
+                        <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
+                        <p>DEL</p>
+                    </div>
+                </button>
+                <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage.call(this)">
+                    <div>
+                        <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
+                        <p>STAT</p>
+                    </div>
+                </button>
+
+                <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
+                    <div>
+                        <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
+                        <p>NEW</p>
+                    </div>
+                </button>
                 </div>
             </div>
 
@@ -111,10 +124,20 @@
 
 <!-- STATISTICS PAGE -->
 
+    <div class="content_lecturer_landingpage col-md-12" id="course_overview_page">
     <div id="stat_page" class="row" style="display: none">
         <button type="button" class="btn" onclick="backToCourseList()">
             <span class="glyphicon glyphicon-arrow-left"></span> BACK
         </button>
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Last 10 lectures attendees</h3>
+                <canvas id="countChart" width="400" height="400"></canvas>
+                <script src="{% static 'scripts/statCharts.js' %}"></script>
+            </div>
+            <div class="col-md-8"></div>
+        </div>
+    </div>
     </div>
 
 </div>

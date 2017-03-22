@@ -33,6 +33,6 @@ urlpatterns = [
 
         url(r'^$', api.CourseDetails.as_view(), name='course_details'),
         url(r'^lectures/$', api.CourseLectures.as_view(), name='course_lectures'),
-
+        url(r'^stats/', api.LectureStats.as_view(), name='stats'),
     ])),
 ]

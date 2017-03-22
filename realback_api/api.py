@@ -22,6 +22,8 @@ class LectureDetails(View):
                 },
             })
 
+        lecture.attendee_counter += 1
+        lecture.save()
         return JsonResponse({
             'success': True,
             'lecture': lecture.as_dict(),
@@ -529,3 +531,21 @@ class CourseLectures(View):
             'success': True,
             'lecture': lecture.as_dict(),
         }, status=201)
+
+
+class LectureStats(View):
+    @method_decorator(login_required)
+    def get(self, request, course_id):
+        """ Read list of latest lectures for course_id """
+        # TODO remember to check if user has access (owner) to course
+        lecture_list = models.Lecture.objects.filter(
+            course__id=course_id, course__user=request.user).order_by('-start_datetime')
+        attendees = {}
+        for lecture in lecture_list:
+            attendees[lecture.title] = lecture.attendee_counter
+
+        return JsonResponse({
+            'success': True,
+            'attendee_count': attendees,
+            'course_id': course_id,
+        })

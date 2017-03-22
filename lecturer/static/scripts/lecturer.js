@@ -113,19 +113,16 @@ function toggleLectureList(click_context, force_show) {
     var course_div = click_context.parent().parent();
     var lecture_list = course_div.children('ul');
     var glyph_span = click_context.children('span').first();
-    var first_bar = course_div.children('div').first();
 
     if (force_show || ! lecture_list.is(':visible')) {
         lecture_list.show();
-        glyph_span.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
-        first_bar.addClass('bars-change-border-radius');
+        glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-up');
         var course_id = course_div.data('course_id');
         populateLectureList(course_id, lecture_list);
 
     } else {
         lecture_list.hide();
-        glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-right');
-        first_bar.removeClass('bars-change-border-radius');
+        glyph_span.removeClass('glyphicon-menu-up').addClass('glyphicon-menu-down');
     }
 }
 
@@ -236,8 +233,10 @@ function showLecturePage() {
  */
 
 function showStatPage() {
+    var course_id = $(this).parent().parent().data('course_id');
     $('#course_overview_page').hide();
     $('#stat_page').show();
+    createCountChart(course_id);
 }
 
 /**

@@ -115,6 +115,7 @@ function toggleLectureList(click_context, force_show) {
     var glyph_span = click_context.children('span').first();
 
     if (force_show || ! lecture_list.is(':visible')) {
+        $('#course_list > div > ul').hide();
         lecture_list.show();
         glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-up');
         var course_id = course_div.data('course_id');

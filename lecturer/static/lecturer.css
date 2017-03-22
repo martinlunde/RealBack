@@ -95,7 +95,7 @@ fieldset[disabled] .btn-custom.active {
 }
 
 #course_form, #course_form_button {
-    margin-top: 10px;
+
     margin-bottom: 10px;
 }
 
@@ -145,6 +145,43 @@ fieldset[disabled] .btn-custom.active {
     margin-top: 6px;
     left:4px;
     color: white;
+}
+
+#course_form_back .glyphicon {
+    color: white;
+}
+
+#course_form_back{
+    position: absolute;
+    height: 34px;
+    width: 61px;
+    border-radius: 8px 0px 0px 8px;
+}
+#course_form_back span {
+    top:0;
+}
+
+#id_title {
+    width: calc(100% - 151px);
+    margin-left:61px;
+    margin-right: 0px;
+    position: absolute;
+    border-radius: 0px;
+}
+
+#course_form_button {
+    width: 61px;
+    height: 34px;
+    margin-top: 0px;
+    float: right;
+    border-radius: 0px 8px 8px 0px;
+}
+
+#course_form_button span {
+    position: absolute;
+    color: white;
+    top:17px;
+    right:30px;
 }
 
 /* Animation for warning text */

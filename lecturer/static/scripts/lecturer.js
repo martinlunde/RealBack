@@ -234,4 +234,5 @@ function showLecturePage() {
 function backToCourseList() {
     $('#lecture_page').hide();
     $('#course_overview_page').show();
+
 }

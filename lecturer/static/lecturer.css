@@ -112,12 +112,12 @@ fieldset[disabled] .btn-custom.active {
 }
 
 .bars {
-    top:100px;
+    position: relative;
     border-radius: 10px;
     background-color: #f2f2f2;
     box-shadow: 7px 8px 16px rgba(00,00,00,0.14);
     padding: 20px;
-    height: 60px;
+    height: auto;
     margin-bottom: 5px;
     margin-top: 5px;
 }
@@ -189,4 +189,12 @@ fieldset[disabled] .btn-custom.active {
     0%      {color: red;}
     50%     {color: white;}
     100%    {color: red;}
+}
+
+.list-group-custom {
+    padding: 0px;
+    margin-top: 0px;
+    box-shadow: 7px 8px 16px rgba(00,00,00,0.14);
+    z-index: 10;
+    height: auto;
 }

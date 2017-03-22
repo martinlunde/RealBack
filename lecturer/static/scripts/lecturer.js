@@ -116,13 +116,13 @@ function toggleLectureList(click_context, force_show) {
 
     if (force_show || ! lecture_list.is(':visible')) {
         lecture_list.show();
-        glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-up');
+        glyph_span.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
         var course_id = course_div.data('course_id');
         populateLectureList(course_id, lecture_list);
 
     } else {
         lecture_list.hide();
-        glyph_span.removeClass('glyphicon-menu-up').addClass('glyphicon-menu-down');
+        glyph_span.removeClass('glyphicon-menu-down').addClass('glyphicon-menu-right');
     }
 }
 

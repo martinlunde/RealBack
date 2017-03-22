@@ -16,10 +16,10 @@
             </a>
         </div>
         <div class="footerMenu">
-            <div class="col-xs-1 col-sm-2 col-md-4"></div>
-            <div class="col-xs-1 col-sm-3 col-md-3"></div>
-            <div class="col-xs-1 col-sm-2 col-md-2">
-                 <p class="item lecture_title"></p>
+            <div class="col-xs-3 col-sm-4 col-md-4"></div>
+            <div class="col-xs-5 col-sm-5 col-md-5"></div>
+            <div class="col-xs-1 col-sm-1 col-md-1">
+                 <a href="/logout/" class="logout item lecture_title">LOGOUT</a>
             </div>
         </div>
     </header>
@@ -55,7 +55,7 @@
 
             <div id="prototype_course_div" class="bars" style="display: none;">
                 <span onclick="toggleLectureList(this)">
-                    <span class="glyphicon glyphicon-menu-down"></span>
+                    <span class="glyphicon glyphicon-menu-right"></span>
                 </span>
 
                 <button type="button" class="btn btn-lecturer-stats" onclick="deleteCourse.call(this)">
@@ -78,10 +78,11 @@
                     </div>
                 </button>
 
-                <ul style="display: none;"></ul>
+                <ul class="list-group-custom bars" style="display: none;"></ul>
             </div>
+
             <ul id="prototype_lecture_list" style="display: none;">
-                <li>
+                <li class="list-group-item-custom">
                     <span onclick="showLecturePage.call(this)"></span>
                     <button type="button" onclick="deleteLecture.call(this)">
                         <span class="glyphicon glyphicon-minus"></span>
@@ -92,8 +93,6 @@
 
             <div id="course_list" class="">
             </div>
-
-            <a href="/logout/">LOGOUT</a>
         </div>
         <div class="col-md-3"></div>
     </div>

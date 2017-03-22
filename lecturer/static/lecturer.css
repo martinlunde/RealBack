@@ -2,6 +2,10 @@
     margin-top: 10px;
 }
 
+.btn {
+    cursor: pointer;
+}
+
 .errorlist li {
     margin-top: 10px;
     color: white;
@@ -127,7 +131,7 @@ fieldset[disabled] .btn-custom.active {
     margin-top: -5px;
     height: 30px;
     width: 80px;
-    float: right;
+    float: left;
     margin-left: 5px;
     margin-right: 5px;
     padding-top: 0px;
@@ -256,6 +260,8 @@ fieldset[disabled] .btn-custom.active {
 
 .wraptext {
     word-wrap: break-word;
+    margin-top: 6px;
+    position: absolute;
 }
 
 .bars-hover:hover {
@@ -265,12 +271,24 @@ fieldset[disabled] .btn-custom.active {
 
 .list-group-item-custom:hover {
     background-color: #fefefe;
+    cursor: pointer;
+}
+
+.lecturer-button-div {
+    margin-top: 7px;
+    float: right;
 }
 
 @media (max-width: 780px) {
 
+    .wraptext {
+        word-wrap: break-word;
+        margin-top: 6px;
+        position: relative;
+}
+
     .bars .btn-lecturer-stats {
-        float: right;
+        float: left;
     }
 
     .lecturer-button-div {

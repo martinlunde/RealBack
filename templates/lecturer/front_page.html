@@ -62,12 +62,12 @@
                     <span class="glyphicon glyphicon-menu-right"></span>
                 </span>
                     <div class="lecturer-button-div">
-                        <button type="button" class="btn btn-lecturer-stats btn-success" onclick="deleteCourse.call(this)">
+                        <button type="button" class="btn btn-lecturer-stats btn-success" onclick="createLecture.call(this)">
                             <div>
-                                <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
-                                <p>DEL</p>
+                                <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
+                                <p>NEW</p>
                             </div>
-                        </button>
+                            
                         <button type="button" class="btn btn-lecturer-stats btn-success" onclick="showStatPage.call(this)">
                             <div>
                                 <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
@@ -75,11 +75,15 @@
                             </div>
                         </button>
 
-                        <button type="button" class="btn btn-lecturer-stats btn-success" onclick="createLecture.call(this)">
+                        <button type="button" class="btn btn-lecturer-stats btn-success" onclick="deleteCourse.call(this)">
                             <div>
-                                <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
-                                <p>NEW</p>
+                                <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
+                                <p>DEL</p>
                             </div>
+                        </button>
+
+
+                        
                         </button>
                     </div>
                 </div>

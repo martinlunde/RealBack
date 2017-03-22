@@ -64,7 +64,7 @@
                         <p>DEL</p>
                     </div>
                 </button>
-                <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage()">
+                <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage.call(this)">
                     <div>
                         <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
                         <p>STAT</p>
@@ -113,6 +113,14 @@
         <button type="button" class="btn" onclick="backToCourseList()">
             <span class="glyphicon glyphicon-arrow-left"></span> BACK
         </button>
+        <div class="row">
+            <div class="col-md-4">
+                <canvas id="countChart" width="400" height="400"></canvas>
+                <script src="{% static 'scripts/statCharts.js' %}"></script>
+                <h1>test</h1>
+            </div>
+            <div class="col-md-8"></div>
+        </div>
     </div>
 
 </div>

@@ -547,4 +547,5 @@ class LectureStats(View):
         return JsonResponse({
             'success': True,
             'attendee_count': attendees,
+            'course_id': course_id,
         })

@@ -270,7 +270,7 @@ fieldset[disabled] .btn-custom.active {
 @media (max-width: 780px) {
 
     .bars .btn-lecturer-stats {
-        float: left;
+        float: right;
     }
 
     .lecturer-button-div {

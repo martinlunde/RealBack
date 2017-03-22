@@ -107,7 +107,7 @@ function createLecture() {
  * @param force_show    Force lecture list to be shown and updated
  */
 function toggleLectureList(click_context, force_show) {
-    event.stopImmediatePropagation()
+    event.stopImmediatePropagation();
     // Set parameter default to false
     force_show = (typeof force_show !== 'undefined') ? force_show : false;
 
@@ -133,7 +133,7 @@ function toggleLectureList(click_context, force_show) {
 }
 
 function toggleLectureListParent(click_context, force_show) {
-    event.stopImmediatePropagation()
+    event.stopImmediatePropagation();
     toggleLectureList(jQuery(click_context).find(".wraptext"),force_show);
 }
 

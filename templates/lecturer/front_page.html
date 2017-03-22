@@ -16,10 +16,12 @@
             </a>
         </div>
         <div class="footerMenu">
-            <div class="col-xs-1 col-sm-2 col-md-4"></div>
-            <div class="col-xs-1 col-sm-3 col-md-3"></div>
-            <div class="col-xs-1 col-sm-2 col-md-2">
-                 <p id="lecture_title" class="item lecture_title"></p>
+            <div class="col-xs-3 col-sm-4 col-md-4"></div>
+            <div class="col-xs-5 col-sm-5 col-md-5">
+                <p id="lecture_title" class="item lecture_title"></p>
+            </div>
+            <div class="col-xs-1 col-sm-1 col-md-1">
+                 <a href="/logout/" class="logout item lecture_title">LOGOUT</a>
             </div>
         </div>
     </header>
@@ -30,8 +32,8 @@
         <div class="col-md-12">
             <h1 class="center">OVERVIEW</h1>
         </div>
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
+        <div class="col-md-1 col-lg-2"></div>
+        <div class="col-md-10 col-lg-8">
             <div class="row row_margin">
                 <button type="button" id="new_course_button" class="btn btn-custom btn-lecturer">
                     <span class="glyphicon glyphicon-plus glyphwhite"></span>
@@ -53,40 +55,42 @@
                 </form>
             </div>
 
-            <div id="prototype_course_div" class="bars" style="display: none;">
-                <div>
-                <span onclick="toggleLectureList(this)">
-                    <span class="glyphicon glyphicon-menu-down"></span>
+            <div id="prototype_course_div" class="bar-content" style="display: none;">
+                <div class="bars">
+                <span class="wraptext" onclick="toggleLectureList(this)">
+                    <span class="glyphicon glyphicon-menu-right"></span>
                 </span>
+                <div class="lecturer-button-div">
+                    <button type="button" class="btn btn-lecturer-stats" onclick="deleteCourse.call(this)">
+                        <div>
+                            <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
+                            <p>DEL</p>
+                        </div>
+                    </button>
+                    <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage()">
+                        <div>
+                            <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
+                            <p>STAT</p>
+                        </div>
+                    </button>
 
-                <button type="button" class="btn btn-lecturer-stats" onclick="deleteCourse.call(this)">
-                    <div>
-                        <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
-                        <p>DEL</p>
-                    </div>
-                </button>
-                <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage()">
-                    <div>
-                        <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
-                        <p>STAT</p>
-                    </div>
-                </button>
-
-                <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
-                    <div>
-                        <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
-                        <p>NEW</p>
-                    </div>
-                </button>
+                    <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
+                        <div>
+                            <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
+                            <p>NEW</p>
+                        </div>
+                    </button>
                 </div>
-
-                <ul style="display: none;"></ul>
             </div>
+
+            <ul class="list-group-custom bars bars-gray" style="display: none;"></ul>
+            </div>
+
             <ul id="prototype_lecture_list" style="display: none;">
-                <li>
+                <li class="list-group-item-custom">
                     <span onclick="showLecturePage.call(this)"></span>
-                    <button type="button" onclick="deleteLecture.call(this)">
-                        <span class="glyphicon glyphicon-minus"></span>
+                    <button type="button" class="btn btn-lecturer-del" onclick="deleteLecture.call(this)">
+                        <span class="glyphicon glyphicon-minus lecturer-glyph-del"></span>
                         <p>DEL</p>
                     </button>
                 </li>
@@ -94,10 +98,8 @@
 
             <div id="course_list" class="">
             </div>
-
-            <a href="/logout/">LOGOUT</a>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-1 col-lg-2"></div>
     </div>
 
 <!-- LECTURE PAGE -->

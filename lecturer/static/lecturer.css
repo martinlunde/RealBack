@@ -79,6 +79,7 @@ fieldset[disabled] .btn-custom.active {
 }
 
 .content_lecturer_landingpage {
+    background-color: #ebebeb;
     position: absolute;
     top:100px;
     width: 100%;
@@ -192,9 +193,14 @@ fieldset[disabled] .btn-custom.active {
 }
 
 .list-group-custom {
-    padding: 0px;
-    margin-top: 0px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     box-shadow: 7px 8px 16px rgba(00,00,00,0.14);
     z-index: 10;
     height: auto;
+}
+
+.list-group-item-custom {
+    height: 40px;
+    list-style: none;
 }

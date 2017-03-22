@@ -12,10 +12,18 @@ function createCountChart(course_id) {
             };
                 attendees_list_count = attendees_list_count.reverse();
                 lecture_list = lecture_list.reverse();
+                var lectures = [];
+                for(var x = 0; x < lecture_list.length; x++){
+                    console.log(lecture_list[x]);
+                    var temp = lecture_list[x].split("-");
+                    temp = "Lecture" + temp[2];
+                    lectures.push(temp);
+                }
+
                 var countChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: lecture_list,
+                    labels: lectures,
                     datasets: [{
                         label: '# of attendants',
                         data: attendees_list_count,

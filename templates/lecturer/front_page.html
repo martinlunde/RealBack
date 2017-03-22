@@ -30,8 +30,8 @@
         <div class="col-md-12">
             <h1 class="center">OVERVIEW</h1>
         </div>
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
+        <div class="col-md-1 col-lg-2"></div>
+        <div class="col-md-10 col-lg-8">
             <div class="row row_margin">
                 <button type="button" id="new_course_button" class="btn btn-custom btn-lecturer">
                     <span class="glyphicon glyphicon-plus glyphwhite"></span>
@@ -55,32 +55,33 @@
 
             <div id="prototype_course_div" class="bar-content" style="display: none;">
                 <div class="bars">
-                <span onclick="toggleLectureList(this)">
+                <span class="wraptext" onclick="toggleLectureList(this)">
                     <span class="glyphicon glyphicon-menu-right"></span>
                 </span>
+                <div class="lecturer-button-div">
+                    <button type="button" class="btn btn-lecturer-stats" onclick="deleteCourse.call(this)">
+                        <div>
+                            <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
+                            <p>DEL</p>
+                        </div>
+                    </button>
+                    <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage()">
+                        <div>
+                            <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
+                            <p>STAT</p>
+                        </div>
+                    </button>
 
-                <button type="button" class="btn btn-lecturer-stats" onclick="deleteCourse.call(this)">
-                    <div>
-                        <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
-                        <p>DEL</p>
-                    </div>
-                </button>
-                <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage()">
-                    <div>
-                        <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
-                        <p>STAT</p>
-                    </div>
-                </button>
-
-                <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
-                    <div>
-                        <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
-                        <p>NEW</p>
-                    </div>
-                </button>
+                    <button type="button" class="btn btn-lecturer-stats" onclick="createLecture.call(this)">
+                        <div>
+                            <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
+                            <p>NEW</p>
+                        </div>
+                    </button>
                 </div>
+            </div>
 
-                <ul class="list-group-custom bars bars-gray" style="display: none;"></ul>
+            <ul class="list-group-custom bars bars-gray" style="display: none;"></ul>
             </div>
 
             <ul id="prototype_lecture_list" style="display: none;">
@@ -96,7 +97,7 @@
             <div id="course_list" class="">
             </div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-1 col-lg-2"></div>
     </div>
 
 <!-- LECTURE PAGE -->

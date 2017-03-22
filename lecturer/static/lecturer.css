@@ -119,8 +119,6 @@ fieldset[disabled] .btn-custom.active {
     box-shadow: 7px 8px 16px rgba(00,00,00,0.14);
     padding: 20px;
     height: auto;
-    margin-bottom: 5px;
-    margin-top: 5px;
 }
 
 .btn-lecturer-stats {
@@ -193,14 +191,60 @@ fieldset[disabled] .btn-custom.active {
 }
 
 .list-group-custom {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    border-radius: 0px 0px 8px 8px;
     box-shadow: 7px 8px 16px rgba(00,00,00,0.14);
     z-index: 10;
     height: auto;
+    border-top: 2px solid #b4b4b4;
+    padding: 0px;
+}
+
+.bars-change-border-radius {
+    border-radius: 8px 8px 0px 0px;
 }
 
 .list-group-item-custom {
     height: 40px;
     list-style: none;
+    width: 100%;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-right: 20px;
+}
+
+.list-group-item-custom:not(:first-child) {
+    border-top: 1px solid #b4b4b4; 
+}
+
+.bar-content {
+    margin-bottom: 10px;
+}
+
+.bars-gray {
+    background-color: #eeeeee;
+}
+
+.btn-lecturer-del {
+    text-align: center;
+    height: 25px;
+    width: 60px;
+    float: right;
+    margin-left: 2px;
+    margin-right: 5px;
+    padding: 0px;
+    margin-top:-2.5px;
+}
+
+.btn-lecturer-del p {
+    color: white;
+    width: 40px;
+    float: right;
+    margin-top: 2.5px;
+    font-size: 12px;
+}
+
+.lecturer-glyph-del {
+    top:2.5px;
+    color: white;
+    left: 5px;
 }

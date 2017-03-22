@@ -53,7 +53,8 @@
                 </form>
             </div>
 
-            <div id="prototype_course_div" class="bars" style="display: none;">
+            <div id="prototype_course_div" class="bar-content" style="display: none;">
+                <div class="bars">
                 <span onclick="toggleLectureList(this)">
                     <span class="glyphicon glyphicon-menu-right"></span>
                 </span>
@@ -64,7 +65,7 @@
                         <p>DEL</p>
                     </div>
                 </button>
-                <button type="button" class="btn btn-lecturer-stats">
+                <button type="button" class="btn btn-lecturer-stats" onclick="showStatPage()">
                     <div>
                         <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
                         <p>STAT</p>
@@ -77,15 +78,16 @@
                         <p>NEW</p>
                     </div>
                 </button>
+                </div>
 
-                <ul class="list-group-custom bars" style="display: none;"></ul>
+                <ul class="list-group-custom bars bars-gray" style="display: none;"></ul>
             </div>
 
             <ul id="prototype_lecture_list" style="display: none;">
                 <li class="list-group-item-custom">
                     <span onclick="showLecturePage.call(this)"></span>
-                    <button type="button" class="btn btn-lecturer-stats" onclick="deleteLecture.call(this)">
-                        <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
+                    <button type="button" class="btn btn-lecturer-del" onclick="deleteLecture.call(this)">
+                        <span class="glyphicon glyphicon-minus lecturer-glyph-del"></span>
                         <p>DEL</p>
                     </button>
                 </li>
@@ -104,6 +106,14 @@
             <span class="glyphicon glyphicon-arrow-left"></span> BACK
         </button>
 
+    </div>
+
+<!-- STATISTICS PAGE -->
+
+    <div id="stat_page" class="row" style="display: none">
+        <button type="button" class="btn" onclick="backToCourseList()">
+            <span class="glyphicon glyphicon-arrow-left"></span> BACK
+        </button>
     </div>
 
 </div>

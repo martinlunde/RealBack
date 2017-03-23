@@ -40,6 +40,8 @@ class Lecture(models.Model):
     volume = models.IntegerField(default=0)
     attendee_counter = models.IntegerField(default=0)
     lecture_activity = models.IntegerField(default=0)
+    volume_reset_timestamp = models.DateTimeField(default=timezone.now)
+    pace_reset_timestamp = models.DateTimeField(default=timezone.now)
     # TODO free old pins that are not used anymore
 
     def save(self, *args, **kwargs):
@@ -65,13 +67,19 @@ class Lecture(models.Model):
             'lecture_volume': self.volume,
             'attendee_counter': self.attendee_counter,
             'lecture_activity': self.lecture_activity,
+            'pace_reset_timestamp': self.pace_reset_timestamp,
+            'volume_reset_timestamp': self.volume_reset_timestamp,
         }
 
     def reset_pace(self):
         self.pace = 0
+        self.pace_reset_timestamp = timezone.now()
+        self.save()
 
     def reset_volume(self):
         self.volume = 0
+        self.volume_reset_timestamp = timezone.now()
+        self.save()
 
 
 class LectureTopic(models.Model):

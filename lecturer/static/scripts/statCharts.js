@@ -17,8 +17,8 @@ function createCharts(course_id) {
                 lecture_list = lecture_list.reverse();
                 var lectures = [];
                 for(var x = 0; x < lecture_list.length; x++){
-                    var temp = lecture_list[x].split("-");
-                    temp = "Lecture" + temp[2];
+                    var temp = lecture_list[x]
+                    temp = temp.substring(0, 22)
                     lectures.push(temp);
                 }
 
@@ -92,19 +92,19 @@ function createCharts(course_id) {
                         data: questionCount_list,
                         backgroundColor: [
                             "#0D998A",
-                            "#00665B",
-                            "#004C44",
-                            "#2F9E92",
-                            "#00322D",
                             "#30B9AA",
+                            "#2F9E92",
                             "#006E62",
-                            "#0D998A",
                             "#00665B",
                             "#004C44",
-                            "#2F9E92",
                             "#00322D",
+                            "#0D998A",
                             "#30B9AA",
-                            "#006E62"],
+                            "#2F9E92",
+                            "#006E62",
+                            "#00665B",
+                            "#004C44",
+                            "#00322D",],
                         borderWidth: 2,
                     }]
                 },

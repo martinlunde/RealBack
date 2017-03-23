@@ -279,6 +279,26 @@ fieldset[disabled] .btn-custom.active {
     float: right;
 }
 
+.box-nomargin {
+    border-radius: 0px 0px 8px 8px;
+    margin-top: -5px;
+    height: 205px;
+}
+
+.box-nomargin-top {
+    border-radius: 8px 8px 0px 0px;
+    margin-bottom: -5px;
+    height: 205px;
+}
+
+.vertical-align {
+    margin-top: 20px;
+}
+
+.small-top-margin {
+    margin-top: 10px;
+}
+
 @media (max-width: 780px) {
 
     .wraptext {

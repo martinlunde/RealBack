@@ -539,10 +539,14 @@ class CourseLectures(View):
             lecture.course = course
 
         else:
-            lecture_count = models.Lecture.objects.filter(course__id=course_id, course__user=request.user).count()
+            lecture_count = models.Lecture.objects.filter(course__id=course_id, course__user=request.user)
+            value = []
+            for lecture in lecture_count:
+                value.append(int(lecture.title.split('-')[2]))
+
             lecture = models.Lecture(
                 course=course,
-                title=str(request.user).split('@')[0] + " - " + str(course.title) + " - " + str(lecture_count + 1)
+                title=str(request.user).split('@')[0] + " - " + str(course.title) + " - " + str(max(value) + 1)
             )
 
         lecture.save()

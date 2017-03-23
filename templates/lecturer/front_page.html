@@ -17,10 +17,7 @@
         </div>
         <div class="footerMenu">
             <div class="col-xs-3 col-sm-4 col-md-4"></div>
-                <p id="lecture_pin" class="item lecture_title"></p>
-            <div class="col-xs-5 col-sm-5 col-md-5">
-                <p id="lecture_title" class="item lecture_title"></p>
-            </div>
+            <div class="col-xs-5 col-sm-5 col-md-5"></div>
             <div class="col-xs-1 col-sm-1 col-md-1">
                  <a href="/logout/" class="logout item lecture_title">LOGOUT</a>
             </div>
@@ -113,14 +110,17 @@
         <div class="content container">
             <div class="row">
                 <div class="col-md-4">
-                    <button type="button" class="btn btn-custom btn-lecturer btn-success vertical-align" onclick="backToCourseList()">
+                    <button type="button"
+                            class="btn btn-custom btn-lecturer btn-success vertical-align"
+                            onclick="pageBackButton()">
                         <span class="glyphicon glyphicon-arrow-left glyphwhite"></span> BACK
                     </button>
                 </div>
                 <div class="col-md-4">
-                    <h1 class="center">OVERVIEW</h1>
+                    <h1 id="lecture_title" class="center">OVERVIEW</h1>
                 </div>
-                <div class="col-md-4"></div>
+                <div class="col-md-3"></div>
+                <div id="lecture_pin" class="col-md-1"></div>
             </div>
                 <div class="col-md-12">
                     <div class="big-box small-top-margin">
@@ -213,7 +213,7 @@
 
     <div class="content_lecturer_landingpage col-md-12" id="course_overview_page">
     <div id="stat_page" class="row" style="display: none">
-        <button type="button" class="btn" onclick="backToCourseList()">
+        <button type="button" class="btn" onclick="pageBackButton()">
             <span class="glyphicon glyphicon-arrow-left glyphwhite"></span> BACK
         </button>
         <div class="row">

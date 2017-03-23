@@ -150,7 +150,7 @@ function toggleLectureList(click_context, force_show) {
 
 function toggleLectureListParent(click_context, force_show) {
     event.stopImmediatePropagation();
-    toggleLectureList(jQuery(click_context).find(".wraptext"),force_show);
+    toggleLectureList(jQuery(click_context).find(".wraptext"), force_show);
 }
 
 /**
@@ -190,7 +190,7 @@ function updateLectureList(course_id, lecture_ul) {
 function deleteCourse() {
     var course_div = $(this).parent().parent().parent();
     var course_id = course_div.data('course_id');
-    event.stopImmediatePropagation()
+    event.stopImmediatePropagation();
 
     // Check if we have asked for permission
     if (course_div.data('delete_permission')) {
@@ -258,8 +258,9 @@ function showLecturePage() {
 
     history.replaceState({callback: 'backToCourseList'}, 'Lecture');
     history.pushState({callback: 'forwardToLecturePage'}, 'Lecture');
-
     forwardToLecturePage();
+    // Get lecture
+    populateLecturePage();
 }
 
 /**
@@ -272,8 +273,6 @@ function forwardToLecturePage() {
     $('#course_overview_page').hide();
     $('#stat_page').hide();
     $('#lecture_page').show();
-    // Get lecture
-    populateLecturePage();
 }
 
 /**
@@ -288,7 +287,7 @@ function populateLecturePage() {
             $('#lecture_title').text(data.lecture.lecture_title);
             $('#lecture_pin').text(data.lecture.lecture_pin);
         }
-    })
+    });
     populateQuestionsLecturePage();
 }
 
@@ -338,7 +337,7 @@ function lectureResetPace() {
  * Show the statistics page for a course
  */
 function showStatPage() {
-    event.stopImmediatePropagation()
+    event.stopImmediatePropagation();
     var course_id = $(this).parent().parent().parent().data('course_id');
 
     history.replaceState({callback: 'backToCourseList'}, 'Lecture');
@@ -371,7 +370,11 @@ function backToCourseList() {
 
     // Clear necessary data
     //lecture_pin = '';
-    // Clear header
-    $('#lecture_title').text('');
-    $('#lecture_pin').text('');
+}
+
+/**
+ * Navigate with the back button on the page
+ */
+function pageBackButton() {
+    history.back();
 }

@@ -539,10 +539,17 @@ class CourseLectures(View):
             lecture.course = course
 
         else:
-            lecture_count = models.Lecture.objects.filter(course__id=course_id, course__user=request.user).count()
+            lecture_count = models.Lecture.objects.filter(course__id=course_id, course__user=request.user)
+            value = [0]
+            for lecture in lecture_count:
+                try:
+                    value.append(int(lecture.title.split('-')[-1]))
+                except ValueError:
+                    pass
+
             lecture = models.Lecture(
                 course=course,
-                title=str(request.user).split('@')[0] + " - " + str(course.title) + " - " + str(lecture_count + 1)
+                title=str(request.user).split('@')[0] + " - " + str(course.title) + " - " + str(max(value) + 1)
             )
 
         lecture.save()
@@ -565,12 +572,15 @@ class LectureStats(View):
         activity = {}
         for lecture in lecture_list:
             activity[lecture.title] = lecture.lecture_activity
-
+        question_count = {}
+        for lecture in lecture_list:
+            question_count[lecture.title] = models.Question.objects.filter(lecture=lecture).count()
         return JsonResponse({
             'success': True,
             'attendee_count': attendees,
             'course_id': course_id,
             'lecture_activity': activity,
+            'question_count': question_count,
         })
 
 

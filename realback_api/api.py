@@ -598,7 +598,7 @@ class LectureResetVolume(View):
         lecture.reset_volume()
         return JsonResponse({
             'success': True,
-            'lecture': lecture.as_dict(),
+            'lecture_volume': lecture.volume,
         })
 
     @method_decorator(login_required)
@@ -623,7 +623,7 @@ class LectureResetPace(View):
         lecture.reset_pace()
         return JsonResponse({
             'success': True,
-            'lecture': lecture.as_dict(),
+            'lecture': lecture.pace,
         })
 
     @method_decorator(login_required)

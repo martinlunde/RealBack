@@ -540,12 +540,12 @@ class CourseLectures(View):
 
         else:
             lecture_count = models.Lecture.objects.filter(course__id=course_id, course__user=request.user)
-            try:
-                value = [0]
-                for lecture in lecture_count:
+            value = [0]
+            for lecture in lecture_count:
+                try:
                     value.append(int(lecture.title.split('-')[-1]))
-            except ValueError:
-                pass
+                except ValueError:
+                    pass
 
             lecture = models.Lecture(
                 course=course,

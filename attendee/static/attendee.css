@@ -54,6 +54,15 @@ body, html {
 	font-weight: 300;
 }
 
+.mono_font {
+    font-family: Consolas, monospace;
+    letter-spacing: .08em;
+}
+
+.giant_font {
+    font-size: 200px;
+}
+
 .frontpage_container {
 	height: 100%;
 	width: 100%;

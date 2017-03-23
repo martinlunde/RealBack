@@ -25,8 +25,10 @@ function onJoin(event) {
             $('.footer').css("display", "none");
 
             // Populate the page contents
-            updatePageContents(json.lecture);
-            // TODO add update timer
+            // TODO add a better update timer
+            //setInterval(function() {
+              updatePageContents(json.lecture);
+            //}, 5000);
         }
     });
 
@@ -51,6 +53,7 @@ function onJoin(event) {
 function updatePageContents(lecture) {
     // Populate question list
     getQuestions();
+    checkReset();
     // TODO update other contents
     // Lecture details
     if (typeof lecture === 'undefined') {
@@ -154,6 +157,37 @@ function markQuestion(){
             list_item[i].getElementsByTagName("span")[0].style.color = "#007d70";
         }
   }
+}
+
+//Checks if volume or pace has been reset
+volume_reset_timestamp = 0;
+pace_reset_timestamp = 0;
+
+/**
+ * Increase or decrease lecture volume preference
+ */
+function checkReset() {
+    var URL = '/lectures/'+ $('#pinInput').val();
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+            if (data.lecture.volume_reset_timestamp != volume_reset_timestamp) {
+                console.log("volume reset");
+                volume_reset_timestamp = data.lecture.volume_reset_timestamp;
+                volume_up = false
+                volume_down = false
+                document.getElementById("volume_up").style.backgroundColor = "#f2f2f2";
+                document.getElementById("volume_down").style.backgroundColor = "#f2f2f2";
+            }
+            if (data.lecture.pace_reset_timestamp != pace_reset_timestamp) {
+                pace_reset_timestamp = data.lecture.pace_reset_timestamp;
+                pace_up = false
+                pace_down = false
+                document.getElementById("pace_up").style.backgroundColor = "#f2f2f2";
+                document.getElementById("pace_down").style.backgroundColor = "#f2f2f2";
+            }
+        }
+    });
 }
 
 //Keeps track if which buttons have been pressed

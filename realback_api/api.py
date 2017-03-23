@@ -237,12 +237,9 @@ class LectureQuestions(View):
         url_param = request.GET
         sort_order = url_param.get('order', '')
         allowed_orders = {'votes': ['-votes', '-timestamp'], 'latest': ['-timestamp']}
-        sort_order = allowed_orders.get(sort_order)
+        sort_order = allowed_orders.get(sort_order, ['-votes', '-timestamp'])
 
-        if sort_order is not None:
-            question_list = models.Question.objects.filter(lecture__pin=pin).order_by(*sort_order)
-        else:
-            question_list = models.Question.objects.filter(lecture__pin=pin).order_by('-votes', '-timestamp')
+        question_list = models.Question.objects.filter(lecture__pin=pin).order_by(*sort_order)
 
         return JsonResponse({
             'success': True,

@@ -299,6 +299,27 @@ fieldset[disabled] .btn-custom.active {
     margin-top: 10px;
 }
 
+.time-size {
+    font-size: 60px;
+    color: #555555;
+}
+
+.timer-button {
+    position: absolute;
+    left:50%;
+    transform: translateX(-50%);
+    width: 150px;
+}
+
+.sound-box-content {
+    position: absolute;
+    top:80px;
+}
+
+.number {
+    font-size: 60px;
+}
+
 @media (max-width: 780px) {
 
     .wraptext {

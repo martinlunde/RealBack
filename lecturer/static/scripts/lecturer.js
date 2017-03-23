@@ -7,8 +7,8 @@ $(document).ready(function () {
 
     // Back button manipulation
     window.onpopstate = function (event) {
-        console.log(event);
-        if (event.hasOwnProperty('state')) {
+        // console.log(event);
+        if ('state' in event && event.state.hasOwnProperty('callback')) {
             console.log(event.state);
             viewStateCallbacks[event.state.callback]();
         }
@@ -17,8 +17,11 @@ $(document).ready(function () {
     updateCourseList();
 });
 
+/* Valid states for browser navigation */
 var viewStateCallbacks = {
-    'backToCourseList': backToCourseList
+    backToCourseList: backToCourseList,
+    forwardToLecturePage: forwardToLecturePage,
+    forwardToStatPage: forwardToStatPage
 };
 
 /**
@@ -254,15 +257,23 @@ function showLecturePage() {
     console.log(lecture_pin);
 
     history.replaceState({callback: 'backToCourseList'}, 'Lecture');
-    // history.pushState('jallastate', '');
+    history.pushState({callback: 'forwardToLecturePage'}, 'Lecture');
 
+    forwardToLecturePage();
+}
+
+/**
+ * Navigate to lecture page
+ *
+ * This must define a complete view state that can be pushed to browser history
+ */
+function forwardToLecturePage() {
     // Show and hide elements
     $('#course_overview_page').hide();
+    $('#stat_page').hide();
     $('#lecture_page').show();
-
     // Get lecture
     populateLecturePage();
-    populateQuestionsLecturePage();
 }
 
 /**
@@ -278,6 +289,7 @@ function populateLecturePage() {
             $('#lecture_pin').text(data.lecture.lecture_pin);
         }
     })
+    populateQuestionsLecturePage();
 }
 
 /**
@@ -291,7 +303,7 @@ function populateQuestionsLecturePage() {
         if (data.success) {
           //do something
         }
-  })
+  });
 }
 
 /**
@@ -305,7 +317,7 @@ function lectureResetVolume() {
         if (data.success) {
           //do something
         }
-  })
+  });
 }
 
 /**
@@ -319,7 +331,7 @@ function lectureResetPace() {
         if (data.success) {
           //do something
         }
-  })
+  });
 }
 
 /**
@@ -328,13 +340,29 @@ function lectureResetPace() {
 function showStatPage() {
     event.stopImmediatePropagation()
     var course_id = $(this).parent().parent().parent().data('course_id');
-    $('#course_overview_page').hide();
-    $('#stat_page').show();
+
+    history.replaceState({callback: 'backToCourseList'}, 'Lecture');
+    history.pushState({callback: 'forwardToStatPage'}, 'Lecture');
+    forwardToStatPage();
+
     createCharts(course_id);
 }
 
 /**
+ * Navigate to stats page
+ *
+ * This must define a complete view state that can be pushed to browser history
+ */
+function forwardToStatPage() {
+    $('#lecture_page').hide();
+    $('#course_overview_page').hide();
+    $('#stat_page').show();
+}
+
+/**
  * Go back to course overview from lecture page or statistics page
+ *
+ * This must define a complete view state that can be pushed to browser history
  */
 function backToCourseList() {
     $('#stat_page').hide();

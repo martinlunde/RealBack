@@ -17,8 +17,8 @@ function createCharts(course_id) {
                 lecture_list = lecture_list.reverse();
                 var lectures = [];
                 for(var x = 0; x < lecture_list.length; x++){
-                    var temp = lecture_list[x].split("-");
-                    temp = "Lecture" + temp[2];
+                    var temp = lecture_list[x]
+                    temp = temp.substring(0, 22)
                     lectures.push(temp);
                 }
 

@@ -228,8 +228,22 @@ class LectureTopicUnderstanding(View):
 
 class LectureQuestions(View):
     def get(self, request, pin=None):
-        """ Read list of latest questions """
-        question_list = models.Question.objects.filter(lecture__pin=pin).order_by('-votes', '-timestamp')
+        """
+        Read list of latest questions
+
+        URL parameters:
+        order:      [votes | latest] default: votes
+        """
+        url_param = request.GET
+        sort_order = url_param.get('order', '')
+        allowed_orders = {'votes': ['-votes', '-timestamp'], 'latest': ['-timestamp']}
+        sort_order = allowed_orders.get(sort_order)
+
+        if sort_order is not None:
+            question_list = models.Question.objects.filter(lecture__pin=pin).order_by(*sort_order)
+        else:
+            question_list = models.Question.objects.filter(lecture__pin=pin).order_by('-votes', '-timestamp')
+
         return JsonResponse({
             'success': True,
             'questions': [question.as_dict() for question in question_list],
@@ -561,3 +575,53 @@ class LectureStats(View):
             'lecture_activity': activity,
             'question_count': question_count,
         })
+
+
+class LectureResetVolume(View):
+    @method_decorator(login_required)
+    def get(self, request, pin):
+        """ Gets lecture and resets the volume value """
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist for this pin'],
+                },
+            })
+
+        lecture.reset_volume()
+        return JsonResponse({
+            'success': True,
+            'lecture': lecture.as_dict(),
+        })
+
+    @method_decorator(login_required)
+    def post(self, request):
+        """ Nothing goes here """
+
+
+class LectureResetPace(View):
+    @method_decorator(login_required)
+    def get(self, request, pin):
+        """ Gets lecture and resets the volume value """
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist for this pin'],
+                },
+            })
+
+        lecture.reset_pace()
+        return JsonResponse({
+            'success': True,
+            'lecture': lecture.as_dict(),
+        })
+
+    @method_decorator(login_required)
+    def post(self, request):
+        """ Nothing goes here """

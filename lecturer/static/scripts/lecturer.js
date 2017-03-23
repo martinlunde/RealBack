@@ -5,8 +5,21 @@ $(document).ready(function () {
     $('#course_form_back').click(toggleShowCourseForm);
     $('#course_form_button').click(createCourse);
 
+    // Back button manipulation
+    window.onpopstate = function (event) {
+        console.log(event);
+        if (event.hasOwnProperty('state')) {
+            console.log(event.state);
+            viewStateCallbacks[event.state.callback]();
+        }
+    };
+
     updateCourseList();
 });
+
+var viewStateCallbacks = {
+    'backToCourseList': backToCourseList
+};
 
 /**
  * Toggle between showing new course button or new course form
@@ -240,12 +253,16 @@ function showLecturePage() {
     lecture_pin = $(this).data('lecture_pin');
     console.log(lecture_pin);
 
+    history.replaceState({callback: 'backToCourseList'}, 'Lecture');
+    // history.pushState('jallastate', '');
+
     // Show and hide elements
     $('#course_overview_page').hide();
     $('#lecture_page').show();
 
     // Get lecture
     populateLecturePage();
+    populateQuestionsLecturePage();
 }
 
 /**
@@ -261,6 +278,48 @@ function populateLecturePage() {
             $('#lecture_pin').text(data.lecture.lecture_pin);
         }
     })
+}
+
+/**
+ * Fill in questions in lecture page
+ */
+function populateQuestionsLecturePage() {
+    var URL = '/lectures/'+ lecture_pin + '/questions/';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+          //do something
+        }
+  })
+}
+
+/**
+ * Reset volume for lecture
+ */
+function lectureResetVolume() {
+    var URL = '/lectures/'+ lecture_pin + '/reset/volume/';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+          //do something
+        }
+  })
+}
+
+/**
+ * Reset pace for lecture
+ */
+function lectureResetPace() {
+    var URL = '/lectures/'+ lecture_pin + '/reset/pace/';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+          //do something
+        }
+  })
 }
 
 /**

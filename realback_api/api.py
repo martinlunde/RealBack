@@ -228,8 +228,22 @@ class LectureTopicUnderstanding(View):
 
 class LectureQuestions(View):
     def get(self, request, pin=None):
-        """ Read list of latest questions """
-        question_list = models.Question.objects.filter(lecture__pin=pin).order_by('-votes', '-timestamp')
+        """
+        Read list of latest questions
+
+        URL parameters:
+        order:      [votes | latest] default: votes
+        """
+        url_param = request.GET
+        sort_order = url_param.get('order', '')
+        allowed_orders = {'votes': ['-votes', '-timestamp'], 'latest': ['-timestamp']}
+        sort_order = allowed_orders.get(sort_order)
+
+        if sort_order is not None:
+            question_list = models.Question.objects.filter(lecture__pin=pin).order_by(*sort_order)
+        else:
+            question_list = models.Question.objects.filter(lecture__pin=pin).order_by('-votes', '-timestamp')
+
         return JsonResponse({
             'success': True,
             'questions': [question.as_dict() for question in question_list],

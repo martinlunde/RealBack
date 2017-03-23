@@ -1,15 +1,20 @@
 
+/* Document finished loading */
 $(document).ready(function () {
     // Add click listeners
     $('#new_course_button').click(toggleShowCourseForm);
     $('#course_form_back').click(toggleShowCourseForm);
     $('#course_form_button').click(createCourse);
+    $('#lecture_title').click(toggleLectureTitleForm);
+    $('#cancel_change_lecture_title').click(toggleLectureTitleForm);
+    $('#change_lecture_title_button').click(changeLectureTitle);
+    $('#lecture_pin').click(blowUpLecturePin);
+    $('#lecture_pin_large').click(blowUpLecturePin);
 
     // Back button manipulation
     window.onpopstate = function (event) {
-        // console.log(event);
         if ('state' in event && event.state.hasOwnProperty('callback')) {
-            console.log(event.state);
+            // console.log(event.state);
             viewStateCallbacks[event.state.callback]();
         }
     };
@@ -25,6 +30,32 @@ var viewStateCallbacks = {
 };
 
 /**
+ * Go back to course overview from lecture page or statistics page
+ *
+ * This must define a complete view state that can be pushed to browser history
+ */
+function backToCourseList() {
+    $('#stat_page').hide();
+    $('#lecture_page').hide();
+    $('#course_overview_page').show();
+
+    hideAllLectureLists();
+
+    // Clear necessary data
+    //lecture_pin = '';
+}
+
+/**
+ * Navigate with the back button on the page
+ */
+function pageBackButton() {
+    history.back();
+}
+
+
+/* --- Course list overview page related stuff --- */
+
+/**
  * Toggle between showing new course button or new course form
  */
 function toggleShowCourseForm() {
@@ -34,9 +65,9 @@ function toggleShowCourseForm() {
     new_course_form.toggle();
     new_course_button.toggle();
     if (new_course_form.is(':visible')) {
-        $('#course_form input').focus();
+        $('#course_form input[name=title]').focus();
     } else {
-        $('#course_form input').val('');
+        $('#course_form input[name=title]').val('');
     }
 }
 
@@ -134,7 +165,9 @@ function toggleLectureList(click_context, force_show) {
     var border_radius = course_div.children('div').first();
 
     if (force_show || ! lecture_list.is(':visible')) {
-        $('#course_list > div > ul').hide();
+        // Hide all other lists first
+        hideAllLectureLists();
+        // Show the list we want to show
         lecture_list.show();
         glyph_span.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
         border_radius.addClass('bars-change-border-radius');
@@ -151,6 +184,15 @@ function toggleLectureList(click_context, force_show) {
 function toggleLectureListParent(click_context, force_show) {
     event.stopImmediatePropagation();
     toggleLectureList(jQuery(click_context).find(".wraptext"), force_show);
+}
+
+/**
+ * Hide all the lecture lists from the course overview page
+ */
+function hideAllLectureLists() {
+    $('#course_list > div > ul').hide();
+    $('#course_list div.bars').removeClass('bars-change-border-radius');
+    $('#course_list span.glyphicon-menu-down').removeClass('glyphicon-menu-down').addClass('glyphicon-menu-right');
 }
 
 /**
@@ -198,7 +240,7 @@ function deleteCourse() {
         csrfDELETE('/courses/' + course_id + '/', function (data) {
             console.log(data);
             if (data.success) {
-                updateCourseList();
+                course_div.remove();
             }
         });
 
@@ -221,7 +263,7 @@ function deleteCourse() {
 function deleteLecture() {
     var lecture_el = $(this).parent();
     var lecture_pin = lecture_el.data('lecture_pin');
-    event.stopImmediatePropagation()
+    event.stopImmediatePropagation();
 
     // Check if we have asked for permission
     if (lecture_el.data('delete_permission')) {
@@ -244,6 +286,9 @@ function deleteLecture() {
         lecture_el.data('delete_permission', true);
     }
 }
+
+
+/* --- Lecture page related stuff --- */
 
 var lecture_pin = '';
 
@@ -272,6 +317,8 @@ function forwardToLecturePage() {
     // Show and hide elements
     $('#course_overview_page').hide();
     $('#stat_page').hide();
+    $('#lecture_pin_large').hide();
+    $('#lecture_page_body').show();
     $('#lecture_page').show();
 }
 
@@ -284,8 +331,8 @@ function populateLecturePage() {
     $.getJSON(URL, function (data) {
         console.log(data);
         if (data.success) {
-            $('#lecture_title').text(data.lecture.lecture_title);
-            $('#lecture_pin').text(data.lecture.lecture_pin);
+            $('#lecture_title > span').first().text(data.lecture.lecture_title);
+            $('#lecture_pin > span').first().text(data.lecture.lecture_pin);
         }
     });
     populateQuestionsLecturePage();
@@ -334,6 +381,56 @@ function lectureResetPace() {
 }
 
 /**
+ * Show title form to edit lecture title
+ */
+function toggleLectureTitleForm() {
+    var lecture_title = $('#lecture_title');
+    var change_lecture_title_form = $('#change_lecture_title_form');
+
+    if (lecture_title.is(':visible')) {
+        lecture_title.hide();
+        change_lecture_title_form.children('input[name=title]').val(lecture_title.children('span').first().text());
+        change_lecture_title_form.show();
+        change_lecture_title_form.children('input[name=title]').focus();
+        // $('#change_lecture_title_form input').focus();
+
+    } else {
+        change_lecture_title_form.hide();
+        change_lecture_title_form.children('input[name=title]').val('');
+        lecture_title.show();
+    }
+}
+
+/**
+ * Submit change lecture title form
+ */
+function changeLectureTitle(event) {
+    var action = '/lectures/' + lecture_pin + '/';
+    var title_form = $('#change_lecture_title_form');
+
+    csrfPOST(action, title_form, function (data) {
+        console.log(data);
+        if (data.success) {
+            $('#lecture_title > span').first().text(data.lecture.lecture_title);
+            toggleLectureTitleForm();
+        }
+    });
+    event.preventDefault();
+}
+
+/**
+ * Show lecture PIN in a large view
+ */
+function blowUpLecturePin() {
+    $('#lecture_page_body').toggle();
+    $('#lecture_pin_large').toggle();
+    $('#lecture_pin_large_text').text(lecture_pin);
+}
+
+
+/* --- Statistics page related stuff --- */
+
+/**
  * Show the statistics page for a course
  */
 function showStatPage() {
@@ -356,25 +453,4 @@ function forwardToStatPage() {
     $('#lecture_page').hide();
     $('#course_overview_page').hide();
     $('#stat_page').show();
-}
-
-/**
- * Go back to course overview from lecture page or statistics page
- *
- * This must define a complete view state that can be pushed to browser history
- */
-function backToCourseList() {
-    $('#stat_page').hide();
-    $('#lecture_page').hide();
-    $('#course_overview_page').show();
-
-    // Clear necessary data
-    //lecture_pin = '';
-}
-
-/**
- * Navigate with the back button on the page
- */
-function pageBackButton() {
-    history.back();
 }

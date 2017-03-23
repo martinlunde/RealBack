@@ -9,6 +9,8 @@ def front_page(request):
     """ View lecturer front page """
     # TODO forms
     course_form = forms.CourseForm()
+    lecture_form = forms.LectureForm()
     return render(request, 'lecturer/front_page.html', {
         'course_form': course_form,
+        'lecture_form': lecture_form,
     })

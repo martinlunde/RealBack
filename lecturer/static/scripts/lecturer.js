@@ -4,6 +4,9 @@ $(document).ready(function () {
     $('#new_course_button').click(toggleShowCourseForm);
     $('#course_form_back').click(toggleShowCourseForm);
     $('#course_form_button').click(createCourse);
+    $('#lecture_title').click(toggleLectureTitleForm);
+    $('#cancel_change_lecture_title').click(toggleLectureTitleForm);
+    //$('#change_lecture_title_button').click();
 
     // Back button manipulation
     window.onpopstate = function (event) {
@@ -331,6 +334,24 @@ function lectureResetPace() {
           //do something
         }
   });
+}
+
+/**
+ * Show title form to edit lecture title
+ */
+function toggleLectureTitleForm() {
+    var lecture_title = $('#lecture_title');
+    var change_lecture_title_form = $('#change_lecture_title_form');
+
+    if (change_lecture_title_form.is(':visible')) {
+        change_lecture_title_form.hide();
+        change_lecture_title_form.children('input').val('');
+        lecture_title.show();
+    } else {
+        lecture_title.hide();
+        change_lecture_title_form.children('input').val(lecture_title.text());
+        change_lecture_title_form.show();
+    }
 }
 
 /**

@@ -117,7 +117,14 @@
                     </button>
                 </div>
                 <div class="col-md-4">
-                    <h1 id="lecture_title" class="center">OVERVIEW</h1>
+                    <h1 id="lecture_title" class="center"><p>OVERVIEW</p>
+                        <span class="glyphicon glyphicon-edit"></span></h1>
+                    <form id="change_lecture_title_form" style="display: none;">
+                        {% csrf_token %}
+                        <button type="button" id="cancel_change_lecture_title">CANCEL</button>
+                        {{ lecture_form.title }}
+                        <button type="submit" id="change_lecture_title_button">SAVE</button>
+                    </form>
                 </div>
                 <div class="col-md-3"></div>
                 <div id="lecture_pin" class="col-md-1"></div>

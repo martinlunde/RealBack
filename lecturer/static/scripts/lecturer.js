@@ -5,8 +5,21 @@ $(document).ready(function () {
     $('#course_form_back').click(toggleShowCourseForm);
     $('#course_form_button').click(createCourse);
 
+    // Back button manipulation
+    window.onpopstate = function (event) {
+        console.log(event);
+        if (event.hasOwnProperty('state')) {
+            console.log(event.state);
+            viewStateCallbacks[event.state.callback]();
+        }
+    };
+
     updateCourseList();
 });
+
+var viewStateCallbacks = {
+    'backToCourseList': backToCourseList
+};
 
 /**
  * Toggle between showing new course button or new course form
@@ -239,6 +252,9 @@ var lecture_pin = '';
 function showLecturePage() {
     lecture_pin = $(this).data('lecture_pin');
     console.log(lecture_pin);
+
+    history.replaceState({callback: 'backToCourseList'}, 'Lecture');
+    // history.pushState('jallastate', '');
 
     // Show and hide elements
     $('#course_overview_page').hide();

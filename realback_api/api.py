@@ -558,3 +558,53 @@ class LectureStats(View):
             'course_id': course_id,
             'lecture_activity': activity,
         })
+
+
+class LectureResetVolume(View):
+    @method_decorator(login_required)
+    def get(self, request, pin):
+        """ Gets lecture and resets the volume value """
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist for this pin'],
+                },
+            })
+
+        lecture.reset_volume()
+        return JsonResponse({
+            'success': True,
+            'lecture': lecture.as_dict(),
+        })
+
+    @method_decorator(login_required)
+    def post(self, request):
+        """ Nothing goes here """
+
+
+class LectureResetPace(View):
+    @method_decorator(login_required)
+    def get(self, request, pin):
+        """ Gets lecture and resets the volume value """
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist for this pin'],
+                },
+            })
+
+        lecture.reset_pace()
+        return JsonResponse({
+            'success': True,
+            'lecture': lecture.as_dict(),
+        })
+
+    @method_decorator(login_required)
+    def post(self, request):
+        """ Nothing goes here """

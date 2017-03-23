@@ -234,10 +234,10 @@ var lecture_pin = '';
 /**
  * Show the lecture page for a lecture
  *
- * `this` will be the clicked span element
+ * `this` will be the clicked element
  */
 function showLecturePage() {
-    lecture_pin = $(this).parent().data('lecture_pin');
+    lecture_pin = $(this).data('lecture_pin');
     console.log(lecture_pin);
 
     // Show and hide elements
@@ -283,7 +283,7 @@ function backToCourseList() {
     $('#course_overview_page').show();
 
     // Clear necessary data
-    lecture_pin = '';
+    //lecture_pin = '';
     // Clear header
     $('#lecture_title').text('');
     $('#lecture_pin').text('');

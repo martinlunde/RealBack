@@ -246,6 +246,7 @@ function showLecturePage() {
 
     // Get lecture
     populateLecturePage();
+    populateQuestionsLecturePage();
 }
 
 /**
@@ -261,6 +262,48 @@ function populateLecturePage() {
             $('#lecture_pin').text(data.lecture.lecture_pin);
         }
     })
+}
+
+/**
+ * Fill in questions in lecture page
+ */
+function populateQuestionsLecturePage() {
+    var URL = '/lectures/'+ lecture_pin + '/questions/';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+          //do something
+        }
+  })
+}
+
+/**
+ * Reset volume for lecture
+ */
+function lectureResetVolume() {
+    var URL = '/lectures/'+ lecture_pin + '/reset/volume/';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+          //do something
+        }
+  })
+}
+
+/**
+ * Reset pace for lecture
+ */
+function lectureResetPace() {
+    var URL = '/lectures/'+ lecture_pin + '/reset/pace/';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+          //do something
+        }
+  })
 }
 
 /**

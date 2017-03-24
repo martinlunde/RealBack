@@ -331,8 +331,10 @@ function populateLecturePage() {
     $.getJSON(URL, function (data) {
         console.log(data);
         if (data.success) {
-            $('#lecture_title > span').first().text(data.lecture.lecture_title);
-            $('#lecture_pin > span').first().text(data.lecture.lecture_pin);
+            $('#lecture_title > h1').first().text(data.lecture.lecture_title);
+            $('#lecture_title > h1').first().append(' <span class="glyphicon glyphicon-edit glyph-align-with-text"></span>');
+            $('#lecture_pin > h2').first().text(data.lecture.lecture_pin);
+            $('#lecture_pin > h2').first().append(' <span class="glyphicon glyphicon-resize-full glyph-font-size-20"></span>');
         }
     });
     populateQuestionsLecturePage();
@@ -389,9 +391,11 @@ function toggleLectureTitleForm() {
 
     if (lecture_title.is(':visible')) {
         lecture_title.hide();
-        change_lecture_title_form.children('input[name=title]').val(lecture_title.children('span').first().text());
+        change_lecture_title_form.children('input[name=title]').val(lecture_title.children('h1').first().text());
         change_lecture_title_form.show();
         change_lecture_title_form.children('input[name=title]').focus();
+        $('#change_lecture_title_form input').attr('id', 'title_enter');
+        $('#change_lecture_title_form input').addClass("form-control");
         // $('#change_lecture_title_form input').focus();
 
     } else {
@@ -411,7 +415,8 @@ function changeLectureTitle(event) {
     csrfPOST(action, title_form, function (data) {
         console.log(data);
         if (data.success) {
-            $('#lecture_title > span').first().text(data.lecture.lecture_title);
+            $('#lecture_title > h1').first().text(data.lecture.lecture_title);
+            $('#lecture_title > h1').first().append(' <span class="glyphicon glyphicon-edit glyph-align-with-text"></span>');
             toggleLectureTitleForm();
         }
     });

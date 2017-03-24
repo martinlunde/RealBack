@@ -316,8 +316,49 @@ fieldset[disabled] .btn-custom.active {
     top:80px;
 }
 
-.number {
-    font-size: 60px;
+.number-huge {
+    font-size: 30px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.middle {
+    text-align: center;
+}
+
+#lecture_title {
+    height: 40px;
+}
+
+.glyph-align-with-text {
+    font-size: 25px;
+}
+
+.glyph-font-size-20 {
+    font-size: 20px;
+}
+
+.bottom_aligned {
+    margin-top: 25px;
+    margin-bottom: 0px;
+}
+
+#lecture_pin {
+    float: right;
+}
+
+#title_enter {
+    width: 100%;
+    margin-top: 21px;
+    margin-bottom: 10px;
+}
+
+#change_lecture_title_button {
+    margin-right: 5px;
+}
+
+#cancel_change_lecture_title {
+    margin-left: 5px;
 }
 
 @media (max-width: 780px) {

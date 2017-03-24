@@ -113,7 +113,7 @@
     <div id="lecture_page" class="row content_lecturer_landingpage" style="display: none;">
         <div class="content container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <button type="button"
                             class="btn btn-custom btn-lecturer btn-success vertical-align"
                             onclick="pageBackButton()">
@@ -121,32 +121,35 @@
                     </button>
                 </div>
 
-                <div class="col-md-4">
-                    <h1 id="lecture_title" class="center"><span>OVERVIEW</span>
-                        <span class="glyphicon glyphicon-edit"></span></h1>
+                <div class="col-md-6">
+                    <div id="lecture_title" class="center">
+                        <h1>OVERVIEW</h1>
+                    </div>
 
                     <form id="change_lecture_title_form" style="display: none;">
                         {% csrf_token %}
-                        <button type="button" id="cancel_change_lecture_title"
-                                class="btn">
-                            <span class="glyphicon glyphicon-remove glyphwhite"></span></button>
+                        
                         {{ lecture_form.title }}
-                        <button type="submit" id="change_lecture_title_button"
-                                class="btn">
-                            <span class="glyphicon glyphicon-ok glyphwhite"></span></button>
+                        <div class="center">
+                            <button type="submit" id="change_lecture_title_button" class="btn">
+                                <span class="glyphicon glyphicon-ok glyphwhite"></span>
+                            </button>
+                            <button type="button" id="cancel_change_lecture_title" class="btn">
+                                <span class="glyphicon glyphicon-remove glyphwhite"></span>
+                            </button>
+                        </div>
                     </form>
                 </div>
 
-                <div class="col-md-2"></div>
-                <div class="col-md-2">
-                    <h2 id="lecture_pin" class="vertical-align"><span class="mono_font"></span>
-                        <span class="glyphicon glyphicon-resize-full"></span></h2>
+                <div class="col-md-3">
+                    <div id="lecture_pin">
+                        <h2 class="mono_font bottom_aligned"></h2>
+                    </div>
                 </div>
             </div>
 
             <div id="lecture_pin_large" class="row vertical-align center" style="display: none;">
                 <span id="lecture_pin_large_text" class="mono_font giant_font"></span>
-                <span class="glyphicon glyphicon-resize-small"></span>
             </div>
 
             <div id="lecture_page_body" class="row">
@@ -175,9 +178,18 @@
                                     <span class="glyphicon glyphicon-forward glyph-center"></span>
                                 </div>
                             </div>
-                            <div class="row" id="asked_questions">
-                                <ul id="question_list">
-                                </ul>
+                            <div class="row">
+                                <div class="sound-box-content col-xs-10">
+                                    <div class="row">
+                                        <div class="number-huge col-xs-3">0</div>
+                                        <div class="col-xs-6 middle">
+                                            <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="updateVolume(true)">
+                                                <h1 class="glyphicon glyphicon-menu-up glyph-up"></h1>
+                                            </button>
+                                        </div>
+                                        <div class="number-huge col-xs-3">0</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -192,14 +204,16 @@
                                     <span class="glyphicon glyphicon-volume-up glyph-center"></span>
                                 </div>
                                 <div class="row">
-                                    <div class="sound-box-content col-sm-12">
-                                        <div class="number col-sm-3">0</div>
-                                        <div class="col-sm-6">
-                                            <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="updateVolume(true)">
-                                                <h1 class="glyphicon glyphicon-menu-up glyph-up"></h1>
-                                            </button>
+                                    <div class="sound-box-content col-xs-10">
+                                        <div class="row">
+                                            <div class="number-huge col-xs-3">0</div>
+                                            <div class="col-xs-6 middle">
+                                                <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="updateVolume(true)">
+                                                    <h1 class="glyphicon glyphicon-menu-up glyph-up"></h1>
+                                                </button>
+                                            </div>
+                                            <div class="number-huge col-xs-3">0</div>
                                         </div>
-                                        <div class="number col-sm-3">0</div>
                                     </div>
                                 </div>
                             </div>

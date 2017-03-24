@@ -184,8 +184,6 @@ body, html {
   transform: translateY(-50%);
 }
 
-
-
 @media (max-width: 550px) {
   .frontpage_background {
     margin-top: -125px;

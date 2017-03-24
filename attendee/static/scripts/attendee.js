@@ -32,6 +32,10 @@ function onJoin(event) {
         }
     });
 
+    var timerID = setInterval(updatePageContents, 5000);
+    console.log(timerID);
+    intervalTimerIDs.push(timerID);
+
     var question_input = $('#question_form textarea');
     question_input.keypress(function (event) {
         if (event.key == 'Enter' && !event.shiftKey) {
@@ -39,9 +43,32 @@ function onJoin(event) {
             event.preventDefault();
         }
     });
-    question_input.keyup(function (event) {
-        $('#question_length').text(question_input.val().length + '/160')
-    });
+    var animationTimeoutList = [];
+    function question_length(event) {
+        $('#question_length').text(question_input.val().length + '/160');
+        if (question_input.val().length >= 160) {
+            $('#question_length').css({
+                'animation-name': 'none',
+                'animation-duration': '0'
+            });
+            $('#question_length').css({
+                'animation-name': 'flash_text',
+                'animation-duration': '3s'
+            });
+            for (var i = 0; i < animationTimeoutList.length; i++) {
+                clearTimeout(animationTimeoutList[i]);
+            }
+            var t_id = setTimeout(function () {
+                $('#question_length').css({
+                    'animation-name': 'none',
+                    'animation-duration': '0'
+                });
+            }, 3000);
+            animationTimeoutList.push(t_id);
+        }
+    }
+    question_input.keyup(question_length);
+    question_input.keydown(question_length);
     question_input.keyup();
 
     event.preventDefault();

@@ -10,6 +10,20 @@ function getLectureDetails(PIN, success) {
     $.getJSON(URL, success);
 }
 
+/* Active update timers */
+var intervalTimerIDs = [];
+
+/**
+ * Clear all update timers
+ */
+function clearIntervalTimers() {
+    console.log(intervalTimerIDs);
+    for (var i = 0; i < intervalTimerIDs.length; i++) {
+        clearInterval(intervalTimerIDs[i]);
+    }
+    intervalTimerIDs = [];
+}
+
 /**
  * Find a cookie
  *

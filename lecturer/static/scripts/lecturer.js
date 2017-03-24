@@ -29,20 +29,6 @@ var viewStateCallbacks = {
     'forwardToStatPage': forwardToStatPage
 };
 
-/* Active update timers */
-var intervalTimerIDs = [];
-
-/**
- * Clear all update timers
- */
-function clearIntervalTimers() {
-    console.log(intervalTimerIDs);
-    for (var i = 0; i < intervalTimerIDs.length; i++) {
-        clearInterval(intervalTimerIDs[i]);
-    }
-    intervalTimerIDs = [];
-}
-
 /**
  * Go back to course overview from lecture page or statistics page
  *
@@ -336,7 +322,7 @@ function forwardToLecturePage() {
     $('#lecture_page_body').show();
     $('#lecture_page').show();
 
-    var timerID = setInterval(populateLecturePage, 10000);
+    var timerID = setInterval(populateLecturePage, 5000);
     console.log(timerID);
     intervalTimerIDs.push(timerID);
 }

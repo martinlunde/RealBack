@@ -337,19 +337,46 @@ function populateLecturePage() {
             $('#lecture_pin > h2').first().append(' <span class="glyphicon glyphicon-resize-full glyph-font-size-20"></span>');
         }
     });
-    populateQuestionsLecturePage();
+    populateRecentQuestionsLecturePage();
+    populateTopQuestionsLecturePage();
 }
 
 /**
- * Fill in questions in lecture page
+ * Fill recent in questions in lecture page
  */
-function populateQuestionsLecturePage() {
-    var URL = '/lectures/'+ lecture_pin + '/questions/';
+function populateRecentQuestionsLecturePage() {
+    var URL = '/lectures/'+ lecture_pin + '/questions/?order=latest';
 
     $.getJSON(URL, function (data) {
         console.log(data);
         if (data.success) {
-          //do something
+          $("#question_list_recent").empty();
+          for (var i = 0; i < data.questions.length; i++) {
+              var question = data.questions[i];
+              var list_element = $("<li>");
+              list_element.append(' ' + question.question_text);
+              $("#question_list_recent").append(list_element);
+          }
+        }
+  });
+}
+
+/**
+ * Fill in top questions in lecture page
+ */
+function populateTopQuestionsLecturePage() {
+    var URL = '/lectures/'+ lecture_pin + '/questions/?order=votes';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+          $("#question_list_top").empty();
+          for (var i = 0; i < Math.min(5, data.questions.length); i++) {
+              var question = data.questions[i];
+              var list_element = $("<li>");
+              list_element.append(' ' + question.question_text);
+              $("#question_list_top").append(list_element);
+          }
         }
   });
 }

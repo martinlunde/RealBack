@@ -24,10 +24,24 @@ $(document).ready(function () {
 
 /* Valid states for browser navigation */
 var viewStateCallbacks = {
-    backToCourseList: backToCourseList,
-    forwardToLecturePage: forwardToLecturePage,
-    forwardToStatPage: forwardToStatPage
+    'backToCourseList': backToCourseList,
+    'forwardToLecturePage': forwardToLecturePage,
+    'forwardToStatPage': forwardToStatPage
 };
+
+/* Active update timers */
+var intervalTimerIDs = [];
+
+/**
+ * Clear all update timers
+ */
+function clearIntervalTimers() {
+    console.log(intervalTimerIDs);
+    for (var i = 0; i < intervalTimerIDs.length; i++) {
+        clearInterval(intervalTimerIDs[i]);
+    }
+    intervalTimerIDs = [];
+}
 
 /**
  * Go back to course overview from lecture page or statistics page
@@ -40,6 +54,7 @@ function backToCourseList() {
     $('#course_overview_page').show();
 
     hideAllLectureLists();
+    clearIntervalTimers();
 
     // Clear necessary data
     //lecture_pin = '';
@@ -320,6 +335,10 @@ function forwardToLecturePage() {
     $('#lecture_pin_large').hide();
     $('#lecture_page_body').show();
     $('#lecture_page').show();
+
+    var timerID = setInterval(populateLecturePage, 10000);
+    console.log(timerID);
+    intervalTimerIDs.push(timerID);
 }
 
 /**
@@ -388,15 +407,15 @@ function lectureResetPace() {
 function toggleLectureTitleForm() {
     var lecture_title = $('#lecture_title');
     var change_lecture_title_form = $('#change_lecture_title_form');
+    var title_input = $('#change_lecture_title_form input[name=title]');
 
     if (lecture_title.is(':visible')) {
         lecture_title.hide();
-        change_lecture_title_form.children('input[name=title]').val(lecture_title.children('h1').first().text());
+        title_input.val(lecture_title.children('h1').first().text().trim());
         change_lecture_title_form.show();
-        change_lecture_title_form.children('input[name=title]').focus();
-        $('#change_lecture_title_form input').attr('id', 'title_enter');
-        $('#change_lecture_title_form input').addClass("form-control");
-        // $('#change_lecture_title_form input').focus();
+        title_input.focus();
+        title_input.attr('id', 'title_enter');
+        title_input.addClass("form-control");
 
     } else {
         change_lecture_title_form.hide();
@@ -415,8 +434,8 @@ function changeLectureTitle(event) {
     csrfPOST(action, title_form, function (data) {
         console.log(data);
         if (data.success) {
-            $('#lecture_title > h1').first().text(data.lecture.lecture_title);
-            $('#lecture_title > h1').first().append(' <span class="glyphicon glyphicon-edit glyph-align-with-text"></span>');
+            $('#lecture_title > h1').first().text(data.lecture.lecture_title).append(
+                ' <span class="glyphicon glyphicon-edit glyph-align-with-text"></span>');
             toggleLectureTitleForm();
         }
     });

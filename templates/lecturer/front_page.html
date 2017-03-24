@@ -128,7 +128,7 @@
 
                     <form id="change_lecture_title_form" style="display: none;">
                         {% csrf_token %}
-                        
+
                         {{ lecture_form.title }}
                         <div class="center">
                             <button type="submit" id="change_lecture_title_button" class="btn">
@@ -219,7 +219,7 @@
                             </div>
                         </div>
                     </div>
-                
+
                     <div class="col-sm-6">
                         <div class="box box-nomargin-top col-sm-12">
                             <div class="row">
@@ -229,6 +229,10 @@
                                 <div class="col-xs-2 text-right">
                                     <span class="glyphicon glyphicon-question-sign glyph-center"></span>
                                 </div>
+                            </div>
+                            <div class="row" id="asked_questions">
+                                          <ul id="question_list_top">
+                                          </ul>
                             </div>
                         </div>
                     </div>
@@ -256,6 +260,10 @@
                                 <div class="col-xs-10">
                                     <h3 class="soundlevel">RECENT QUESTIONS</h3>
                                 </div>
+                            </div>
+                            <div class="row" id="asked_questions">
+                                          <ul id="question_list_recent">
+                                          </ul>
                             </div>
                         </div>
                     </div>

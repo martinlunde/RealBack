@@ -1,15 +1,4 @@
 
-/**
- * Get details for lecture with PIN
- *
- * @param PIN       Lecture PIN
- * @param success   Function callback on received response
- */
-function getLectureDetails(PIN, success) {
-    var URL = '/lectures/' + PIN + '/';
-    $.getJSON(URL, success);
-}
-
 /* Active update timers */
 var intervalTimerIDs = [];
 

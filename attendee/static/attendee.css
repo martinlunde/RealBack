@@ -355,6 +355,6 @@ body, html {
 
 /* Animation for warning text */
 @keyframes flash_text {
-    0%      {color: #F75D59;}
+    0%      {color: #ff543f;}
     100%    {color: inherit;}
 }

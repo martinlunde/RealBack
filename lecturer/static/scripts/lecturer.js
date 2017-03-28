@@ -322,7 +322,7 @@ function forwardToLecturePage() {
     $('#lecture_page_body').show();
     $('#lecture_page').show();
 
-    var timerID = setInterval(populateLecturePage, 5000);
+    var timerID = setInterval(populateLecturePage, 10000);
     console.log(timerID);
     intervalTimerIDs.push(timerID);
 }
@@ -336,10 +336,13 @@ function populateLecturePage() {
     $.getJSON(URL, function (data) {
         console.log(data);
         if (data.success) {
-            $('#lecture_title > h1').first().text(data.lecture.lecture_title);
-            $('#lecture_title > h1').first().append(' <span class="glyphicon glyphicon-edit glyph-align-with-text"></span>');
-            $('#lecture_pin > h2').first().text(data.lecture.lecture_pin);
-            $('#lecture_pin > h2').first().append(' <span class="glyphicon glyphicon-resize-full glyph-font-size-20"></span>');
+            $('#lecture_title').children('h1').first().text(data.lecture.lecture_title).append(
+                ' <span class="glyphicon glyphicon-edit glyph-align-with-text"></span>');
+
+            if ($('#lecture_page_body').is(':visible')) {
+                $('#lecture_pin').children('h2').first().text(data.lecture.lecture_pin).append(
+                    ' <span class="glyphicon glyphicon-resize-full glyph-font-size-20"></span>');
+            }
         }
     });
     populateRecentQuestionsLecturePage();
@@ -459,9 +462,21 @@ function changeLectureTitle(event) {
  * Show lecture PIN in a large view
  */
 function blowUpLecturePin() {
-    $('#lecture_page_body').toggle();
-    $('#lecture_pin_large').toggle();
-    $('#lecture_pin_large_text').text(lecture_pin);
+    var lecture_page_body = $('#lecture_page_body');
+    var lecture_pin_large = $('#lecture_pin_large');
+
+    if(lecture_page_body.is(':visible')) {
+        lecture_page_body.hide();
+        lecture_pin_large.show();
+        $('#lecture_pin_large_text').text(lecture_pin);
+        $('#lecture_pin > h2 > span.glyphicon').first().removeClass(
+            'glyphicon-resize-full').addClass('glyphicon-resize-small');
+    } else {
+        lecture_page_body.show();
+        lecture_pin_large.hide();
+        $('#lecture_pin > h2 > span.glyphicon').first().removeClass(
+            'glyphicon-resize-small').addClass('glyphicon-resize-full');
+    }
 }
 
 

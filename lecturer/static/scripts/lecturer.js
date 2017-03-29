@@ -479,6 +479,20 @@ function blowUpLecturePin() {
     }
 }
 
+/**
+ * Toggle timer
+ */
+var timerToggle = false;
+function timerController(){
+    console.log(timerToggle);
+    if(timerToggle == false){
+        timerToggle = true;
+        $('#timerToggleButton').html('STOP');
+    }else{
+        timerToggle = false;
+        $('#timerToggleButton').html('START');
+    }
+}
 
 /* --- Statistics page related stuff --- */
 

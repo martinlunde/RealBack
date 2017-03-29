@@ -119,7 +119,7 @@ body, html {
 
 /* Bootstrap form-control. Used for applying same styles to #id_username and #id_password. */
 
-.form-control, #id_username, #id_password, #id_password1, #id_password2, #id_title {
+.form-control, #id_username, #id_password, #id_password1, #id_password2, #id_title, #id_email {
  display: block;
   width: 100%;
   height: 34px;

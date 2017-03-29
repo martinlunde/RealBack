@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils import timezone
 from . import models, forms
 
 
@@ -341,10 +342,20 @@ class LecturePace(View):
                 })
 
             lecture.lecture_activity += 1
-            if form.cleaned_data['pace']:
-                lecture.pace += 1
+            # checking if vote increases or decreases a value
+            url_param = request.GET
+            vote = url_param.get('vote', '')
+            if vote:
+                if form.cleaned_data['pace']:
+                    lecture.paceup += 1
+                else:
+                    lecture.pacedown += 1
             else:
-                lecture.pace -= 1
+                if form.cleaned_data['pace']:
+                    lecture.paceup -= 1
+                else:
+                    lecture.pacedown -= 1
+
             lecture.save()
 
             return JsonResponse({
@@ -355,6 +366,70 @@ class LecturePace(View):
         return JsonResponse({
             'success': False,
             'errors': form.errors,
+        })
+
+
+class LectureTimer(View):
+    def get(self, request, pin=None):
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist'],
+                },
+            })
+
+        startTime = lecture.start_datetime
+        endTime = lecture.end_datetime
+        active = lecture.timer_active
+
+        return JsonResponse({
+            'success': True,
+            'startTime': startTime,
+            'endTime': endTime,
+            'active': active,
+        })
+
+
+class StartTimer(View):
+    def get(self, request, pin=None):
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist'],
+                },
+            })
+
+        lecture.start_datetime = timezone.now()
+        lecture.timer_active = True
+        lecture.save()
+        return JsonResponse({
+            'success': True,
+        })
+
+
+class StopTimer(View):
+    def get(self, request, pin=None):
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist'],
+                },
+            })
+        lecture.timer_active = False
+        lecture.end_datetime = timezone.now()
+        lecture.save()
+        return JsonResponse({
+            'success': True,
+            'lecture': lecture.timer_active,
         })
 
 

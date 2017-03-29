@@ -348,6 +348,7 @@ function populateLecturePage() {
     populateRecentQuestionsLecturePage();
     populateTopQuestionsLecturePage();
     getPace();
+    getVolume();
 }
 
 /**
@@ -430,6 +431,22 @@ function getPace() {
             $('#pace_upvotes').append(data.lecture.lecture_pace_up)
             $('#pace_downvotes').empty()
             $('#pace_downvotes').append(data.lecture.lecture_pace_down)
+        }
+    })
+}
+
+/**
+ * Update volume for lecture
+ */
+function getVolume() {
+    var URL = '/lectures/'+ lecture_pin + '/volume/';
+    $.getJSON(URL, function (data) {
+      console.log(data);
+        if (data.success) {
+            $('#volume_upvotes').empty()
+            $('#volume_upvotes').append(data.lecture.lecture_volume_up)
+            $('#volume_downvotes').empty()
+            $('#volume_downvotes').append(data.lecture.lecture_volume_down)
         }
     })
 }

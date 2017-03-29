@@ -400,7 +400,7 @@ function lectureResetVolume() {
     $.getJSON(URL, function (data) {
         console.log(data);
         if (data.success) {
-          //do something
+            getVolume();
         }
   });
 }
@@ -414,7 +414,7 @@ function lectureResetPace() {
     $.getJSON(URL, function (data) {
         console.log(data);
         if (data.success) {
-          //do something
+            getPace();
         }
   });
 }

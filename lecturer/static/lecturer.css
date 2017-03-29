@@ -364,6 +364,10 @@ fieldset[disabled] .btn-custom.active {
     float: right;
 }
 
+.red_text {
+    color: #EE6352;
+}
+
 @media (max-width: 780px) {
 
     .wraptext {

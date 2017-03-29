@@ -482,24 +482,65 @@ function blowUpLecturePin() {
 /**
  * Toggle timer
  */
+function updateDisplay() {
+    var seconds, minute, hours;
+    var value = $('#stopWatch').html();
+    seconds = parseInt(value.split(':')[2]);
+    minute = parseInt(value.split(':')[1]);
+    hours = parseInt(value.split(':')[0]);
+    seconds++;
+
+    if(seconds<10){
+        seconds = "0" + String(seconds);
+    }
+    if(minute<10){
+        minute = "0" + String(minute);
+    }
+    if(hours<10){
+        hours = "0" + String(hours)
+    }
+    if(seconds === 60){
+        seconds = 0;
+        minute++;
+    }
+    if(minute === 60){
+        minute = 0;
+        hours++;
+    }
+    seconds = String(seconds);
+    minute = String(minute);
+    hours = String(hours);
+    $('#stopWatch').html(hours + ":" + minute + ":" + seconds);
+}
+
+var stopTimer;
 var timerToggle = false;
 function timerController(){
-    var URL = '/lectures/'+ lecture_pin + 'timer/';
-
+    var URL = '/lectures/'+ lecture_pin + '/timer/';
     $.getJSON(URL, function (data) {
-        console.log(data);
         if (data.success) {
+            if(timerToggle == false){
+                timerToggle = true;
+                $('#timerToggleButton').html('STOP');
+                if(!data.active) {
+                    var URL = '/lectures/' + lecture_pin + '/start_timer/';
+                    $.getJSON(URL, function (data2) {
+                        console.log(data2);
+                    });
+                    stopTimer = setInterval(updateDisplay, 1000);
+                }
+            }else{
+                timerToggle = false;
+                $('#timerToggleButton').html('START');
 
+                var URL = '/lectures/'+ lecture_pin + '/stop_timer/';
+                $.getJSON(URL, function (data2) {
+                    console.log(data2);
+                });
+                clearInterval(stopTimer);
+            }
         }
   });
-
-    if(timerToggle == false){
-        timerToggle = true;
-        $('#timerToggleButton').html('STOP');
-    }else{
-        timerToggle = false;
-        $('#timerToggleButton').html('START');
-    }
 }
 
 /* --- Statistics page related stuff --- */

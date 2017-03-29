@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils import timezone
 from . import models, forms
 
 
@@ -375,8 +376,45 @@ class LectureTimer(View):
 
         return JsonResponse({
             'success': True,
-            'lecture': time,
+            'time': time,
             'active': active,
+        })
+
+class StartTimer(View):
+    def get(self, request, pin=None):
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist'],
+                },
+            })
+
+        lecture.start_datetime = timezone.now()
+        lecture.timer_active = True
+        lecture.save()
+        return JsonResponse({
+            'success': True,
+        })
+
+class StopTimer(View):
+    def get(self, request, pin=None):
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist'],
+                },
+            })
+        lecture.timer_active = False
+        lecture.save()
+        return JsonResponse({
+            'success': True,
+            'lecture': lecture.timer_active,
         })
 
 class LectureVolume(View):

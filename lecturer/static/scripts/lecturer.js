@@ -322,7 +322,7 @@ function forwardToLecturePage() {
     $('#lecture_page_body').show();
     $('#lecture_page').show();
 
-    var timerID = setInterval(populateLecturePage, 10000);
+    var timerID = setInterval(populateLecturePage, 2000);
     console.log(timerID);
     intervalTimerIDs.push(timerID);
 }
@@ -347,6 +347,7 @@ function populateLecturePage() {
     });
     populateRecentQuestionsLecturePage();
     populateTopQuestionsLecturePage();
+    getPace();
 }
 
 /**
@@ -415,6 +416,22 @@ function lectureResetPace() {
           //do something
         }
   });
+}
+
+/**
+ * Update pace for lecture
+ */
+function getPace() {
+    var URL = '/lectures/'+ lecture_pin + '/pace/';
+    $.getJSON(URL, function (data) {
+      console.log(data);
+        if (data.success) {
+            $('#pace_upvotes').empty()
+            $('#pace_upvotes').append(data.lecture.lecture_pace_up)
+            $('#pace_downvotes').empty()
+            $('#pace_downvotes').append(data.lecture.lecture_pace_down)
+        }
+    })
 }
 
 /**

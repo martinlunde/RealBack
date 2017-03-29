@@ -85,7 +85,7 @@ fieldset[disabled] .btn-custom.active {
 .content_lecturer_landingpage {
     background-color: #ebebeb;
     position: absolute;
-    top:100px;
+    top:80px;
     width: 100%;
     left: 50%;
     transform: translateX(-50%);

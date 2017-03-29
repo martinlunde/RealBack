@@ -51,7 +51,7 @@
                     {{ course_form.title }}
                     <div id="course_error_message"></div>
                     <button type="submit" class="btn btn-custom btn-success" id="course_form_button">
-                        <span class="glyphicon glyphicon-ok glyphwhite"></span>
+                        <span class="glyphicon glyphicon-ok glyphwhite glyph_move_center"></span>
                     </button>
                     </div>
                 </form>
@@ -128,16 +128,13 @@
 
                     <form id="change_lecture_title_form" style="display: none;">
                         {% csrf_token %}
-
+                        <button type="submit" id="change_lecture_title_button" class="btn btn-success">
+                            <span class="glyphicon glyphicon-ok glyphwhite"></span>
+                        </button>
                         {{ lecture_form.title }}
-                        <div class="center">
-                            <button type="submit" id="change_lecture_title_button" class="btn">
-                                <span class="glyphicon glyphicon-ok glyphwhite"></span>
-                            </button>
-                            <button type="button" id="cancel_change_lecture_title" class="btn">
-                                <span class="glyphicon glyphicon-remove glyphwhite"></span>
-                            </button>
-                        </div>
+                        <button type="button" id="cancel_change_lecture_title" class="btn btn-success">
+                            <span class="glyphicon glyphicon-remove glyphwhite"></span>
+                        </button>
                     </form>
                 </div>
 
@@ -195,13 +192,13 @@
                             <div class="row">
                                 <div class="sound-box-content col-xs-10">
                                     <div class="row">
-                                        <div class="number-huge col-xs-3">0</div>
+                                        <div class="number-huge col-xs-3" id="pace_upvotes">0</div>
                                         <div class="col-xs-6 middle">
-                                            <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="updateVolume(true)">
+                                            <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="LectureResetPace">
                                                 <h1 class="glyphicon glyphicon-menu-up glyph-up"></h1>
                                             </button>
                                         </div>
-                                        <div class="number-huge col-xs-3">0</div>
+                                        <div class="number-huge col-xs-3"id="pace_downvotes">0</div>
                                     </div>
                                 </div>
                             </div>
@@ -220,13 +217,13 @@
                                 <div class="row">
                                     <div class="sound-box-content col-xs-10">
                                         <div class="row">
-                                            <div class="number-huge col-xs-3">0</div>
+                                            <div class="number-huge col-xs-3" id="volume_upvotes">0</div>
                                             <div class="col-xs-6 middle">
-                                                <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="updateVolume(true)">
+                                                <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="LectureResetVolume">
                                                     <h1 class="glyphicon glyphicon-menu-up glyph-up"></h1>
                                                 </button>
                                             </div>
-                                            <div class="number-huge col-xs-3">0</div>
+                                            <div class="number-huge col-xs-3" id="volume_downvotes">0</div>
                                         </div>
                                     </div>
                                 </div>
@@ -262,8 +259,8 @@
                                 <div class="col-xs-2 text-right">
                                     <span class="glyphicon glyphicon-forward glyph-center"></span>
                                 </div>
-                                <h1 class="center time-size">00:00:00</h1>
-                                <button type="button" class="btn btn-success timer-button" onclick="">START</button>
+                                <h1 class="center time-size" id="stopWatch">00:00:00</h1>
+                                <button type="button" class="btn btn-success timer-button" id="timerToggleButton" onclick="timerController()">START</button>
                             </div>
                         </div>
                     </div>

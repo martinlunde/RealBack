@@ -86,7 +86,7 @@ function updatePageContents(lecture) {
 function getQuestions() {
     var api_url = '/lectures/' + lecture_pin + '/questions/';
     $.getJSON(api_url, function (data) {
-        console.log(data);
+        //console.log(data);
         if (data.success) {
             // TODO Update question list
             // Empty list of existing questions
@@ -181,7 +181,7 @@ pace_reset_timestamp = 0;
 function checkReset() {
     var URL = '/lectures/'+ lecture_pin + '/';
     $.getJSON(URL, function (data) {
-        console.log(data);
+        //console.log(data);
         if (data.success) {
             if (data.lecture.volume_reset_timestamp != volume_reset_timestamp) {
                 console.log("volume reset");
@@ -210,58 +210,71 @@ volume_down = false;
  * Increase or decrease lecture volume preference
  */
 function updateVolume(increase) {
-    var form_action = '/lectures/' + lecture_pin + '/volume/';
+    var form_action = '/lectures/' + $('#pinInput').val() + '/volume/?vote=';
     var form = $('#volume_form');
     var volume_element = $('#id_volume');
+    var query = '';
+    runagain = false;
+    runagain_value = false;
 
     //Gir knappene radio butten funksjonalitet
     if(increase) {
       if(volume_up) {
         volume_up = false;
         document.getElementById("volume_up").style.backgroundColor = "#f2f2f2";
-        volume_element.prop('checked', false);
+        volume_element.prop('checked', true);
       }else {
         if (volume_down) {
           volume_down = false
           document.getElementById("volume_down").style.backgroundColor = "#f2f2f2";
-          volume_element.prop('checked', true);
+          volume_element.prop('checked', false);
           //kjører det dobbelt
-          updateVolume(true)
+          runagain = true;
+          runagain_value = true;
         }else {
           volume_up = true
           document.getElementById("volume_up").style.backgroundColor = "#cfcfcf";
           volume_element.prop('checked', true);
+          query = 'true'
         }
       }
     }else {
       if(volume_down) {
         volume_down = false
         document.getElementById("volume_down").style.backgroundColor = "#f2f2f2";
-        volume_element.prop('checked', true);
+        volume_element.prop('checked', false);
       }else {
         if (volume_up) {
           volume_up = false
           document.getElementById("volume_up").style.backgroundColor = "#f2f2f2";
-          volume_element.prop('checked', false);
+          volume_element.prop('checked', true);
           //kjører det dobbelt
-          updateVolume(false)
+          runagain = true;
+          runagain_value = false;
         }else {
           volume_down = true;
           document.getElementById("volume_down").style.backgroundColor = "#cfcfcf";
           volume_element.prop('checked', false);
+          query = 'true'
         }
       }
     }
 
-    csrfPOST(form_action, form, function (data) {
-        console.log(data);
-        if (data.success) {
-            $('#current_volume_value').text(data.lecture.lecture_volume);
-            console.log(data.lecture.lecture_volume);
-        }
-    });
-}
+   form_action += query;
 
+   csrfPOST(form_action, form, function (data) {
+       console.log(data);
+       if (data.success) {
+           $('#current_volume_value').text(data.lecture.lecture_volume);
+       }
+    });
+
+    if (runagain) {
+       setTimeout(function(){
+         updateVolume(runagain_value);
+       }, 10);
+    }
+}
 
 //Keeps track of which buttons have been pressed
 pace_up = false;
@@ -271,49 +284,57 @@ pace_down = false;
  * Increase or decrease lecture pace preference
  */
 function updatePace(increase) {
-    var form_action = '/lectures/' + lecture_pin + '/pace/';
+    var form_action = '/lectures/' + $('#pinInput').val() + '/pace/?vote=';
     var form = $('#pace_form');
     var pace_element = $('#id_pace');
+    var query = '';
+    runagain = false;
+    runagain_value = false;
 
     //Gir knappene radio butten funksjonalitet
     if(increase) {
       if(pace_up) {
         pace_up = false;
         document.getElementById("pace_up").style.backgroundColor = "#f2f2f2";
-        pace_element.prop('checked', false);
+        pace_element.prop('checked', true);
       }else {
         if (pace_down) {
           pace_down = false
           document.getElementById("pace_down").style.backgroundColor = "#f2f2f2";
-          pace_element.prop('checked', true);
+          pace_element.prop('checked', false);
           //kjører det dobbelt
-          updatePace(true)
+          runagain = true;
+          runagain_value = true;
         }else {
           pace_up = true
           document.getElementById("pace_up").style.backgroundColor = "#cfcfcf";
           pace_element.prop('checked', true);
+          query = 'true'
         }
       }
     }else {
       if(pace_down) {
         pace_down = false
         document.getElementById("pace_down").style.backgroundColor = "#f2f2f2";
-        pace_element.prop('checked', true);
+        pace_element.prop('checked', false);
       }else {
         if (pace_up) {
           pace_up = false
           document.getElementById("pace_up").style.backgroundColor = "#f2f2f2";
-          pace_element.prop('checked', false);
+          pace_element.prop('checked', true);
           //kjører det dobbelt
-          updatePace(false)
+          runagain = true;
+          runagain_value = false;
         }else {
           pace_down = true;
           document.getElementById("pace_down").style.backgroundColor = "#cfcfcf";
           pace_element.prop('checked', false);
+          query = 'true'
         }
       }
     }
 
+    form_action += query;
 
     csrfPOST(form_action, form, function (data) {
         console.log(data);
@@ -321,4 +342,10 @@ function updatePace(increase) {
             $('#current_pace_value').text(data.lecture.lecture_pace);
         }
     });
+
+    if (runagain) {
+      setTimeout(function(){
+        updatePace(runagain_value);
+      }, 10);
+    }
 }

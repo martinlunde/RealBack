@@ -95,11 +95,16 @@ fieldset[disabled] .btn-custom.active {
     color:white;
 }
 
+.glyph_move_center {
+    color: white;
+    top: -1px;
+}
+
 .btn-lecturer {
     width: 200px;
 }
 
-#course_form, #course_form_button {
+#course_form, #course_form_button, #change_lecture_title_form {
 
     margin-bottom: 10px;
 }
@@ -155,7 +160,7 @@ fieldset[disabled] .btn-custom.active {
     color: white;
 }
 
-#course_form_back{
+#course_form_back, #cancel_change_lecture_title{
     position: absolute;
     height: 34px;
     width: 61px;
@@ -165,7 +170,11 @@ fieldset[disabled] .btn-custom.active {
     top:0;
 }
 
-#id_title {
+#cancel_change_lecture_title span {
+    top:2px;
+}
+
+#id_title, #title_enter {
     width: calc(100% - 151px);
     margin-left:61px;
     margin-right: 0px;
@@ -173,7 +182,12 @@ fieldset[disabled] .btn-custom.active {
     border-radius: 0px;
 }
 
-#course_form_button {
+#title_enter {
+    top:10px;
+    height: 37px;
+}
+
+#course_form_button, #change_lecture_title_button {
     width: 61px;
     height: 34px;
     margin-top: 0px;
@@ -181,11 +195,14 @@ fieldset[disabled] .btn-custom.active {
     border-radius: 0px 8px 8px 0px;
 }
 
-#course_form_button span {
-    position: absolute;
-    color: white;
-    top:17px;
-    right:30px;
+#change_lecture_title_button, #cancel_change_lecture_title {
+    margin-top: 20px;
+    height: 37px;
+    top:10px;
+}
+
+#cancel_change_lecture_title {
+    margin-top: 10px;
 }
 
 /* Animation for warning text */
@@ -345,20 +362,6 @@ fieldset[disabled] .btn-custom.active {
 
 #lecture_pin {
     float: right;
-}
-
-#title_enter {
-    width: 100%;
-    margin-top: 21px;
-    margin-bottom: 10px;
-}
-
-#change_lecture_title_button {
-    margin-right: 5px;
-}
-
-#cancel_change_lecture_title {
-    margin-left: 5px;
 }
 
 @media (max-width: 780px) {

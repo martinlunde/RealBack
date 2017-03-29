@@ -341,10 +341,20 @@ class LecturePace(View):
                 })
 
             lecture.lecture_activity += 1
-            if form.cleaned_data['pace']:
-                lecture.pace += 1
+            # checking if vote increases or decreases a value
+            url_param = request.GET
+            vote = url_param.get('vote', '')
+            if vote:
+                if form.cleaned_data['pace']:
+                    lecture.paceup += 1
+                else:
+                    lecture.pacedown += 1
             else:
-                lecture.pace -= 1
+                if form.cleaned_data['pace']:
+                    lecture.paceup -= 1
+                else:
+                    lecture.pacedown -= 1
+
             lecture.save()
 
             return JsonResponse({

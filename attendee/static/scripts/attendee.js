@@ -86,7 +86,7 @@ function updatePageContents(lecture) {
 function getQuestions() {
     var api_url = '/lectures/' + lecture_pin + '/questions/';
     $.getJSON(api_url, function (data) {
-        console.log(data);
+        //console.log(data);
         if (data.success) {
             // TODO Update question list
             // Empty list of existing questions
@@ -181,7 +181,7 @@ pace_reset_timestamp = 0;
 function checkReset() {
     var URL = '/lectures/'+ lecture_pin + '/';
     $.getJSON(URL, function (data) {
-        console.log(data);
+        //console.log(data);
         if (data.success) {
             if (data.lecture.volume_reset_timestamp != volume_reset_timestamp) {
                 console.log("volume reset");
@@ -270,7 +270,9 @@ function updateVolume(increase) {
     });
 
     if (runagain) {
-       updateVolume(runagain_value);
+       setTimeout(function(){
+         updateVolume(runagain_value);
+       }, 10);
     }
 }
 
@@ -342,6 +344,8 @@ function updatePace(increase) {
     });
 
     if (runagain) {
+      setTimeout(function(){
         updatePace(runagain_value);
+      }, 10);
     }
 }

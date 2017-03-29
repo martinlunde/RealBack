@@ -35,6 +35,7 @@ class Lecture(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.CharField(max_length=50, validators=[validators.MinLengthValidator(3)])
     start_datetime = models.DateTimeField(default=timezone.now)
+    end_datetime = models.DateTimeField(default=timezone.now)
     timer_active = models.BooleanField(default=False)
     pin = models.CharField(max_length=6, default=_generate_pin, unique=True)
     pace = models.IntegerField(default=0)

@@ -371,14 +371,17 @@ class LectureTimer(View):
                 },
             })
 
-        time = lecture.start_datetime
+        startTime = lecture.start_datetime
+        endTime = lecture.end_datetime
         active = lecture.timer_active
 
         return JsonResponse({
             'success': True,
-            'time': time,
+            'startTime': startTime,
+            'endTime': endTime,
             'active': active,
         })
+
 
 class StartTimer(View):
     def get(self, request, pin=None):
@@ -399,6 +402,7 @@ class StartTimer(View):
             'success': True,
         })
 
+
 class StopTimer(View):
     def get(self, request, pin=None):
         try:
@@ -411,11 +415,13 @@ class StopTimer(View):
                 },
             })
         lecture.timer_active = False
+        lecture.end_datetime = timezone.now()
         lecture.save()
         return JsonResponse({
             'success': True,
             'lecture': lecture.timer_active,
         })
+
 
 class LectureVolume(View):
     def get(self, request, pin=None):

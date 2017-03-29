@@ -482,6 +482,7 @@ function blowUpLecturePin() {
 /**
  * Toggle timer
  */
+var time;
 function updateDisplay() {
     var seconds, minute, hours;
     var value = $('#stopWatch').html();
@@ -510,7 +511,8 @@ function updateDisplay() {
     seconds = String(seconds);
     minute = String(minute);
     hours = String(hours);
-    $('#stopWatch').html(hours + ":" + minute + ":" + seconds);
+    time = hours + ":" + minute + ":" + seconds
+    $('#stopWatch').html(time);
 }
 
 var stopTimer;
@@ -521,7 +523,7 @@ function timerController(){
         if (data.success) {
             if(timerToggle == false){
                 timerToggle = true;
-                $('#timerToggleButton').html('STOP');
+                $('#timerToggleButton').html('END LECTURE');
                 if(!data.active) {
                     var URL = '/lectures/' + lecture_pin + '/start_timer/';
                     $.getJSON(URL, function (data2) {

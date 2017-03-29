@@ -76,7 +76,7 @@ class ModelTestCase(TestCase):
         test_course.save()
 
         pin = models._generate_pin()
-        test_lecture = models.Lecture(course=test_course, title="Lecture1", pin=pin, pace=5, volume=10)
+        test_lecture = models.Lecture(course=test_course, title="Lecture1", pin=pin)
         test_lecture.save()
 
         # Test if lectures and courses are created correctly, and if the relevant functions are
@@ -84,10 +84,10 @@ class ModelTestCase(TestCase):
         self.assertEqual(test_course.title, "TDT4140")
         self.assertEqual(test_lecture.title, "Lecture1")
         self.assertEqual(test_lecture.course, test_course)
-        test_lecture.reset_pace()
-        test_lecture.reset_volume()
-        self.assertEqual(test_lecture.pace, 0)
-        self.assertEqual(test_lecture.volume, 0)
+        # test_lecture.reset_pace()
+        # test_lecture.reset_volume()
+        # self.assertEqual(test_lecture.pace, 0)
+        # self.assertEqual(test_lecture.volume, 0)
 
     def test_questions(self):
         user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')

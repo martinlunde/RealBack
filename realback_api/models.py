@@ -36,8 +36,10 @@ class Lecture(models.Model):
     title = models.CharField(max_length=50, validators=[validators.MinLengthValidator(3)])
     start_datetime = models.DateTimeField(default=timezone.now)
     pin = models.CharField(max_length=6, default=_generate_pin, unique=True)
-    pace = models.IntegerField(default=0)
-    volume = models.IntegerField(default=0)
+    paceup = models.IntegerField(default=0)
+    pacedown = models.IntegerField(default=0)
+    volumeup = models.IntegerField(default=0)
+    volumedown = models.IntegerField(default=0)
     attendee_counter = models.IntegerField(default=0)
     lecture_activity = models.IntegerField(default=0)
     volume_reset_timestamp = models.DateTimeField(default=timezone.now)
@@ -63,8 +65,10 @@ class Lecture(models.Model):
             'lecture_pin': self.pin,
             'lecture_title': self.title,
             'lecture_start_time': self.start_datetime,
-            'lecture_pace': self.pace,
-            'lecture_volume': self.volume,
+            'lecture_pace_up': self.paceup,
+            'lecture_pace_down': self.pacedown,
+            'lecture_volume_up': self.volumeup,
+            'lecture_volume_down': self.volumedown,
             'attendee_counter': self.attendee_counter,
             'lecture_activity': self.lecture_activity,
             'pace_reset_timestamp': self.pace_reset_timestamp,
@@ -72,12 +76,14 @@ class Lecture(models.Model):
         }
 
     def reset_pace(self):
-        self.pace = 0
+        self.paceup = 0
+        self.pacedown = 0
         self.pace_reset_timestamp = timezone.now()
         self.save()
 
     def reset_volume(self):
-        self.volume = 0
+        self.volumeup = 0
+        self.volumedown = 0
         self.volume_reset_timestamp = timezone.now()
         self.save()
 

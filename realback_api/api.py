@@ -466,10 +466,20 @@ class LectureVolume(View):
                 })
 
             lecture.lecture_activity += 1
-            if form.cleaned_data['volume']:
-                lecture.volume += 1
+
+            url_param = request.GET
+            vote = url_param.get('vote', '')
+            if vote:
+                if form.cleaned_data['volume']:
+                    lecture.volumeup += 1
+                else:
+                    lecture.volumedown += 1
             else:
-                lecture.volume -= 1
+                if form.cleaned_data['volume']:
+                    lecture.volumeup -= 1
+                else:
+                    lecture.volumedown -= 1
+
             lecture.save()
 
             return JsonResponse({

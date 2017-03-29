@@ -50,6 +50,7 @@ function backToCourseList() {
  * Navigate with the back button on the page
  */
 function pageBackButton() {
+    toggleLectureTitleForm()
     history.back();
 }
 

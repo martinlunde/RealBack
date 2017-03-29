@@ -358,6 +358,27 @@ class LecturePace(View):
         })
 
 
+class LectureTimer(View):
+    def get(self, request, pin=None):
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist'],
+                },
+            })
+
+        time = lecture.start_datetime
+        active = lecture.timer_active
+
+        return JsonResponse({
+            'success': True,
+            'lecture': time,
+            'active': active,
+        })
+
 class LectureVolume(View):
     def get(self, request, pin=None):
         """ Read digest of lecture volume opinions """

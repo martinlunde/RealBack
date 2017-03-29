@@ -484,7 +484,15 @@ function blowUpLecturePin() {
  */
 var timerToggle = false;
 function timerController(){
-    console.log(timerToggle);
+    var URL = '/lectures/'+ lecture_pin + 'timer/';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+
+        }
+  });
+
     if(timerToggle == false){
         timerToggle = true;
         $('#timerToggleButton').html('STOP');

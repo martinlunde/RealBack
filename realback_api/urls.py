@@ -21,6 +21,7 @@ urlpatterns = [
         ])),
         url(r'^pace/$', api.LecturePace.as_view(), name='lecture_pace'),
         url(r'^volume/$', api.LectureVolume.as_view(), name='lecture_volume'),
+        url(r'timer/$', api.LectureTimer.as_view(), name='lecture_timer'),
         url(r'^topics/$', api.LectureTopics.as_view(), name='lecture_topics'),
         url(r'^topics/(?P<topic_id>[0-9]+)/', include([
 

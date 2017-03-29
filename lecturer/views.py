@@ -10,7 +10,9 @@ def front_page(request):
     # TODO forms
     course_form = forms.CourseForm()
     lecture_form = forms.LectureForm()
+    topic_form = forms.LectureTopicForm()
     return render(request, 'lecturer/front_page.html', {
         'course_form': course_form,
         'lecture_form': lecture_form,
+        'topic_form': topic_form,
     })

@@ -271,49 +271,57 @@ pace_down = false;
  * Increase or decrease lecture pace preference
  */
 function updatePace(increase) {
-    var form_action = '/lectures/' + lecture_pin + '/pace/';
+    var form_action = '/lectures/' + $('#pinInput').val() + '/pace/?vote=';
     var form = $('#pace_form');
     var pace_element = $('#id_pace');
+    var query = '';
+    runagain = false;
+    runagain_value = false;
 
     //Gir knappene radio butten funksjonalitet
     if(increase) {
       if(pace_up) {
         pace_up = false;
         document.getElementById("pace_up").style.backgroundColor = "#f2f2f2";
-        pace_element.prop('checked', false);
+        pace_element.prop('checked', true);
       }else {
         if (pace_down) {
           pace_down = false
           document.getElementById("pace_down").style.backgroundColor = "#f2f2f2";
-          pace_element.prop('checked', true);
+          pace_element.prop('checked', false);
           //kjører det dobbelt
-          updatePace(true)
+          runagain = true;
+          runagain_value = true;
         }else {
           pace_up = true
           document.getElementById("pace_up").style.backgroundColor = "#cfcfcf";
           pace_element.prop('checked', true);
+          query = 'true'
         }
       }
     }else {
       if(pace_down) {
         pace_down = false
         document.getElementById("pace_down").style.backgroundColor = "#f2f2f2";
-        pace_element.prop('checked', true);
+        pace_element.prop('checked', false);
       }else {
         if (pace_up) {
           pace_up = false
           document.getElementById("pace_up").style.backgroundColor = "#f2f2f2";
-          pace_element.prop('checked', false);
+          pace_element.prop('checked', true);
           //kjører det dobbelt
-          updatePace(false)
+          runagain = true;
+          runagain_value = false;
         }else {
           pace_down = true;
           document.getElementById("pace_down").style.backgroundColor = "#cfcfcf";
           pace_element.prop('checked', false);
+          query = 'true'
         }
       }
     }
 
+    form_action += query;
 
     csrfPOST(form_action, form, function (data) {
         console.log(data);
@@ -321,4 +329,8 @@ function updatePace(increase) {
             $('#current_pace_value').text(data.lecture.lecture_pace);
         }
     });
+
+    if (runagain) {
+        updatePace(runagain_value);
+    }
 }

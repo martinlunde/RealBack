@@ -84,10 +84,10 @@ class ModelTestCase(TestCase):
         self.assertEqual(test_course.title, "TDT4140")
         self.assertEqual(test_lecture.title, "Lecture1")
         self.assertEqual(test_lecture.course, test_course)
-        #test_lecture.reset_pace()
-        #test_lecture.reset_volume()
-        #self.assertEqual(test_lecture.pace, 0)
-        #self.assertEqual(test_lecture.volume, 0)
+        # test_lecture.reset_pace()
+        # test_lecture.reset_volume()
+        # self.assertEqual(test_lecture.pace, 0)
+        # self.assertEqual(test_lecture.volume, 0)
 
     def test_questions(self):
         user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')

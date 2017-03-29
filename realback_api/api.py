@@ -341,7 +341,7 @@ class LecturePace(View):
                 })
 
             lecture.lecture_activity += 1
-            #checking if vote increases or decreases a value
+            # checking if vote increases or decreases a value
             url_param = request.GET
             vote = url_param.get('vote', '')
             if vote:

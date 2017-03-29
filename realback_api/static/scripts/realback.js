@@ -1,13 +1,16 @@
 
+/* Active update timers */
+var intervalTimerIDs = [];
+
 /**
- * Get details for lecture with PIN
- *
- * @param PIN       Lecture PIN
- * @param success   Function callback on received response
+ * Clear all update timers
  */
-function getLectureDetails(PIN, success) {
-    var URL = '/lectures/' + PIN + '/';
-    $.getJSON(URL, success);
+function clearIntervalTimers() {
+    console.log(intervalTimerIDs);
+    for (var i = 0; i < intervalTimerIDs.length; i++) {
+        clearInterval(intervalTimerIDs[i]);
+    }
+    intervalTimerIDs = [];
 }
 
 /**

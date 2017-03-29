@@ -104,7 +104,7 @@ fieldset[disabled] .btn-custom.active {
     width: 200px;
 }
 
-#course_form, #course_form_button, #change_lecture_title_form {
+#course_form, #change_lecture_title_form {
 
     margin-bottom: 10px;
 }

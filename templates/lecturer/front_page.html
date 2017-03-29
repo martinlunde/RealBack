@@ -128,16 +128,13 @@
 
                     <form id="change_lecture_title_form" style="display: none;">
                         {% csrf_token %}
-
+                        <button type="submit" id="change_lecture_title_button" class="btn btn-success">
+                            <span class="glyphicon glyphicon-ok glyphwhite"></span>
+                        </button>
                         {{ lecture_form.title }}
-                        <div class="center">
-                            <button type="submit" id="change_lecture_title_button" class="btn">
-                                <span class="glyphicon glyphicon-ok glyphwhite"></span>
-                            </button>
-                            <button type="button" id="cancel_change_lecture_title" class="btn">
-                                <span class="glyphicon glyphicon-remove glyphwhite"></span>
-                            </button>
-                        </div>
+                        <button type="button" id="cancel_change_lecture_title" class="btn btn-success">
+                            <span class="glyphicon glyphicon-remove glyphwhite"></span>
+                        </button>
                     </form>
                 </div>
 

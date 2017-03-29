@@ -95,6 +95,11 @@ fieldset[disabled] .btn-custom.active {
     color:white;
 }
 
+.glyph_move_center {
+    color: white;
+    top: -1px;
+}
+
 .btn-lecturer {
     width: 200px;
 }
@@ -179,13 +184,6 @@ fieldset[disabled] .btn-custom.active {
     margin-top: 0px;
     float: right;
     border-radius: 0px 8px 8px 0px;
-}
-
-#course_form_button span {
-    position: absolute;
-    color: white;
-    top:17px;
-    right:30px;
 }
 
 /* Animation for warning text */

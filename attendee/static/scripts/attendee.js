@@ -5,30 +5,31 @@ $(document).ready(function () {
     $('.footer').css("display", "block");
 
     $('#joinButton').click(onJoin);
+    $('#pinInput').focus();
     $('#question_submit_button').click(sendQuestion);
 });
+
+var lecture_pin = '';
 
 /**
  * Actions to perform after a lecture is joined
  */
 function onJoin(event) {
-    var PIN = $('#pinInput').val();
-    getLectureDetails(PIN, function (json) {
-        if (json.success == false) {
-            $('#landing_page').css("display", "none");
-            $('#frontpage_attendee').css("display", "block");
-            $('.footer').css("display", "block");
-
-        } else if (json.success == true) {
-            $('#landing_page').css("display", "block");
-            $('#frontpage_attendee').css("display", "none");
-            $('.footer').css("display", "none");
+    var PIN = $('#pinInput').val().trim().toUpperCase();
+    var URL = '/lectures/' + PIN + '/join/';
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+            lecture_pin = PIN;
+            $('#landing_page').show();
+            $('#frontpage_attendee').hide();
+            $('.footer').hide();
 
             // Populate the page contents
-            // TODO add a better update timer
-            //setInterval(function() {
-              updatePageContents(json.lecture);
-            //}, 5000);
+            updatePageContents(data.lecture);
+            var timerID = setInterval(updatePageContents, 10000);
+            console.log(timerID);
+            intervalTimerIDs.push(timerID);
         }
     });
 
@@ -39,9 +40,19 @@ function onJoin(event) {
             event.preventDefault();
         }
     });
-    question_input.keyup(function (event) {
-        $('#question_length').text(question_input.val().length + '/160')
-    });
+    function question_length(event) {
+        $('#question_length').html($('<div>').text(question_input.val().length + '/160'));
+
+        if (question_input.val().length >= 160) {
+            $('#question_length').children('div').css({
+                'animation-name': 'flash_text',
+                'animation-timing-function': 'linear',
+                'animation-duration': '2s'
+            });
+        }
+    }
+    question_input.keyup(question_length);
+    question_input.keydown(question_length);
     question_input.keyup();
 
     event.preventDefault();
@@ -57,7 +68,8 @@ function updatePageContents(lecture) {
     // TODO update other contents
     // Lecture details
     if (typeof lecture === 'undefined') {
-        getLectureDetails($('#pinInput').val(), function (data) {
+        var URL = '/lectures/' + lecture_pin + '/';
+        $.getJSON(URL, function (data) {
             if (data.success) {
                 var lecture = data.lecture;
                 $('.lecture_title').text(lecture.lecture_title.toUpperCase());
@@ -72,7 +84,7 @@ function updatePageContents(lecture) {
  * Get list of questions for lecture
  */
 function getQuestions() {
-    var api_url = '/lectures/' + $('#pinInput').val() + '/questions/';
+    var api_url = '/lectures/' + lecture_pin + '/questions/';
     $.getJSON(api_url, function (data) {
         console.log(data);
         if (data.success) {
@@ -109,7 +121,7 @@ function getQuestions() {
  * Post a new question
  */
 function sendQuestion(event) {
-    var form_action = '/lectures/' + $('#pinInput').val() + '/questions/';
+    var form_action = '/lectures/' + lecture_pin + '/questions/';
     var form_el = $("#question_form");
 
     csrfPOST(form_action, form_el, function (data) {
@@ -134,7 +146,7 @@ upvotedQuestions=[];
 function upvoteQuestion() {
     upvotedQuestions.push($(this).val());
     console.log('upvote:' + $(this).val());
-    var form_action = '/lectures/' + $('#pinInput').val() + '/questions/' + $(this).val() + '/vote/';
+    var form_action = '/lectures/' + lecture_pin + '/questions/' + $(this).val() + '/vote/';
     csrfPOST(form_action, $("<form>"), function (data) {
         console.log(data);
         if (data.success) {
@@ -167,7 +179,7 @@ pace_reset_timestamp = 0;
  * Increase or decrease lecture volume preference
  */
 function checkReset() {
-    var URL = '/lectures/'+ $('#pinInput').val();
+    var URL = '/lectures/'+ lecture_pin + '/';
     $.getJSON(URL, function (data) {
         console.log(data);
         if (data.success) {

@@ -352,3 +352,9 @@ body, html {
   .box {
     margin-top: 0px;
   }
+
+/* Animation for warning text */
+@keyframes flash_text {
+    0%      {color: #ff543f;}
+    100%    {color: inherit;}
+}

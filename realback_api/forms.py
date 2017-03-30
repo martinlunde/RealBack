@@ -47,3 +47,7 @@ class VolumeForm(forms.Form):
         required=False,
         widget=forms.CheckboxInput(attrs={'style': 'display: none;'})
     )
+
+
+class RatingForm(forms.Form):
+    rating = forms.IntegerField(required=True)

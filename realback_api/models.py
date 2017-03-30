@@ -46,7 +46,8 @@ class Lecture(models.Model):
     lecture_activity = models.IntegerField(default=0)
     volume_reset_timestamp = models.DateTimeField(default=timezone.now)
     pace_reset_timestamp = models.DateTimeField(default=timezone.now)
-    rating = models.FloatField(default=0)
+    rating = models.FloatField(default=1.0)
+    rating_amount = models.IntegerField(default=0)
     rating_active = models.BooleanField(default=False)
     # TODO free old pins that are not used anymore
 
@@ -80,6 +81,7 @@ class Lecture(models.Model):
             'volume_reset_timestamp': self.volume_reset_timestamp,
             'rating': self.rating,
             'rating_active': self.rating_active,
+            'rating_amount': self.rating_amount,
         }
 
     def reset_pace(self):

@@ -11,6 +11,13 @@ $(document).ready(function () {
     $('#lecture_pin').click(blowUpLecturePin);
     $('#lecture_pin_large').click(blowUpLecturePin);
 
+    $('#topic_title').click(toggleTopicTitleForm);
+    $('#new_topic_button').click(function (event) {
+        toggleTopicTitleForm(event, false, true);
+    });
+    $('#save_topic_title').click(addLectureTopic);
+    $('#cancel_topic_title').click(toggleTopicTitleForm);
+
     // Back button manipulation
     window.onpopstate = function (event) {
         if ('state' in event && event.state.hasOwnProperty('callback')) {
@@ -42,6 +49,7 @@ function backToCourseList() {
     hideAllLectureLists();
     clearIntervalTimers();
     toggleLectureTitleForm(null, true);
+    toggleTopicTitleForm(null, true);
 
     // Clear necessary data
     //lecture_pin = '';
@@ -115,6 +123,10 @@ function updateCourseList() {
             for (var i = 0; i < course_list.length; i++) {
                 var course = course_list[i];
                 var course_div = prototype_course_div.clone();
+                course_div.children('div.bars').click(toggleLectureListParent);
+                course_div.find('button.new_button').click(createLecture);
+                course_div.find('button.stat_button').click(showStatPage);
+                course_div.find('button.del_button').click(deleteCourse);
                 course_div.attr({
                     id: '',
                     style: ''
@@ -134,7 +146,7 @@ function updateCourseList() {
  *
  * `this` will be the button that called the function
  */
-function createLecture() {
+function createLecture(event) {
     var course_div = $(this).parent().parent().parent();
     var URL = '/courses/' + course_div.data('course_id') + '/lectures/';
     event.stopImmediatePropagation();
@@ -143,7 +155,7 @@ function createLecture() {
         console.log(data);
         if (data.success) {
             // TODO update lecture list for this course
-            var context = course_div.find('span').first();
+            var context = course_div.find('span.wraptext');
             toggleLectureList(context, true);
         }
     });
@@ -156,14 +168,13 @@ function createLecture() {
  * @param force_show    Force lecture list to be shown and updated
  */
 function toggleLectureList(click_context, force_show) {
-    event.stopImmediatePropagation();
     // Set parameter default to false
     force_show = (typeof force_show !== 'undefined') ? force_show : false;
 
     click_context = $(click_context);
     var course_div = click_context.parent().parent();
     var lecture_list = course_div.children('ul');
-    var glyph_span = click_context.children('span').first();
+    var glyph_span = click_context.children('span.glyphicon');
     var border_radius = course_div.children('div').first();
 
     if (force_show || ! lecture_list.is(':visible')) {
@@ -183,9 +194,9 @@ function toggleLectureList(click_context, force_show) {
     }
 }
 
-function toggleLectureListParent(click_context, force_show) {
-    event.stopImmediatePropagation();
-    toggleLectureList(jQuery(click_context).find(".wraptext"), force_show);
+function toggleLectureListParent(event) {
+    // event.stopImmediatePropagation();
+    toggleLectureList($(this).find('span.wraptext'), false);
 }
 
 /**
@@ -210,10 +221,11 @@ function updateLectureList(course_id, lecture_ul) {
         console.log(data);
         if (data.success && data.lectures.length > 0) {
             lecture_ul.empty();
-            var prototype_li_el = $('#prototype_lecture_list li');
+            var prototype_li_el = $('#prototype_lecture_list').children('li');
             for (var i = 0; i < data.lectures.length; i++) {
                 var lecture = data.lectures[i];
                 var li_element = prototype_li_el.clone();
+                li_element.find('button.lecture-del-button').click(deleteLecture);
                 // Store PIN so we can get it when lecture is clicked
                 li_element.data({
                     'lecture_pin': lecture.lecture_pin,
@@ -231,7 +243,7 @@ function updateLectureList(course_id, lecture_ul) {
  *
  * `this` will be the delete button
  */
-function deleteCourse() {
+function deleteCourse(event) {
     var course_div = $(this).parent().parent().parent();
     var course_id = course_div.data('course_id');
     event.stopImmediatePropagation();
@@ -262,7 +274,7 @@ function deleteCourse() {
  *
  * `this` will be the delete button
  */
-function deleteLecture() {
+function deleteLecture(event) {
     var lecture_el = $(this).parent();
     var lecture_pin = lecture_el.data('lecture_pin');
     event.stopImmediatePropagation();
@@ -273,8 +285,13 @@ function deleteLecture() {
         csrfDELETE('/lectures/' + lecture_pin + '/', function (data) {
             console.log(data);
             if (data.success) {
-                // TODO update lecture list
+                var lecture_li = lecture_el.parent();
                 lecture_el.remove();
+                if (lecture_li.is(':empty')) {
+                    lecture_li.append(
+                        $('#prototype_course_div').find('div.empty_lecture_list').clone()
+                    );
+                }
             }
         });
 
@@ -306,8 +323,23 @@ function showLecturePage() {
     history.replaceState({callback: 'backToCourseList'}, 'Lecture');
     history.pushState({callback: 'forwardToLecturePage'}, 'Lecture');
     forwardToLecturePage();
+
     // Get lecture
-    populateLecturePage();
+    var URL = '/lectures/'+ lecture_pin + '/';
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+            $('#lecture_title').children('h1').first().text(data.lecture.lecture_title).append(
+                ' <span class="glyphicon glyphicon-edit glyph-align-with-text"></span>');
+
+            if ($('#lecture_page_body').is(':visible')) {
+                $('#lecture_pin').children('h2').first().text(data.lecture.lecture_pin).append(
+                    ' <span class="glyphicon glyphicon-resize-full glyph-font-size-20"></span>');
+            }
+        }
+    });
+    populateTopicList();
+    refreshLecturePage();
 }
 
 /**
@@ -323,32 +355,17 @@ function forwardToLecturePage() {
     $('#lecture_page_body').show();
     $('#lecture_page').show();
 
-    var timerID = setInterval(populateLecturePage, 10000);
+    var timerID = setInterval(refreshLecturePage, 10000);
     console.log(timerID);
     intervalTimerIDs.push(timerID);
 }
 
 /**
- * Fill in contents in lecture page
+ * Lecture page contents that should be refreshed continuously
  */
-function populateLecturePage() {
-    var URL = '/lectures/'+ lecture_pin + '/';
-
-    $.getJSON(URL, function (data) {
-        console.log(data);
-        if (data.success) {
-            $('#lecture_title').children('h1').first().text(data.lecture.lecture_title).append(
-                ' <span class="glyphicon glyphicon-edit glyph-align-with-text"></span>');
-
-            if ($('#lecture_page_body').is(':visible')) {
-                $('#lecture_pin').children('h2').first().text(data.lecture.lecture_pin).append(
-                    ' <span class="glyphicon glyphicon-resize-full glyph-font-size-20"></span>');
-            }
-        }
-    });
+function refreshLecturePage() {
     populateRecentQuestionsLecturePage();
     populateTopQuestionsLecturePage();
-    populateTopicList();
     getPace();
     getVolume();
 }
@@ -414,9 +431,8 @@ function populateTopicList() {
         'white-space': 'nowrap',
         'text-align': 'center'
     });
-    $('#topic_title').css({
-        'text-align': 'center',
-        margin: '10px'
+    $('#topic_title').parent().css({
+        'text-align': 'center'
     });
 
     for (var i = 0; i < 15; i++) {
@@ -434,6 +450,7 @@ function populateTopicList() {
         });
         inside_div.text(i+1);
         inside_div.click(function () {
+            toggleTopicTitleForm(null, true);
             $('#topic_title').text($(this).data('topic_title'));
             topic_list.find('div').eq(current_topic_index).css({
                 width: '50px',
@@ -466,6 +483,43 @@ function populateTopicList() {
     });
     current_topic_div.click();
     $('#topic_title').text(current_topic_div.data('topic_title'));
+}
+
+/**
+ * Toggle topic title form
+ *
+ * @param event
+ * @param force_close
+ * @param new_topic
+ */
+function toggleTopicTitleForm(event, force_close, new_topic) {
+    force_close = (typeof force_close !== 'undefined') ? force_close : false;
+    new_topic = (typeof new_topic !== 'undefined') ? new_topic : false;
+
+    var topic_title = $('#topic_title');
+    var topic_title_div = topic_title.parent();
+    var topic_title_form = $('#topic_title_form');
+    var new_topic_button_div = $('#new_topic_button').parent();
+    var topic_title_before_div = $('#topic_title_before_div');
+    var title_input = topic_title_form.children('input[name=title]');
+
+    if (force_close || topic_title_form.is(':visible')) {
+        topic_title_form.hide();
+        title_input.val('');
+        topic_title_before_div.show();
+        topic_title_div.show();
+        new_topic_button_div.show();
+    } else {
+        topic_title_before_div.hide();
+        topic_title_div.hide();
+        new_topic_button_div.hide();
+        topic_title_form.children('input[name=order]').hide();
+        title_input.val(topic_title.text().trim());
+        title_input.attr('id', 'topic_title_enter');
+        title_input.addClass("form-control");
+        topic_title_form.show();
+        title_input.focus();
+    }
 }
 
 /**
@@ -543,9 +597,9 @@ function toggleLectureTitleForm(event, force_close) {
     force_close = (typeof force_close !== 'undefined') ? force_close : false;
     var lecture_title = $('#lecture_title');
     var change_lecture_title_form = $('#change_lecture_title_form');
-    var title_input = $('#change_lecture_title_form input[name=title]');
+    var title_input = change_lecture_title_form.children('input[name=title]');
 
-    if (force_close || lecture_title.is(':hidden')) {
+    if (force_close || change_lecture_title_form.is(':visible')) {
         change_lecture_title_form.hide();
         change_lecture_title_form.children('input[name=title]').val('');
         lecture_title.show();
@@ -670,7 +724,7 @@ function timerController(){
 /**
  * Show the statistics page for a course
  */
-function showStatPage() {
+function showStatPage(event) {
     event.stopImmediatePropagation();
     var course_id = $(this).parent().parent().parent().data('course_id');
 

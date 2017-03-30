@@ -367,6 +367,9 @@ function checkEnd() {
 }
 
 function showModal() {
-    console.log("modal shown");
     $('#myModal').modal('show');
+}
+
+function rate(rating) {
+    console.log("Rated " + String(rating));
 }

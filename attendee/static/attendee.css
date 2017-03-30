@@ -32,14 +32,6 @@ body, html {
 	max-width: 100%;
 }
 
-@media (max-width: 750px) {
-	.logo {
-		width: 125px;
-		margin-left: -20px;
-		margin-top: 19px;
-	}
-}
-
 * {
 	color: #007d70;
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;

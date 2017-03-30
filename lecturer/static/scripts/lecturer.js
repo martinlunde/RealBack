@@ -337,28 +337,46 @@ function populateLecturePage() {
     $.getJSON(URL, function (data) {
         console.log(data);
         if (data.success) {
-
             $('#lecture_title').children('h1').first().text(data.lecture.lecture_title).append(
                 ' <span class="glyphicon glyphicon-edit glyph-align-with-text"></span>');
 
-            if (data.lecture.lecture_title.length > 29) {
-                $('#lecture_title').children('h1').first().css({
-                    'font-size': '22px'
-                });
-                $('#lecture_title').children('h1').children('span').css({
-                    'font-size': '18px'
-                });
-            } else {
-                $('#lecture_title').children('h1').first().css({
-                    'font-size': '36px'
-                });
-                $('#lecture_title').children('h1').children('span').css({
-                    'font-size': '25px'
-                });
-            }
             if ($('#lecture_page_body').is(':visible')) {
                 $('#lecture_pin').children('h2').first().text(data.lecture.lecture_pin).append(
                     ' <span class="glyphicon glyphicon-resize-full glyph-font-size-20"></span>');
+            }
+            if ($(window).width() > 700) {
+                if (data.lecture.lecture_title.length > 29) {
+                    $('#lecture_title').children('h1').first().css({
+                        'font-size': '22px',
+                        'margin-top':'25px'
+                    });
+                    $('#lecture_title').children('h1').children('span').css({
+                        'font-size': '18px'
+                    });
+                    $('#lecture_pin').css({
+                        'margin-top':'-5px'
+                    })
+                } else {
+                    $('#lecture_title').children('h1').first().css({
+                        'font-size': '36px',
+                        'margin-top':'20px'
+                    });
+                    $('#lecture_title').children('h1').children('span').css({
+                        'font-size': '25px'
+                    });
+                }
+            } else {
+                $('#lecture_title').children('h1').first().css({
+                        'font-size': '20px',
+                        'margin-top':'25px'
+                    });
+                    $('#lecture_title').children('h1').children('span').css({
+                        'font-size': '20px'
+                    });
+                    $('#lecture_pin').css({
+                        'margin-top':'-5px',
+                        'font-size': '18px'
+                    })
             }
         }
     });

@@ -329,14 +329,14 @@ fieldset[disabled] .btn-custom.active {
 }
 
 .sound-box-content {
-    position: absolute;
-    top:80px;
+    top:25px;
 }
 
 .number-huge {
     font-size: 30px;
     margin-top: 10px;
     text-align: center;
+    padding: 0px;
 }
 
 .middle {
@@ -372,13 +372,36 @@ fieldset[disabled] .btn-custom.active {
     left: -5px;
 }
 
+.remove-padding {
+    padding: 0px;
+}
+
+.logout {
+    float: right;
+}
+
+@media (max-width: 991px) {
+    #lecture_pin {
+        float:none;
+        text-align: center;
+    }
+
+    .bottom_aligned {
+        margin-top: 70px;
+    }
+}
+
 @media (max-width: 780px) {
+
+    #lecture_title h1 {
+        font-size: 20px;
+    }
 
     .wraptext {
         word-wrap: break-word;
         margin-top: 6px;
         position: relative;
-}
+    }
 
     .bars .btn-lecturer-stats {
         float: left;

@@ -340,6 +340,7 @@ function showLecturePage() {
     });
     populateTopicList();
     refreshLecturePage();
+    resetTimer();
 }
 
 /**
@@ -488,9 +489,9 @@ function populateTopicList() {
 /**
  * Toggle topic title form
  *
- * @param event
- * @param force_close
- * @param new_topic
+ * @param event         Click event
+ * @param force_close   True if form should be closed, false if form should be toggled
+ * @param new_topic     True if a new topic should be created, false if a topic should be updated
  */
 function toggleTopicTitleForm(event, force_close, new_topic) {
     force_close = (typeof force_close !== 'undefined') ? force_close : false;
@@ -717,6 +718,10 @@ function timerController(){
             }
         }
   });
+}
+
+function resetTimer() {
+    $('#stopWatch').html("00:00:00");
 }
 
 /* --- Statistics page related stuff --- */

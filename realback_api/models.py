@@ -46,6 +46,9 @@ class Lecture(models.Model):
     lecture_activity = models.IntegerField(default=0)
     volume_reset_timestamp = models.DateTimeField(default=timezone.now)
     pace_reset_timestamp = models.DateTimeField(default=timezone.now)
+    rating = models.FloatField(default=1.0)
+    rating_amount = models.IntegerField(default=0)
+    rating_active = models.BooleanField(default=False)
     # TODO free old pins that are not used anymore
 
     def save(self, *args, **kwargs):
@@ -67,6 +70,7 @@ class Lecture(models.Model):
             'lecture_pin': self.pin,
             'lecture_title': self.title,
             'lecture_start_time': self.start_datetime,
+            'lecture_end_time': self.end_datetime,
             'lecture_pace_up': self.paceup,
             'lecture_pace_down': self.pacedown,
             'lecture_volume_up': self.volumeup,
@@ -75,6 +79,9 @@ class Lecture(models.Model):
             'lecture_activity': self.lecture_activity,
             'pace_reset_timestamp': self.pace_reset_timestamp,
             'volume_reset_timestamp': self.volume_reset_timestamp,
+            'rating': self.rating,
+            'rating_active': self.rating_active,
+            'rating_amount': self.rating_amount,
         }
 
     def reset_pace(self):
@@ -99,6 +106,7 @@ class LectureTopic(models.Model):
 
     def as_dict(self):
         return {
+            'topic_id': self.id,
             'topic_title': self.title,
             'topic_understanding': self.understanding,
             'topic_order': self.order,

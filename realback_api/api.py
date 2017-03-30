@@ -407,6 +407,7 @@ class StartTimer(View):
 
         lecture.start_datetime = timezone.now()
         lecture.timer_active = True
+        lecture.rating_active = False
         lecture.save()
         return JsonResponse({
             'success': True,
@@ -426,10 +427,60 @@ class StopTimer(View):
             })
         lecture.timer_active = False
         lecture.end_datetime = timezone.now()
+        lecture.rating_active = True
         lecture.save()
         return JsonResponse({
             'success': True,
             'lecture': lecture.timer_active,
+        })
+
+
+class ResetRating(View):
+    def get(self, request, pin=None):
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist'],
+                },
+            })
+        lecture.rating_active = False
+        lecture.save()
+        return JsonResponse({
+            'success': True,
+            'lecture': lecture.timer_active,
+        })
+
+
+class Rate(View):
+    def post(self, request, pin=None):
+        form = forms.RatingForm(request.POST)
+        if form.is_valid():
+            try:
+                lecture = models.Lecture.objects.get(pin=pin)
+            except models.Lecture.DoesNotExist:
+                return JsonResponse({
+                    'success': False,
+                    'errors': {
+                        'message': ['Lecture does not exist'],
+                    },
+                })
+
+            lecture.rating_amount += 1
+            old_average = lecture.rating
+            lecture.rating = old_average + ((form.cleaned_data['rating'] - old_average)/lecture.rating_amount)
+            lecture.save()
+
+            return JsonResponse({
+                'success': True,
+                'lecture': lecture.as_dict(),
+            })
+
+        return JsonResponse({
+            'success': False,
+            'errors': form.errors,
         })
 
 

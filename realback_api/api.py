@@ -470,7 +470,7 @@ class Rate(View):
 
             lecture.rating_amount += 1
             old_average = lecture.rating
-            lecture.rating = old_average + ((form.cleaned_data['rating'] - old_average)/lecture.rating_amount)
+            lecture.rating = old_average + ((form.cleaned_data['rating'] - old_average) / lecture.rating_amount)
             lecture.save()
 
             return JsonResponse({

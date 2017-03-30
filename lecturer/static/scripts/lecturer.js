@@ -308,6 +308,7 @@ function showLecturePage() {
     forwardToLecturePage();
     // Get lecture
     populateLecturePage();
+    resetTimer();
 }
 
 /**
@@ -662,6 +663,10 @@ function timerController(){
             }
         }
   });
+}
+
+function resetTimer() {
+    $('#stopWatch').html("00:00:00");
 }
 
 /* --- Statistics page related stuff --- */

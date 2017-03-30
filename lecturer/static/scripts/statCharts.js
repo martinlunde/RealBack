@@ -84,27 +84,14 @@ function createCharts(course_id) {
                 console.log(questionCount_list);
 
                 var questionPie = new Chart(ctx3, {
-                type: 'pie',
+                type: 'line',
                 data: {
                     labels: lectures,
                     datasets: [{
                         label: '# of activity-points',
                         data: questionCount_list,
-                        backgroundColor: [
-                            "#0D998A",
-                            "#30B9AA",
-                            "#2F9E92",
-                            "#006E62",
-                            "#00665B",
-                            "#004C44",
-                            "#00322D",
-                            "#0D998A",
-                            "#30B9AA",
-                            "#2F9E92",
-                            "#006E62",
-                            "#00665B",
-                            "#004C44",
-                            "#00322D",],
+                        backgroundColor: ["#00665B"],
+                        borderColor: ["#007d70"],
                         borderWidth: 2,
                     }]
                 },

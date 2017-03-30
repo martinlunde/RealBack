@@ -178,7 +178,7 @@
                                     <div class="row">
                                         <div class="number-huge col-xs-3" id="pace_upvotes">0</div>
                                         <div class="col-xs-6 middle">
-                                            <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="updateVolume(true)">
+                                            <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="LectureResetPace">
                                                 <h1 class="glyphicon glyphicon-menu-up glyph-up"></h1>
                                             </button>
                                         </div>
@@ -201,13 +201,13 @@
                                 <div class="row">
                                     <div class="sound-box-content col-xs-10">
                                         <div class="row">
-                                            <div class="number-huge col-xs-3">0</div>
+                                            <div class="number-huge col-xs-3" id="volume_upvotes">0</div>
                                             <div class="col-xs-6 middle">
-                                                <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="updateVolume(true)">
+                                                <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="LectureResetVolume">
                                                     <h1 class="glyphicon glyphicon-menu-up glyph-up"></h1>
                                                 </button>
                                             </div>
-                                            <div class="number-huge col-xs-3 red_text">0</div>
+                                            <div class="number-huge col-xs-3 red_text" id="volume_downvotes">0</div>
                                         </div>
                                     </div>
                                 </div>
@@ -269,12 +269,22 @@
 
 <!-- STATISTICS PAGE -->
 
-    <div class="content_lecturer_landingpage col-md-12" id="course_overview_page">
-    <div id="stat_page" class="row" style="display: none">
-        <button type="button" class="btn" onclick="pageBackButton()">
-            <span class="glyphicon glyphicon-arrow-left glyphwhite"></span> BACK
-        </button>
+    <div class="content_lecturer_landingpage col-md-12" id="stat_page" style="display: none">
         <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-custom btn-lecturer btn-success vertical-align" onclick="pageBackButton()">
+                    <span class="glyphicon glyphicon-arrow-left glyphwhite move_left"></span>BACK
+                </button>
+            </div>
+            <div class="col-md-4">
+                <h1 class="center">STATISTICS</h1>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2"></div>
             <div class="col-md-4">
                 <h3>Attendee count</h3>
                 <canvas id="countChart" width="400" height="400"></canvas>
@@ -283,13 +293,17 @@
                 <h3>Lecture Activity</h3>
                 <canvas id="activityChart" width="400" height="400"></canvas>
             </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
             <div class="col-md-4">
                 <h3>Questions per lecture</h3>
                 <canvas id="questionPie" width="400" height="400"></canvas>
             </div>
-            <script src="{% static 'scripts/statCharts.js' %}"></script>
+            <div class="col-md-6"></div>
         </div>
-    </div>
+        <script src="{% static 'scripts/statCharts.js' %}"></script>
     </div>
 
 </div>

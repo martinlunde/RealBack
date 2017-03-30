@@ -368,6 +368,10 @@ fieldset[disabled] .btn-custom.active {
     color: #EE6352;
 }
 
+.move_left {
+    left: -5px;
+}
+
 @media (max-width: 780px) {
 
     .wraptext {

@@ -41,6 +41,7 @@ function backToCourseList() {
 
     hideAllLectureLists();
     clearIntervalTimers();
+    toggleLectureTitleForm(null, true);
 
     // Clear necessary data
     //lecture_pin = '';
@@ -50,7 +51,6 @@ function backToCourseList() {
  * Navigate with the back button on the page
  */
 function pageBackButton() {
-    toggleLectureTitleForm()
     history.back();
 }
 
@@ -208,7 +208,7 @@ function updateLectureList(course_id, lecture_ul) {
 
     $.getJSON(URL, function (data) {
         console.log(data);
-        if (data.success) {
+        if (data.success && data.lectures.length > 0) {
             lecture_ul.empty();
             var prototype_li_el = $('#prototype_lecture_list li');
             for (var i = 0; i < data.lectures.length; i++) {
@@ -539,23 +539,24 @@ function getVolume() {
 /**
  * Show title form to edit lecture title
  */
-function toggleLectureTitleForm() {
+function toggleLectureTitleForm(event, force_close) {
+    force_close = (typeof force_close !== 'undefined') ? force_close : false;
     var lecture_title = $('#lecture_title');
     var change_lecture_title_form = $('#change_lecture_title_form');
     var title_input = $('#change_lecture_title_form input[name=title]');
 
-    if (lecture_title.is(':visible')) {
+    if (force_close || lecture_title.is(':hidden')) {
+        change_lecture_title_form.hide();
+        change_lecture_title_form.children('input[name=title]').val('');
+        lecture_title.show();
+
+    } else {
         lecture_title.hide();
         title_input.val(lecture_title.children('h1').first().text().trim());
         change_lecture_title_form.show();
         title_input.focus();
         title_input.attr('id', 'title_enter');
         title_input.addClass("form-control");
-
-    } else {
-        change_lecture_title_form.hide();
-        change_lecture_title_form.children('input[name=title]').val('');
-        lecture_title.show();
     }
 }
 

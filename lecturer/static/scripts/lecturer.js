@@ -208,7 +208,7 @@ function updateLectureList(course_id, lecture_ul) {
 
     $.getJSON(URL, function (data) {
         console.log(data);
-        if (data.success) {
+        if (data.success && data.lectures.length > 0) {
             lecture_ul.empty();
             var prototype_li_el = $('#prototype_lecture_list li');
             for (var i = 0; i < data.lectures.length; i++) {

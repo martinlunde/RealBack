@@ -65,6 +65,7 @@ function updatePageContents(lecture) {
     // Populate question list
     getQuestions();
     checkReset();
+    checkEnd();
     // TODO update other contents
     // Lecture details
     if (typeof lecture === 'undefined') {
@@ -348,4 +349,24 @@ function updatePace(increase) {
         updatePace(runagain_value);
       }, 10);
     }
+}
+
+function checkEnd() {
+     var URL = '/lectures/' + lecture_pin;
+    $.getJSON(URL, function (data) {
+        if (data.success) {
+            if(data.lecture.rating_active){
+                showModal();
+                var URL = '/lectures/'+ lecture_pin + '/reset_rating/';
+                $.getJSON(URL, function (data) {
+                    if (data.success) {console.log("reset success")}
+                });
+            }
+        }
+    });
+}
+
+function showModal() {
+    console.log("modal shown");
+    $('#myModal').modal('show');
 }

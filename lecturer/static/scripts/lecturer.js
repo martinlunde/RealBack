@@ -146,7 +146,7 @@ function createLecture() {
             var context = course_div.find('span').first();
             toggleLectureList(context, true);
         }
-    })
+    });
 }
 
 /**
@@ -323,7 +323,7 @@ function forwardToLecturePage() {
     $('#lecture_page_body').show();
     $('#lecture_page').show();
 
-    var timerID = setInterval(populateLecturePage, 2000);
+    var timerID = setInterval(populateLecturePage, 10000);
     console.log(timerID);
     intervalTimerIDs.push(timerID);
 }
@@ -337,9 +337,25 @@ function populateLecturePage() {
     $.getJSON(URL, function (data) {
         console.log(data);
         if (data.success) {
+
             $('#lecture_title').children('h1').first().text(data.lecture.lecture_title).append(
                 ' <span class="glyphicon glyphicon-edit glyph-align-with-text"></span>');
 
+            if (data.lecture.lecture_title.length > 29) {
+                $('#lecture_title').children('h1').first().css({
+                    'font-size': '22px'
+                });
+                $('#lecture_title').children('h1').children('span').css({
+                    'font-size': '18px'
+                });
+            } else {
+                $('#lecture_title').children('h1').first().css({
+                    'font-size': '36px'
+                });
+                $('#lecture_title').children('h1').children('span').css({
+                    'font-size': '25px'
+                });
+            }
             if ($('#lecture_page_body').is(':visible')) {
                 $('#lecture_pin').children('h2').first().text(data.lecture.lecture_pin).append(
                     ' <span class="glyphicon glyphicon-resize-full glyph-font-size-20"></span>');
@@ -348,12 +364,13 @@ function populateLecturePage() {
     });
     populateRecentQuestionsLecturePage();
     populateTopQuestionsLecturePage();
+    populateTopicList();
     getPace();
     getVolume();
 }
 
 /**
- * Fill recent in questions in lecture page
+ * Fill in recent questions in lecture page
  */
 function populateRecentQuestionsLecturePage() {
     var URL = '/lectures/'+ lecture_pin + '/questions/?order=latest';
@@ -390,6 +407,89 @@ function populateTopQuestionsLecturePage() {
           }
         }
   });
+}
+
+var current_topic_index = 0;
+
+/**
+ * Populate topic list
+ */
+function populateTopicList() {
+    var topic_list = $('#topic_list');
+    var outside_div = topic_list.parent();
+    topic_list.empty();
+    topic_list.css({
+        'list-style-type': 'none'
+    });
+    outside_div.css({
+        margin: '0',
+        padding: '0',
+        height: '80px',
+        'overflow-x': 'hidden',
+        'overflow-y': 'hidden',
+        'white-space': 'nowrap',
+        'text-align': 'center'
+    });
+    $('#topic_title').css({
+        'text-align': 'center',
+        margin: '10px'
+    });
+
+    for (var i = 0; i < 15; i++) {
+        var li_el = $('<li>');
+        var inside_div = $('<div>');
+        inside_div.addClass('btn');
+        inside_div.css({
+            margin: '5px 10px',
+            width: '50px',
+            height: '50px'
+        });
+        inside_div.data({
+            topic_title: 'Topic ' + i,
+            topic_index: i
+        });
+        inside_div.text(i+1);
+        inside_div.click(function () {
+            $('#topic_title').text($(this).data('topic_title'));
+            topic_list.find('div').eq(current_topic_index).css({
+                width: '50px',
+                height: '50px'
+            });
+            current_topic_index = $(this).data('topic_index');
+            $(this).css({
+                width: '60px',
+                height: '60px'
+            });
+            var current_width = topic_list.width();
+            topic_list.css({
+                position: 'relative',
+                left: (current_width / 2 - 60 - current_topic_index * 70)
+            });
+        });
+
+        li_el.css({
+            display: 'inline'
+        });
+
+        li_el.append(inside_div);
+        topic_list.append(li_el);
+    }
+
+    var current_topic_div = topic_list.find('div').eq(current_topic_index);
+    current_topic_div.css({
+        width: '60px',
+        height: '60px'
+    });
+    current_topic_div.click();
+    $('#topic_title').text(current_topic_div.data('topic_title'));
+}
+
+/**
+ * Add a new topic to the lecture
+ */
+function addLectureTopic() {
+    var URL = '/lectures' + lecture_pin + '/topics'
+
 }
 
 /**

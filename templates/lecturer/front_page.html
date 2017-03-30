@@ -159,6 +159,20 @@
                                     <span class="glyphicon glyphicon-record glyph-center"></span>
                             </div>
                         </div>
+                        <div class="row">
+                            <ul id="topic_list"></ul>
+                        </div>
+                        <div class="row">
+                            <h4 id="topic_title"></h4>
+                            <form id="topic_title_form" style="display: none;">
+                                {% csrf_token %}
+                                {{ topic_form.title }}
+                                {{ topic_form.order }}
+                                <button type="button" class="btn">cancel</button>
+                                <button type="submit" class="btn">save</button>
+                            </form>
+                            <button type="button" id="new_topic_button" class="btn">NEW TOPIC</button>
+                        </div>
                     </div>
                 </div>
 
@@ -257,8 +271,7 @@
                                 </div>
                             </div>
                             <div class="row" id="asked_questions">
-                                          <ul id="question_list_recent">
-                                          </ul>
+                                <ul id="question_list_recent"></ul>
                             </div>
                         </div>
                     </div>

@@ -22,6 +22,12 @@ class LectureForm(forms.ModelForm):
         fields = ['title']
 
 
+class NewLectureTopicForm(forms.ModelForm):
+    class Meta:
+        model = models.LectureTopic
+        fields = ['title']
+
+
 class LectureTopicForm(forms.ModelForm):
     class Meta:
         model = models.LectureTopic

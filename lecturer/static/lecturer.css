@@ -246,7 +246,7 @@ fieldset[disabled] .btn-custom.active {
     background-color: #eeeeee;
 }
 
-.btn-lecturer-del {
+.lecture-del-button {
     text-align: center;
     height: 25px;
     width: 60px;
@@ -257,7 +257,7 @@ fieldset[disabled] .btn-custom.active {
     margin-top:-2.5px;
 }
 
-.btn-lecturer-del p {
+.lecture-del-button p {
     color: white;
     width: 40px;
     float: right;
@@ -384,4 +384,8 @@ fieldset[disabled] .btn-custom.active {
     .bars {
         height: auto;
     }
+}
+
+#new_topic_button {
+    width: 110px;
 }

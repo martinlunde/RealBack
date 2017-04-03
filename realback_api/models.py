@@ -106,6 +106,7 @@ class LectureTopic(models.Model):
 
     def as_dict(self):
         return {
+            'topic_id': self.id,
             'topic_title': self.title,
             'topic_understanding': self.understanding,
             'topic_order': self.order,

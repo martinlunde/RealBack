@@ -163,29 +163,62 @@
                                     <span class="glyphicon glyphicon-record glyph-center"></span>
                             </div>
                         </div>
+
                         <div id="topic_list_parent" class="row">
                             <ul id="topic_list"></ul>
                         </div>
-                        <div class="row">
-                            <div class="col-md-2" id="topic_title_before_div"></div>
-                            <div class="col-md-8" id="topic_title_parent">
-                                <h4 id="topic_title"></h4>
-                                <span class="glyphicon glyphicon-edit"></span>
-                            </div>
 
-                            <form id="topic_title_form" style="display: none;">
-                                {% csrf_token %}
-                                {{ topic_form.title }}
-                                {{ topic_form.order }}
-                                <button type="button" class="btn btn-success" id="cancel_topic_title">
+                        <div id="topic_title_row" class="row">
+                            <div class="col-md-2" id="topic_title_before_div">
+                                <button type="button" id="delete_topic_button" title="Delete topic"
+                                        class="btn btn-success topic_button">
+                                    <span class="glyphicon glyphicon-minus glyphwhite"></span>
+                                    DEL</button>
+                            </div>
+                            <div class="col-md-8" id="topic_title_parent">
+                                <h4 id="topic_title" title="Change topic title"></h4>
+                                <span id="topic_title_glyph" class="glyphicon glyphicon-edit"
+                                      title="Change topic title"></span>
+                            </div>
+                            <div id="new_topic_button_parent" class="col-md-2 topic_button_right">
+                                <button type="button" id="new_topic_button" title="New topic"
+                                        class="btn btn-success topic_button">
+                                    <span class="glyphicon glyphicon-plus glyphwhite"></span>
+                                    NEW</button>
+                            </div>
+                        </div>
+                        <div id="topic_title_form_row" class="row" style="display: none;">
+                            <div class="col-md-12">
+                                <form id="topic_title_form">
+                                    <button type="button" class="btn btn-success"
+                                            id="cancel_topic_title" title="Cancel">
+                                        <span class="glyphicon glyphicon-remove glyphwhite"></span>
+                                    </button>
+                                    {% csrf_token %}
+                                    {{ topic_form.title }}
+                                    {{ topic_form.order }}
+                                    <button type="submit" class="btn btn-success"
+                                            id="save_topic_title" title="Save">
+                                        <span class="glyphicon glyphicon-ok glyphwhite"></span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="topic_delete_row" class="row" style="display: none;">
+                            <div class="col-md-2">
+                                <button type="button" id="cancel_delete_topic" title="Cancel delete"
+                                        class="btn btn-success topic_button">
                                     <span class="glyphicon glyphicon-remove glyphwhite"></span>
                                 </button>
-                                <button type="submit" class="btn btn-success" id="save_topic_title">
+                            </div>
+                            <div id="delete_topic_title_parent" class="col-md-8">
+                                <h4 id="delete_topic_title"></h4>
+                            </div>
+                            <div class="col-md-2 topic_button_right">
+                                <button type="button" id="confirm_delete_topic" title="Confirm delete"
+                                        class="btn btn-success topic_button">
                                     <span class="glyphicon glyphicon-ok glyphwhite"></span>
                                 </button>
-                            </form>
-                            <div class="col-md-2">
-                                <button type="button" id="new_topic_button" class="btn btn-success">NEW TOPIC</button>
                             </div>
                         </div>
                     </div>

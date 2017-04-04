@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.db.models import Max
 from django.utils import timezone
 from . import models, forms
 
@@ -117,9 +118,12 @@ class LectureTopics(View):
                     },
                 })
 
-            topic_count = models.LectureTopic.objects.filter(lecture=lecture).count()
+            max_topic_order = models.LectureTopic.objects.filter(lecture=lecture).aggregate(Max('order'))['order__max']
+            if max_topic_order is None:
+                # Set to -1 if no topics exist since we add 1 later
+                max_topic_order = -1
             topic = form.save(commit=False)
-            topic.order = topic_count  # Zero indexed so set to count
+            topic.order = max_topic_order + 1
             topic.lecture = lecture
             topic.save()
             return JsonResponse({
@@ -205,6 +209,7 @@ class LectureTopicDetails(View):
             })
 
         topic.delete()
+        # TODO Reorder topics after topic is deleted
         return JsonResponse({
             'success': True,
             'lecture_topic_id': topic_id,

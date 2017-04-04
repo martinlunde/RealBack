@@ -49,6 +49,7 @@ class Lecture(models.Model):
     rating = models.FloatField(default=1.0)
     rating_amount = models.IntegerField(default=0)
     rating_active = models.BooleanField(default=False)
+    active_topic_index = models.IntegerField(default=0)
     # TODO free old pins that are not used anymore
 
     def save(self, *args, **kwargs):

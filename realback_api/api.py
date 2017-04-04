@@ -23,10 +23,13 @@ class LectureDetails(View):
                 },
             })
 
+        # If join URL path is used
+        # AND PIN for this lecture is not stored in session
+        # AND current user is not the lecturer for this lecture
+        # THEN we count a new attendee
         if join and request.session.get('lecture_pin', '') != pin and request.user != lecture.course.user:
             request.session['lecture_pin'] = pin
             lecture.attendee_counter += 1
-            print('Attendees: ' + str(lecture.attendee_counter))
             lecture.save()
 
         return JsonResponse({
@@ -102,7 +105,7 @@ class LectureTopics(View):
     def post(self, request, pin=None):
         """ Create lecture topic """
         # TODO remember to check if user has access (owner) to course
-        form = forms.LectureTopicForm(request.POST)
+        form = forms.NewLectureTopicForm(request.POST)
         if form.is_valid():
             try:
                 lecture = models.Lecture.objects.get(pin=pin, course__user=request.user)
@@ -114,7 +117,9 @@ class LectureTopics(View):
                     },
                 })
 
+            topic_count = models.LectureTopic.objects.filter(lecture=lecture).count()
             topic = form.save(commit=False)
+            topic.order = topic_count  # Zero indexed so set to count
             topic.lecture = lecture
             topic.save()
             return JsonResponse({

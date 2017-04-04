@@ -15,8 +15,17 @@ $(document).ready(function () {
     $('#new_topic_button').click(function (event) {
         toggleTopicTitleForm(event, false, true);
     });
-    $('#save_topic_title').click(addLectureTopic);
     $('#cancel_topic_title').click(toggleTopicTitleForm);
+
+    // Change conflicting automatic id's for input fields
+    $('#change_lecture_title_form').children('input[name=title]')
+        .attr({id: 'title_enter', placeholder: 'Lecture title'})
+        .addClass("form-control");
+    $('#topic_title_form').children('input[name=title]')
+        .attr('id', 'topic_title_input')
+        .addClass("form-control");
+
+    $('#course_form').find('input[name=title]').attr('placeholder', 'Course title');
 
     // Back button manipulation
     window.onpopstate = function (event) {
@@ -50,9 +59,6 @@ function backToCourseList() {
     clearIntervalTimers();
     toggleLectureTitleForm(null, true);
     toggleTopicTitleForm(null, true);
-
-    // Clear necessary data
-    //lecture_pin = '';
 }
 
 /**
@@ -84,7 +90,7 @@ function toggleShowCourseForm() {
 /**
  * Create a new course
  *
- * @param event     Submit event object
+ * @param event     Click event
  */
 function createCourse(event) {
     var form_action = '/courses/';
@@ -127,10 +133,7 @@ function updateCourseList() {
                 course_div.find('button.new_button').click(createLecture);
                 course_div.find('button.stat_button').click(showStatPage);
                 course_div.find('button.del_button').click(deleteCourse);
-                course_div.attr({
-                    id: '',
-                    style: ''
-                });
+                course_div.removeAttr('id style');
                 course_div.data('course_id', course.course_id);
                 course_div.data('delete_permission', false);
                 // Insert title after first glyph icon
@@ -144,7 +147,7 @@ function updateCourseList() {
 /**
  * Create a new lecture for a course
  *
- * `this` will be the button that called the function
+ * @param event     Click event
  */
 function createLecture(event) {
     var course_div = $(this).parent().parent().parent();
@@ -164,11 +167,11 @@ function createLecture(event) {
 /**
  * Toggle visibility of the lecture list for a course and update list if it's not visible
  *
- * @param click_context       The element that called the function
- * @param force_show    Force lecture list to be shown and updated
+ * @param click_context     The element that called the function
+ * @param force_show        Force lecture list to be shown and updated (default: false)
  */
 function toggleLectureList(click_context, force_show) {
-    // Set parameter default to false
+    // Set force_show parameter default to false
     force_show = (typeof force_show !== 'undefined') ? force_show : false;
 
     click_context = $(click_context);
@@ -203,9 +206,12 @@ function toggleLectureListParent(event) {
  * Hide all the lecture lists from the course overview page
  */
 function hideAllLectureLists() {
-    $('#course_list > div > ul').hide();
-    $('#course_list div.bars').removeClass('bars-change-border-radius');
-    $('#course_list span.glyphicon-menu-down').removeClass('glyphicon-menu-down').addClass('glyphicon-menu-right');
+    var course_list = $('#course_list');
+    course_list.find('ul').hide();
+    course_list.find('div.bars').removeClass('bars-change-border-radius');
+    course_list.find('span.glyphicon-menu-down')
+        .removeClass('glyphicon-menu-down')
+        .addClass('glyphicon-menu-right');
 }
 
 /**
@@ -241,7 +247,7 @@ function updateLectureList(course_id, lecture_ul) {
 /**
  * Delete a course (with all its associated lectures)
  *
- * `this` will be the delete button
+ * @param event     Click event
  */
 function deleteCourse(event) {
     var course_div = $(this).parent().parent().parent();
@@ -272,7 +278,7 @@ function deleteCourse(event) {
 /**
  * Delete a lecture
  *
- * `this` will be the delete button
+ * @param event     Click event
  */
 function deleteLecture(event) {
     var lecture_el = $(this).parent();
@@ -323,6 +329,9 @@ function showLecturePage() {
     history.replaceState({callback: 'backToCourseList'}, 'Lecture');
     history.pushState({callback: 'forwardToLecturePage'}, 'Lecture');
     forwardToLecturePage();
+
+    // TODO clear page contents (title, pin, topics, pace, sound, questions, timer)
+    current_topic_index = 0;
 
     // Get lecture
     var URL = '/lectures/'+ lecture_pin + '/';
@@ -417,73 +426,68 @@ var current_topic_index = 0;
  * Populate topic list
  */
 function populateTopicList() {
+    var URL = '/lectures/' + lecture_pin + '/topics/';
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+            var topic_list = $('#topic_list');
+            topic_list.empty();
+
+            for (var i = 0; i < data.lecture_topics.length; i++) {
+                appendTopicToList(data.lecture_topics[i]);
+            }
+
+            $('#topic_title').text('');
+            var current_topic_div = topic_list.find('div').eq(current_topic_index);
+            current_topic_div.click();
+        }
+    });
+}
+
+/**
+ * Append a topic to the topic list
+ *
+ * @param topic     The topic to be appended
+ */
+function appendTopicToList(topic) {
+    var inside_div = $('<div>');
+    inside_div.addClass('topic_indicator');
+    inside_div.data({
+        topic_id: topic.topic_id,
+        topic_title: topic.topic_title,
+        topic_order: topic.topic_order
+    });
+    inside_div.text(topic.topic_title);
+    inside_div.click(selectTopic);
+
+    var li_el = $('<li>');
+    li_el.addClass('topic_li_element');
+    li_el.append(inside_div);
+    $('#topic_list').append(li_el);
+    return inside_div;
+}
+
+/**
+ * Select a topic in the topic list
+ *
+ * @param event         Click event
+ * @param close_form    True if topic title form should be closed if open
+ */
+function selectTopic(event, close_form) {
+    close_form = (typeof close_form !== 'undefined') ? close_form : true;
+
     var topic_list = $('#topic_list');
-    var outside_div = topic_list.parent();
-    topic_list.empty();
-    topic_list.css({
-        'list-style-type': 'none'
-    });
-    outside_div.css({
-        margin: '0',
-        padding: '0',
-        height: '80px',
-        'overflow-x': 'hidden',
-        'overflow-y': 'hidden',
-        'white-space': 'nowrap',
-        'text-align': 'center'
-    });
-    $('#topic_title').parent().css({
-        'text-align': 'center'
-    });
-
-    for (var i = 0; i < 15; i++) {
-        var li_el = $('<li>');
-        var inside_div = $('<div>');
-        inside_div.addClass('btn');
-        inside_div.css({
-            margin: '5px 10px',
-            width: '50px',
-            height: '50px'
-        });
-        inside_div.data({
-            topic_title: 'Topic ' + i,
-            topic_index: i
-        });
-        inside_div.text(i+1);
-        inside_div.click(function () {
-            toggleTopicTitleForm(null, true);
-            $('#topic_title').text($(this).data('topic_title'));
-            topic_list.find('div').eq(current_topic_index).css({
-                width: '50px',
-                height: '50px'
-            });
-            current_topic_index = $(this).data('topic_index');
-            $(this).css({
-                width: '60px',
-                height: '60px'
-            });
-            var current_width = topic_list.width();
-            topic_list.css({
-                position: 'relative',
-                left: (current_width / 2 - 60 - current_topic_index * 70)
-            });
-        });
-
-        li_el.css({
-            display: 'inline'
-        });
-
-        li_el.append(inside_div);
-        topic_list.append(li_el);
+    if (close_form) {
+        // Force close topic title form
+        toggleTopicTitleForm(null, true);
     }
-
-    var current_topic_div = topic_list.find('div').eq(current_topic_index);
-    current_topic_div.css({
-        width: '60px',
-        height: '60px'
-    });
-    current_topic_div.click();
-    $('#topic_title').text(current_topic_div.data('topic_title'));
+    $('#topic_title').text($(this).data('topic_title'));
+    topic_list.find('div').eq(current_topic_index).removeClass('topic_indicator_selected');
+    current_topic_index = $(this).data('topic_order');
+    $(this).addClass('topic_indicator_selected');
+    // Calculate position of the topic list so the selected topic is centered
+    var current_width = topic_list.width();
+    topic_list.css('left', current_width / 2 - 40 - current_topic_index * 70);
 }
 
 /**
@@ -511,13 +515,18 @@ function toggleTopicTitleForm(event, force_close, new_topic) {
         topic_title_div.show();
         new_topic_button_div.show();
     } else {
+        if (new_topic) {
+            $('#save_topic_title').off('click').click(addLectureTopic);
+            title_input.val('');
+        } else {
+            $('#save_topic_title').off('click').click(renameLectureTopic);
+            title_input.val(topic_title.text().trim());
+        }
+        title_input.attr('placeholder', 'Topic title');
         topic_title_before_div.hide();
         topic_title_div.hide();
         new_topic_button_div.hide();
         topic_title_form.children('input[name=order]').hide();
-        title_input.val(topic_title.text().trim());
-        title_input.attr('id', 'topic_title_enter');
-        title_input.addClass("form-control");
         topic_title_form.show();
         title_input.focus();
     }
@@ -525,10 +534,42 @@ function toggleTopicTitleForm(event, force_close, new_topic) {
 
 /**
  * Add a new topic to the lecture
+ *
+ * @param event     Click event
  */
-function addLectureTopic() {
-    var URL = '/lectures' + lecture_pin + '/topics'
+function addLectureTopic(event) {
+    var URL = '/lectures/' + lecture_pin + '/topics/';
 
+    csrfPOST(URL, $('#topic_title_form'), function (data) {
+        console.log(data);
+        if (data.success) {
+            $('#topic_title_input').val('').attr('placeholder', 'Add another topic?');
+            var topic_div = appendTopicToList(data.lecture_topic);
+            selectTopic.call(topic_div, null, false);
+        }
+    });
+    event.preventDefault();
+}
+
+/**
+ * Rename a lecture topic
+ *
+ * @param event     Click event
+ */
+function renameLectureTopic(event) {
+    var current_topic = $('#topic_list').find('div').eq(current_topic_index);
+    var URL = '/lectures/' + lecture_pin + '/topics/' + current_topic.data('topic_id') + '/';
+    var topic_title_form = $('#topic_title_form');
+    topic_title_form.children('input[name=order]').val(current_topic.data('topic_order'));
+
+    csrfPOST(URL, topic_title_form, function (data) {
+        console.log(data);
+        if (data.success) {
+            toggleTopicTitleForm(null, true);
+            populateTopicList();
+        }
+    });
+    event.preventDefault();
 }
 
 /**
@@ -583,16 +624,17 @@ function getVolume() {
     $.getJSON(URL, function (data) {
       console.log(data);
         if (data.success) {
-            $('#volume_upvotes').empty()
-            $('#volume_upvotes').append(data.lecture.lecture_volume_up)
-            $('#volume_downvotes').empty()
-            $('#volume_downvotes').append(data.lecture.lecture_volume_down)
+            $('#volume_upvotes').empty().append(data.lecture.lecture_volume_up);
+            $('#volume_downvotes').empty().append(data.lecture.lecture_volume_down);
         }
     })
 }
 
 /**
- * Show title form to edit lecture title
+ * Toggle showing title form to edit lecture title
+ *
+ * @param event         Click event
+ * @param force_close   Force the form to be closed (default: false)
  */
 function toggleLectureTitleForm(event, force_close) {
     force_close = (typeof force_close !== 'undefined') ? force_close : false;
@@ -610,13 +652,13 @@ function toggleLectureTitleForm(event, force_close) {
         title_input.val(lecture_title.children('h1').first().text().trim());
         change_lecture_title_form.show();
         title_input.focus();
-        title_input.attr('id', 'title_enter');
-        title_input.addClass("form-control");
     }
 }
 
 /**
  * Submit change lecture title form
+ *
+ * @param event     Click event
  */
 function changeLectureTitle(event) {
     var action = '/lectures/' + lecture_pin + '/';
@@ -654,10 +696,10 @@ function blowUpLecturePin() {
     }
 }
 
+var time;
 /**
  * Toggle timer
  */
-var time;
 function updateDisplay() {
     var seconds, minute, hours;
     var value = $('#stopWatch').html();
@@ -728,6 +770,8 @@ function resetTimer() {
 
 /**
  * Show the statistics page for a course
+ *
+ * @param event     Click event
  */
 function showStatPage(event) {
     event.stopImmediatePropagation();

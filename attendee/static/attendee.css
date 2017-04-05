@@ -344,6 +344,21 @@ body, html {
   color: #555555;
 }
 
+#pinInput {
+    max-width: 270px;
+    height: auto;
+    margin: auto;
+    font-size: 18px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#pinInput:placeholder-shown {
+    font-family: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+}
+
 @media screen and (max-width: 768px) {
   .fit-vol-cont {
     margin-top: 25px;

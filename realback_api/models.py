@@ -105,6 +105,18 @@ class LectureTopic(models.Model):
     understanding = models.IntegerField(default=0)
     order = models.PositiveIntegerField(default=0)
 
+    def delete(self, *args, **kwargs):
+        self.reorder_consecutive_orders()
+        super(LectureTopic, self).delete(*args, **kwargs)
+
+    def reorder_consecutive_orders(self):
+        topics = LectureTopic.objects.filter(lecture=self.lecture, order__gt=self.order).order_by('order')
+        i = self.order
+        for topic in topics:
+            topic.order = i
+            i += 1
+            topic.save()
+
     def as_dict(self):
         return {
             'topic_id': self.id,

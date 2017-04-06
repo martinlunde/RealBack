@@ -113,7 +113,7 @@ class LectureTopic(models.Model):
 
     def reorder_consecutive_orders(self):
         LectureTopic.objects.filter(lecture=self.lecture, order__gt=self.order)\
-            .order_by('order').update(order=F('order')-1)
+            .order_by('order').update(order=F('order') - 1)
 
     def as_dict(self):
         return {

@@ -1,5 +1,6 @@
 
 from django.db import models, IntegrityError, transaction
+from django.db.models import F
 from django.utils import timezone
 from django.core import validators
 from random import choice
@@ -110,12 +111,8 @@ class LectureTopic(models.Model):
         super(LectureTopic, self).delete(*args, **kwargs)
 
     def reorder_consecutive_orders(self):
-        topics = LectureTopic.objects.filter(lecture=self.lecture, order__gt=self.order).order_by('order')
-        i = self.order
-        for topic in topics:
-            topic.order = i
-            i += 1
-            topic.save()
+        LectureTopic.objects.filter(lecture=self.lecture, order__gt=self.order)\
+            .order_by('order').update(order=F('order')-1)
 
     def as_dict(self):
         return {

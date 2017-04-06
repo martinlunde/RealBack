@@ -812,7 +812,7 @@ class QuestionActive(View):
     def post(self, request, pin=None, question_id=None):
         """ Changes question active status to False"""
         try:
-            question = models.Question.objects.get(id=question_id, lecture__pin=pin)
+            question = models.Question.objects.get(id=question_id, lecture__pin=pin, lecture__course__user=request.user)
         except models.Question.DoesNotExist:
             return JsonResponse({
                 'success': False,

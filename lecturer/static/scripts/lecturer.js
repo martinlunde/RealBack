@@ -398,9 +398,6 @@ function populateRecentQuestionsLecturePage() {
           for (var i = 0; i < data.questions.length; i++) {
               var question = data.questions[i];
               var list_element = $("<li>");
-              list_element.attr({
-                  value: question.question_id,
-              })
               list_element.append(' ' + question.question_text);
               $("#question_list_recent").append(list_element);
           }
@@ -451,7 +448,6 @@ function activeQuestion() {
       console.log(data);
       if (data.success) {
           populateTopQuestionsLecturePage()
-          populateRecentQuestionsLecturePage()
       }
   });
 }

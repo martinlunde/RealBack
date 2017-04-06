@@ -170,6 +170,10 @@ fieldset[disabled] .btn-custom.active {
     top:0;
 }
 
+#question_list_top {
+  list-style-type: none;
+}
+
 #cancel_change_lecture_title span {
     top:2px;
 }
@@ -242,7 +246,7 @@ fieldset[disabled] .btn-custom.active {
 }
 
 .list-group-item-custom:not(:first-child) {
-    border-top: 1px solid #b4b4b4; 
+    border-top: 1px solid #b4b4b4;
 }
 
 .bar-content {

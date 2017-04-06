@@ -17,6 +17,7 @@ urlpatterns = [
         url(r'^questions/(?P<question_id>[0-9]+)/', include([
 
             url(r'^vote/$', api.LectureQuestionVotes.as_view(), name='lecture_question_votes'),
+            url(r'^active/$', api.QuestionActive.as_view(), name='question_active'),
 
         ])),
         url(r'^pace/$', api.LecturePace.as_view(), name='lecture_pace'),

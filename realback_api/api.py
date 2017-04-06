@@ -258,9 +258,11 @@ class LectureQuestions(View):
         url_param = request.GET
         sort_order = url_param.get('order', '')
         allowed_orders = {'votes': ['-votes', '-timestamp'], 'latest': ['-timestamp']}
+        allowed_filters = {'votes': {'lecture__pin': pin, 'active': True}, 'latest': {'lecture__pin': pin}}
+        query_filter = allowed_filters.get(sort_order, {'lecture__pin': pin, 'active': True})
         sort_order = allowed_orders.get(sort_order, ['-votes', '-timestamp'])
 
-        question_list = models.Question.objects.filter(lecture__pin=pin).order_by(*sort_order)
+        question_list = models.Question.objects.filter(**query_filter).order_by(*sort_order)
 
         return JsonResponse({
             'success': True,
@@ -785,3 +787,42 @@ class LectureResetPace(View):
     @method_decorator(login_required)
     def post(self, request):
         """ Nothing goes here """
+
+
+class QuestionActive(View):
+    @method_decorator(login_required)
+    def get(self, request, pin=None, question_id=None):
+        """ Gets question active status """
+        try:
+            question = models.Question.objects.get(id=question_id, lecture__pin=pin)
+        except models.Question.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Question does not exist for this id'],
+                },
+            })
+
+        return JsonResponse({
+            'success': True,
+            'question': question.active,
+        })
+
+    @method_decorator(login_required)
+    def post(self, request, pin=None, question_id=None):
+        """ Changes question active status to False"""
+        try:
+            question = models.Question.objects.get(id=question_id, lecture__pin=pin)
+        except models.Question.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Question does not exist for this id'],
+                },
+            })
+
+        question.set_inactive()
+        return JsonResponse({
+            'success': True,
+            'question': question.active,
+        })

@@ -120,10 +120,16 @@ class Question(models.Model):
     text = models.CharField(max_length=160)
     votes = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
 
     def as_dict(self):
         return {
             'question_text': self.text,
             'question_votes': self.votes,
             'question_id': self.id,
+            'question_active': self.active,
         }
+
+    def set_inactive(self):
+        self.active = False
+        self.save()

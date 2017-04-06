@@ -416,14 +416,42 @@ function populateTopQuestionsLecturePage() {
         if (data.success) {
           $("#question_list_top").empty();
           for (var i = 0; i < Math.min(5, data.questions.length); i++) {
-              var question = data.questions[i];
-              var list_element = $("<li>");
-              list_element.append(' ' + question.question_text);
-              $("#question_list_top").append(list_element);
+             var question = data.questions[i];
+             var list_element = $("<li>");
+             var upvote_button = $("<button>");
+             var glyphicon_up = $("<span>");
+             glyphicon_up.attr({
+                 class: 'glyphicon glyphicon-remove'
+             });
+             upvote_button.attr({
+                 type: 'button',
+                 class: 'upvote-button',
+                 onclick: 'activeQuestion.call(this)',
+                 value: question.question_id
+             });
+             upvote_button.append(glyphicon_up);
+             upvote_button.append(question.question_votes);
+             list_element.append(upvote_button);
+             list_element.append('- ' + question.question_text);
+             $("#question_list_top").append(list_element);
           }
         }
   });
 }
+
+/**
+ * Changes Question Active status
+ */
+function activeQuestion() {
+  var form_action = '/lectures/' + lecture_pin + '/questions/' + $(this).val() + '/active/';
+  csrfPOST(form_action, $("<form>"), function (data) {
+      console.log(data);
+      if (data.success) {
+          populateTopQuestionsLecturePage()
+      }
+  });
+}
+
 
 var current_topic_index = 0;
 

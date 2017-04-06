@@ -247,6 +247,33 @@ class LectureTopicUnderstanding(View):
         })
 
 
+class LectureTopicActive(View):
+    @method_decorator(login_required)
+    def post(self, request, pin=None, topic_id=None):
+        """ Set topic as active topic """
+
+        try:
+            topic = models.LectureTopic.objects.get(
+                id=topic_id,
+                lecture__pin=pin,
+                lecture__course__user=request.user
+            )
+        except models.LectureTopic.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Topic ID does not exist for this lecture and user'],
+                },
+            })
+
+        topic.lecture.active_topic_index = topic.order
+        topic.lecture.save()
+        return JsonResponse({
+            'success': True,
+            'lecture': topic.lecture,
+        })
+
+
 class LectureQuestions(View):
     def get(self, request, pin=None):
         """

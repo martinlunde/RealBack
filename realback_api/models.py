@@ -84,6 +84,7 @@ class Lecture(models.Model):
             'rating': self.rating,
             'rating_active': self.rating_active,
             'rating_amount': self.rating_amount,
+            'active_topic_index': self.active_topic_index,
         }
 
     def reset_pace(self):

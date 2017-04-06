@@ -471,6 +471,7 @@ function populateTopicList() {
             }
 
             $('#topic_title').text('');
+            // TODO get topic index from lecture
             var current_topic_div = topic_list.find('div').eq(current_topic_index);
             current_topic_div.click();
         }
@@ -510,17 +511,31 @@ function appendTopicToList(topic) {
 function selectTopic(event, close_form) {
     close_form = (typeof close_form !== 'undefined') ? close_form : true;
 
-    var topic_list = $('#topic_list');
     if (close_form) {
         // Force close topic title form
         toggleTopicTitleForm(null, true);
     }
     if ($('#topic_delete_row').is(':visible')) {
+        // If confirm delete dialog is open, close it
         toggleDeleteTopicConfirm(null, true);
     }
+
+    var topic_list = $('#topic_list');
     $('#topic_title').text($(this).data('topic_title'));
     topic_list.find('div').eq(current_topic_index).removeClass('topic_indicator_selected');
-    current_topic_index = $(this).data('topic_order');
+    var new_topic_index = $(this).data('topic_order');
+
+    if (current_topic_index !== new_topic_index) {
+        var URL = '/lectures/' + lecture_pin + '/topics/' + $(this).data('topic_id') + '/active/';
+        csrfPOST(URL, $('<form>'), function (data) {
+            console.log(data);
+            if (data.success) {
+                // Does it matter?
+            }
+        });
+        current_topic_index = new_topic_index;
+    }
+
     $(this).addClass('topic_indicator_selected');
     // Calculate position of the topic list so the selected topic is centered
     var current_width = topic_list.width();

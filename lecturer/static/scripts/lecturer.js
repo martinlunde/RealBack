@@ -591,6 +591,7 @@ function deleteLectureTopic(event) {
         if (data.success) {
             if (current_topic_index > 0) current_topic_index--;
             populateTopicList();
+            toggleDeleteTopicConfirm(null, true);
         }
     })
 }

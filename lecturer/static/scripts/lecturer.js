@@ -471,7 +471,7 @@ function populateTopicList() {
             }
 
             $('#topic_title').text('');
-            // TODO get topic index from lecture
+            current_topic_index = data.lecture.active_topic_index;
             var current_topic_div = topic_list.find('div').eq(current_topic_index);
             current_topic_div.click();
         }
@@ -526,13 +526,7 @@ function selectTopic(event, close_form) {
     var new_topic_index = $(this).data('topic_order');
 
     if (current_topic_index !== new_topic_index) {
-        var URL = '/lectures/' + lecture_pin + '/topics/' + $(this).data('topic_id') + '/active/';
-        csrfPOST(URL, $('<form>'), function (data) {
-            console.log(data);
-            if (data.success) {
-                // Does it matter?
-            }
-        });
+        setActiveTopic($(this).data('topic_id'));
         current_topic_index = new_topic_index;
     }
 
@@ -540,6 +534,24 @@ function selectTopic(event, close_form) {
     // Calculate position of the topic list so the selected topic is centered
     var current_width = topic_list.width();
     topic_list.css('left', current_width / 2 - 41 - current_topic_index * 66);
+}
+
+/**
+ * Store a topic as active topic for lecture
+ *
+ * @param topic_id          ID of the topic to set as active
+ * @param callback_maybe    A callback to be executed on success
+ */
+function setActiveTopic(topic_id, callback_maybe) {
+    var URL = '/lectures/' + lecture_pin + '/topics/' + topic_id + '/active/';
+    csrfPOST(URL, $('<form>'), function (data) {
+        console.log(data);
+        if (data.success) {
+            if (typeof callback_maybe === 'function') {
+                callback_maybe(data);
+            }
+        }
+    });
 }
 
 /**
@@ -633,10 +645,11 @@ function deleteLectureTopic(event) {
         console.log(data);
         if (data.success) {
             if (current_topic_index > 0) current_topic_index--;
+            setActiveTopic($('#topic_list').find('div').eq(current_topic_index).data('topic_id'));
             populateTopicList();
             toggleDeleteTopicConfirm(null, true);
         }
-    })
+    });
 }
 
 /**

@@ -99,6 +99,7 @@ class LectureTopics(View):
         topic_list = models.LectureTopic.objects.filter(lecture__pin=pin).order_by('order')
         return JsonResponse({
             'success': True,
+            'lecture': topic_list[0].lecture.as_dict(),
             'lecture_topics': [topic.as_dict() for topic in topic_list],
         })
 
@@ -270,7 +271,7 @@ class LectureTopicActive(View):
         topic.lecture.save()
         return JsonResponse({
             'success': True,
-            'lecture': topic.lecture,
+            'lecture': topic.lecture.as_dict(),
         })
 
 

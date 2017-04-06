@@ -107,8 +107,8 @@ class LectureTopic(models.Model):
     order = models.PositiveIntegerField(default=0)
 
     def delete(self, *args, **kwargs):
-        self.reorder_consecutive_orders()
         super(LectureTopic, self).delete(*args, **kwargs)
+        self.reorder_consecutive_orders()
 
     def reorder_consecutive_orders(self):
         LectureTopic.objects.filter(lecture=self.lecture, order__gt=self.order)\

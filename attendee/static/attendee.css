@@ -373,3 +373,68 @@ body, html {
     0%      {color: #ff543f;}
     100%    {color: inherit;}
 }
+
+/* Topic list related styles */
+
+#topic_list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    position: relative;
+    display: inline;
+}
+
+#topic_list_parent {
+    margin: 0;
+    padding: 0;
+    height: 80px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.topic_li_element {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.topic_indicator {
+    margin: 5px 8px;
+    padding: 10px;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    /*background-color: #f2f2f2;*/
+    border: 1px solid #555555;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.topic_indicator:hover {
+    background-color: #fefefe;
+}
+
+.topic_indicator_selected {
+    width: 65px;
+    height: 65px;
+}
+
+.topic_title_parent {
+    height: 32px;
+    text-align: center;
+}
+
+.pointer_cursor {
+    cursor: pointer;
+}
+
+.topic_title {
+    /*margin: 5px 0;*/
+    margin: 0;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    top: 3px;
+}

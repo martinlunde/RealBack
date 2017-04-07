@@ -399,69 +399,13 @@ fieldset[disabled] .btn-custom.active {
 
 /* Topic list related styles */
 
-#topic_list {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    position: relative;
-    display: inline;
-}
-
-#topic_list_parent {
-    margin: 0;
-    padding: 0;
-    height: 80px;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    white-space: nowrap;
-    text-align: center;
-}
-
-.topic_li_element {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.topic_indicator {
-    margin: 5px 8px;
-    padding: 10px;
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-    /*background-color: #f2f2f2;*/
-    border: 1px solid #555555;
-    border-radius: 50%;
-    cursor: pointer;
-    user-select: none;
-}
-
-.topic_indicator:hover {
-    background-color: #fefefe;
-}
-
-.topic_indicator_selected {
-    width: 65px;
-    height: 65px;
-}
-
-#topic_title_parent, #delete_topic_title_parent {
-    height: 32px;
-    text-align: center;
-}
-
-#topic_title, #topic_title_glyph, #delete_topic_title {
-    margin: 5px 0;
-    display: inline-block;
-    vertical-align: middle;
-    cursor: pointer;
-}
-
 .topic_button_right {
     text-align: right;
 }
 
 .topic_button {
-    width: 123px;
+    width: 120px;
+    height: 32px;
     padding: 5px 10px;
 }
 
@@ -489,12 +433,12 @@ fieldset[disabled] .btn-custom.active {
 }
 
 #cancel_topic_title {
-    border-radius: 8px 0px 0px 8px;
+    border-radius: 8px 0 0 8px;
     z-index: 1;
     left: 5px;
 }
 
 #save_topic_title {
-    border-radius: 0px 8px 8px 0px;
+    border-radius: 0 8px 8px 0;
     right: 5px;
 }

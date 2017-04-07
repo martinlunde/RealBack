@@ -467,7 +467,7 @@ function populateTopicList() {
             topic_list.empty();
 
             for (var i = 0; i < data.lecture_topics.length; i++) {
-                appendTopicToList(data.lecture_topics[i]);
+                appendTopicToList(data.lecture_topics[i], topic_list, selectTopic);
             }
 
             $('#topic_title').text('');
@@ -476,30 +476,6 @@ function populateTopicList() {
             current_topic_div.click();
         }
     });
-}
-
-/**
- * Append a topic to the topic list
- *
- * @param topic     The topic to be appended
- */
-function appendTopicToList(topic) {
-    var inside_div = $('<div>');
-    inside_div.addClass('topic_indicator');
-    inside_div.data({
-        topic_id: topic.topic_id,
-        topic_title: topic.topic_title,
-        topic_order: topic.topic_order
-    });
-    inside_div.attr('title', topic.topic_title);
-    inside_div.text(topic.topic_order + 1);
-    inside_div.click(selectTopic);
-
-    var li_el = $('<li>');
-    li_el.addClass('topic_li_element');
-    li_el.append(inside_div);
-    $('#topic_list').append(li_el);
-    return inside_div;
 }
 
 /**
@@ -531,9 +507,8 @@ function selectTopic(event, close_form) {
     }
 
     $(this).addClass('topic_indicator_selected');
-    // Calculate position of the topic list so the selected topic is centered
-    var current_width = topic_list.width();
-    topic_list.css('left', current_width / 2 - 41 - current_topic_index * 66);
+    // Center selected topic
+    topic_list.css('left', calculateTopicListPosition(topic_list.width(), current_topic_index));
 }
 
 /**
@@ -603,8 +578,9 @@ function addLectureTopic(event) {
     csrfPOST(URL, $('#topic_title_form'), function (data) {
         console.log(data);
         if (data.success) {
+            var topic_list = $('#topic_list');
             $('#topic_title_input').val('').attr('placeholder', 'Add another topic?');
-            var topic_div = appendTopicToList(data.lecture_topic);
+            var topic_div = appendTopicToList(data.lecture_topic, topic_list, selectTopic);
             selectTopic.call(topic_div, null, false);
         }
     });

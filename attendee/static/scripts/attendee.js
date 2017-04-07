@@ -66,7 +66,8 @@ function updatePageContents(lecture) {
     getQuestions();
     checkReset();
     checkEnd();
-    // TODO update other contents
+    populateTopicList();
+
     // Lecture details
     if (typeof lecture === 'undefined') {
         var URL = '/lectures/' + lecture_pin + '/';
@@ -79,6 +80,30 @@ function updatePageContents(lecture) {
     } else {
         $('.lecture_title').text(lecture.lecture_title.toUpperCase());
     }
+}
+
+/**
+ * Populate topic list
+ */
+function populateTopicList() {
+    var URL = '/lectures/' + lecture_pin + '/topics/';
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+            var topic_list = $('#topic_list');
+            topic_list.empty();
+
+            for (var i = 0; i < data.lecture_topics.length; i++) {
+                appendTopicToList(data.lecture_topics[i], topic_list);
+            }
+
+            var current_topic_div = topic_list.find('div').eq(data.lecture.active_topic_index);
+            $('#topic_title').text(current_topic_div.data('topic_title'));
+            current_topic_div.addClass('topic_indicator_selected');
+            // Center selected topic
+            topic_list.css('left', calculateTopicListPosition(topic_list.width(), data.lecture.active_topic_index));
+        }
+    });
 }
 
 /**

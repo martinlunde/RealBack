@@ -398,7 +398,7 @@ function populateRecentQuestionsLecturePage() {
           for (var i = 0; i < data.questions.length; i++) {
               var question = data.questions[i];
               var list_element = $("<li>");
-              list_element.append(' ' + question.question_text);
+              list_element.append(question.question_text);
               $("#question_list_recent").append(list_element);
           }
         }
@@ -418,20 +418,21 @@ function populateTopQuestionsLecturePage() {
           for (var i = 0; i < Math.min(5, data.questions.length); i++) {
              var question = data.questions[i];
              var list_element = $("<li>");
-             var upvote_button = $("<button>");
-             var glyphicon_up = $("<span>");
-             glyphicon_up.attr({
-                 class: 'glyphicon glyphicon-remove'
-             });
-             upvote_button.attr({
+             var close_button = $("<button>");
+             var glyphicon_remove = $("<span>");
+             var upvote_count = $("<div>");
+             glyphicon_remove.addClass('glyphicon glyphicon-remove glyph-upvote');
+             upvote_count.addClass('upvote_count');
+             upvote_count.text(question.question_votes);
+             close_button.addClass('upvote-button').attr({
                  type: 'button',
-                 class: 'upvote-button',
+                 title: 'Remove this question',
                  onclick: 'activeQuestion.call(this)',
                  value: question.question_id
              });
-             upvote_button.append(glyphicon_up);
-             upvote_button.append(question.question_votes);
-             list_element.append(upvote_button);
+             close_button.append(glyphicon_remove);
+             close_button.append(upvote_count);
+             list_element.append(close_button);
              list_element.append('- ' + question.question_text);
              $("#question_list_top").append(list_element);
           }

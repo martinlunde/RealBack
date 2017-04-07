@@ -170,10 +170,6 @@ fieldset[disabled] .btn-custom.active {
     top:0;
 }
 
-#question_list_top {
-  list-style-type: none;
-}
-
 #cancel_change_lecture_title span {
     top:2px;
 }
@@ -359,7 +355,8 @@ fieldset[disabled] .btn-custom.active {
 }
 
 .glyph-align-with-text {
-    font-size: 25px;
+    /*font-size: 25px;*/
+    font-size: 22px;
 }
 
 .glyph-font-size-20 {

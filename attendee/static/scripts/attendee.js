@@ -111,10 +111,10 @@ function populateTopicList() {
  */
 function getQuestions() {
     var api_url = '/lectures/' + lecture_pin + '/questions/';
+
     $.getJSON(api_url, function (data) {
         //console.log(data);
         if (data.success) {
-            // TODO Update question list
             // Empty list of existing questions
             $("#question_list").empty();
             // Add questions to list
@@ -123,17 +123,18 @@ function getQuestions() {
                 var list_element = $("<li>");
                 var upvote_button = $("<button>");
                 var glyphicon_up = $("<span>");
-                glyphicon_up.attr({
-                    class: 'glyphicon glyphicon-menu-up glyph-upvote'
-                });
-                upvote_button.attr({
+                var upvote_count = $("<div>");
+                glyphicon_up.addClass('glyphicon glyphicon-menu-up glyph-upvote');
+                upvote_count.addClass('upvote_count');
+                upvote_count.text(question.question_votes);
+                upvote_button.addClass('upvote-button').attr({
                     type: 'button',
-                    class: 'upvote-button',
+                    title: 'Up-vote this question',
                     onclick: 'upvoteQuestion.call(this)',
                     value: question.question_id
                 });
                 upvote_button.append(glyphicon_up);
-                upvote_button.append(question.question_votes);
+                upvote_button.append(upvote_count);
                 list_element.append(upvote_button);
                 list_element.append('- ' + question.question_text);
                 $("#question_list").append(list_element);

@@ -246,7 +246,7 @@ fieldset[disabled] .btn-custom.active {
     background-color: #eeeeee;
 }
 
-.btn-lecturer-del {
+.lecture-del-button {
     text-align: center;
     height: 25px;
     width: 60px;
@@ -257,7 +257,7 @@ fieldset[disabled] .btn-custom.active {
     margin-top:-2.5px;
 }
 
-.btn-lecturer-del p {
+.lecture-del-button p {
     color: white;
     width: 40px;
     float: right;
@@ -415,4 +415,61 @@ fieldset[disabled] .btn-custom.active {
     .bars {
         height: auto;
     }
+}
+
+/* Topic list related styles */
+
+#topic_title {
+    display: inline;
+    cursor: pointer;
+}
+
+#topic_list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    position: relative;
+    display: inline;
+}
+
+#topic_list_parent {
+    margin: 0;
+    padding: 0;
+    height: 80px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.topic_li_element {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.topic_indicator {
+    margin: 5px 10px;
+    padding: 10px;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    /*vertical-align: middle;*/
+    /*background-color: #f2f2f2;*/
+    border: 1px solid #555555;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.topic_indicator_selected {
+    width: 60px;
+    height: 60px;
+}
+
+#topic_title_parent {
+    text-align: center;
+}
+
+#new_topic_button {
+    width: 115px;
 }

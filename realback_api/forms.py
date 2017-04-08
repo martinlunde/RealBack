@@ -22,6 +22,12 @@ class LectureForm(forms.ModelForm):
         fields = ['title']
 
 
+class NewLectureTopicForm(forms.ModelForm):
+    class Meta:
+        model = models.LectureTopic
+        fields = ['title']
+
+
 class LectureTopicForm(forms.ModelForm):
     class Meta:
         model = models.LectureTopic
@@ -47,3 +53,7 @@ class VolumeForm(forms.Form):
         required=False,
         widget=forms.CheckboxInput(attrs={'style': 'display: none;'})
     )
+
+
+class RatingForm(forms.Form):
+    rating = forms.IntegerField(required=True)

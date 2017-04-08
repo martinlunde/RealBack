@@ -23,10 +23,13 @@ class LectureDetails(View):
                 },
             })
 
+        # If join URL path is used
+        # AND PIN for this lecture is not stored in session
+        # AND current user is not the lecturer for this lecture
+        # THEN we count a new attendee
         if join and request.session.get('lecture_pin', '') != pin and request.user != lecture.course.user:
             request.session['lecture_pin'] = pin
             lecture.attendee_counter += 1
-            print('Attendees: ' + str(lecture.attendee_counter))
             lecture.save()
 
         return JsonResponse({
@@ -102,7 +105,7 @@ class LectureTopics(View):
     def post(self, request, pin=None):
         """ Create lecture topic """
         # TODO remember to check if user has access (owner) to course
-        form = forms.LectureTopicForm(request.POST)
+        form = forms.NewLectureTopicForm(request.POST)
         if form.is_valid():
             try:
                 lecture = models.Lecture.objects.get(pin=pin, course__user=request.user)
@@ -114,7 +117,9 @@ class LectureTopics(View):
                     },
                 })
 
+            topic_count = models.LectureTopic.objects.filter(lecture=lecture).count()
             topic = form.save(commit=False)
+            topic.order = topic_count  # Zero indexed so set to count
             topic.lecture = lecture
             topic.save()
             return JsonResponse({
@@ -407,6 +412,7 @@ class StartTimer(View):
 
         lecture.start_datetime = timezone.now()
         lecture.timer_active = True
+        lecture.rating_active = False
         lecture.save()
         return JsonResponse({
             'success': True,
@@ -426,10 +432,60 @@ class StopTimer(View):
             })
         lecture.timer_active = False
         lecture.end_datetime = timezone.now()
+        lecture.rating_active = True
         lecture.save()
         return JsonResponse({
             'success': True,
             'lecture': lecture.timer_active,
+        })
+
+
+class ResetRating(View):
+    def get(self, request, pin=None):
+        try:
+            lecture = models.Lecture.objects.get(pin=pin)
+        except models.Lecture.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Lecture does not exist'],
+                },
+            })
+        lecture.rating_active = False
+        lecture.save()
+        return JsonResponse({
+            'success': True,
+            'lecture': lecture.timer_active,
+        })
+
+
+class Rate(View):
+    def post(self, request, pin=None):
+        form = forms.RatingForm(request.POST)
+        if form.is_valid():
+            try:
+                lecture = models.Lecture.objects.get(pin=pin)
+            except models.Lecture.DoesNotExist:
+                return JsonResponse({
+                    'success': False,
+                    'errors': {
+                        'message': ['Lecture does not exist'],
+                    },
+                })
+
+            lecture.rating_amount += 1
+            old_average = lecture.rating
+            lecture.rating = old_average + ((form.cleaned_data['rating'] - old_average) / lecture.rating_amount)
+            lecture.save()
+
+            return JsonResponse({
+                'success': True,
+                'lecture': lecture.as_dict(),
+            })
+
+        return JsonResponse({
+            'success': False,
+            'errors': form.errors,
         })
 
 

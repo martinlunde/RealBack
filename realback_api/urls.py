@@ -24,6 +24,8 @@ urlpatterns = [
         url(r'^timer/$', api.LectureTimer.as_view(), name='lecture_timer'),
         url(r'^start_timer/$', api.StartTimer.as_view(), name='start_timer'),
         url(r'^stop_timer/$', api.StopTimer.as_view(), name='stop_timer'),
+        url(r'^reset_rating/$', api.ResetRating.as_view(), name='reset_rating'),
+        url(r'^rate/$', api.Rate.as_view(), name='rate'),
         url(r'^topics/$', api.LectureTopics.as_view(), name='lecture_topics'),
         url(r'^topics/(?P<topic_id>[0-9]+)/', include([
 

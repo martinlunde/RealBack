@@ -389,10 +389,11 @@ function populateLecturePage() {
 
             if ($('#lecture_page_body').is(':visible')) {
                 $('#lecture_pin').children('h2').first().text(data.lecture.lecture_pin).append(
-                    ' <span class="glyphicon glyphicon-resize-full glyph-font-size-20"></span>');
+                    '<span class="glyphicon glyphicon-resize-full glyph-font-size-20"></span>');
             }
             if ($(window).width() > 700) {
                 if (data.lecture.lecture_title.length > 29) {
+                    console.log("HOI");
                     $('#lecture_title').children('h1').first().css({
                         'font-size': '22px',
                         'margin-top':'25px'
@@ -413,6 +414,7 @@ function populateLecturePage() {
                     });
                 }
             } else {
+                console.log("HOooooI");
                 $('#lecture_title').children('h1').first().css({
                         'font-size': '20px',
                         'margin-top':'25px'
@@ -430,6 +432,7 @@ function populateLecturePage() {
 }
 
 function refreshLecturePage() {
+    populateLecturePage();
     populateRecentQuestionsLecturePage();
     populateTopQuestionsLecturePage();
     getPace();

@@ -529,3 +529,18 @@ fieldset[disabled] .btn-custom.active {
     border-radius: 0px 8px 8px 0px;
     right: 5px;
 }
+
+.glyph-small {
+    font-size: 10px;
+    position: absolute;
+    left:0px;
+    top:25px;
+}
+
+.glyph-small-up-adjust {
+    top:27px;
+}
+
+.move_right {
+    right:-11.5px;
+}

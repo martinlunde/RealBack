@@ -170,6 +170,10 @@ fieldset[disabled] .btn-custom.active {
     top:0;
 }
 
+#question_list_top {
+  list-style-type: none;
+}
+
 #cancel_change_lecture_title span {
     top:2px;
 }
@@ -212,6 +216,13 @@ fieldset[disabled] .btn-custom.active {
     100%    {color: #F75D59;}
 }
 
+/* Animation for warning text */
+@keyframes warning_text2 {
+    0%      {color: #F75D59;}
+    50%     {color: inherit;}
+    100%    {color: #F75D59;}
+}
+
 .list-group-custom {
     border-radius: 0px 0px 8px 8px;
     box-shadow: 7px 8px 16px rgba(00,00,00,0.14);
@@ -235,7 +246,7 @@ fieldset[disabled] .btn-custom.active {
 }
 
 .list-group-item-custom:not(:first-child) {
-    border-top: 1px solid #b4b4b4; 
+    border-top: 1px solid #b4b4b4;
 }
 
 .bar-content {
@@ -419,11 +430,6 @@ fieldset[disabled] .btn-custom.active {
 
 /* Topic list related styles */
 
-#topic_title {
-    display: inline;
-    cursor: pointer;
-}
-
 #topic_list {
     margin: 0;
     padding: 0;
@@ -444,16 +450,15 @@ fieldset[disabled] .btn-custom.active {
 
 .topic_li_element {
     display: inline-block;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .topic_indicator {
-    margin: 5px 10px;
+    margin: 5px 8px;
     padding: 10px;
     width: 50px;
     height: 50px;
     overflow: hidden;
-    /*vertical-align: middle;*/
     /*background-color: #f2f2f2;*/
     border: 1px solid #555555;
     border-radius: 50%;
@@ -461,15 +466,66 @@ fieldset[disabled] .btn-custom.active {
     user-select: none;
 }
 
-.topic_indicator_selected {
-    width: 60px;
-    height: 60px;
+.topic_indicator:hover {
+    background-color: #fefefe;
 }
 
-#topic_title_parent {
+.topic_indicator_selected {
+    width: 65px;
+    height: 65px;
+}
+
+#topic_title_parent, #delete_topic_title_parent {
+    height: 32px;
     text-align: center;
 }
 
-#new_topic_button {
-    width: 115px;
+#topic_title, #topic_title_glyph, #delete_topic_title {
+    margin: 5px 0;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.topic_button_right {
+    text-align: right;
+}
+
+.topic_button {
+    width: 123px;
+    padding: 5px 10px;
+}
+
+#topic_title_form {
+    text-align: center;
+}
+
+#topic_title_form > input[name=title] {
+    display: inline-block;
+    margin: 0;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    width: calc(100% - 151px);
+    max-width: 400px;
+    height: 32px;
+    position: relative;
+    top: 1px;
+    border-radius: 0;
+}
+
+#cancel_topic_title, #save_topic_title {
+    padding: 5px 10px;
+    width: 61px;
+    position: relative;
+}
+
+#cancel_topic_title {
+    border-radius: 8px 0px 0px 8px;
+    z-index: 1;
+    left: 5px;
+}
+
+#save_topic_title {
+    border-radius: 0px 8px 8px 0px;
+    right: 5px;
 }

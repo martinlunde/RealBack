@@ -211,7 +211,7 @@ volume_down = false;
  * Increase or decrease lecture volume preference
  */
 function updateVolume(increase) {
-    var form_action = '/lectures/' + $('#pinInput').val() + '/volume/?vote=';
+    var form_action = '/lectures/' + lecture_pin + '/volume/?vote=';
     var form = $('#volume_form');
     var volume_element = $('#id_volume');
     var query = '';
@@ -285,7 +285,7 @@ pace_down = false;
  * Increase or decrease lecture pace preference
  */
 function updatePace(increase) {
-    var form_action = '/lectures/' + $('#pinInput').val() + '/pace/?vote=';
+    var form_action = '/lectures/' + lecture_pin + '/pace/?vote=';
     var form = $('#pace_form');
     var pace_element = $('#id_pace');
     var query = '';

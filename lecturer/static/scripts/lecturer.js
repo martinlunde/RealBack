@@ -12,10 +12,14 @@ $(document).ready(function () {
     $('#lecture_pin_large').click(blowUpLecturePin);
 
     $('#topic_title').click(toggleTopicTitleForm);
+    $('#topic_title_glyph').click(toggleTopicTitleForm);
     $('#new_topic_button').click(function (event) {
         toggleTopicTitleForm(event, false, true);
     });
     $('#cancel_topic_title').click(toggleTopicTitleForm);
+    $('#delete_topic_button').click(toggleDeleteTopicConfirm);
+    $('#cancel_delete_topic').click(toggleDeleteTopicConfirm);
+    $('#confirm_delete_topic').click(deleteLectureTopic);
 
     // Change conflicting automatic id's for input fields
     $('#change_lecture_title_form').children('input[name=title]')
@@ -43,7 +47,7 @@ var viewStateCallbacks = {
     'backToCourseList': backToCourseList,
     'forwardToLecturePage': forwardToLecturePage,
     'forwardToStatPage': forwardToStatPage
-};
+}
 
 /**
  * Go back to course overview from lecture page or statistics page
@@ -59,6 +63,7 @@ function backToCourseList() {
     clearIntervalTimers();
     toggleLectureTitleForm(null, true);
     toggleTopicTitleForm(null, true);
+    toggleDeleteTopicConfirm(null, true);
 }
 
 /**
@@ -422,6 +427,7 @@ function populateLecturePage() {
             }
         }
     });
+}
 
 function refreshLecturePage() {
     populateRecentQuestionsLecturePage();
@@ -461,14 +467,42 @@ function populateTopQuestionsLecturePage() {
         if (data.success) {
           $("#question_list_top").empty();
           for (var i = 0; i < Math.min(5, data.questions.length); i++) {
-              var question = data.questions[i];
-              var list_element = $("<li>");
-              list_element.append(' ' + question.question_text);
-              $("#question_list_top").append(list_element);
+             var question = data.questions[i];
+             var list_element = $("<li>");
+             var upvote_button = $("<button>");
+             var glyphicon_up = $("<span>");
+             glyphicon_up.attr({
+                 class: 'glyphicon glyphicon-remove'
+             });
+             upvote_button.attr({
+                 type: 'button',
+                 class: 'upvote-button',
+                 onclick: 'activeQuestion.call(this)',
+                 value: question.question_id
+             });
+             upvote_button.append(glyphicon_up);
+             upvote_button.append(question.question_votes);
+             list_element.append(upvote_button);
+             list_element.append('- ' + question.question_text);
+             $("#question_list_top").append(list_element);
           }
         }
   });
 }
+
+/**
+ * Changes Question Active status
+ */
+function activeQuestion() {
+  var form_action = '/lectures/' + lecture_pin + '/questions/' + $(this).val() + '/active/';
+  csrfPOST(form_action, $("<form>"), function (data) {
+      console.log(data);
+      if (data.success) {
+          populateTopQuestionsLecturePage()
+      }
+  });
+}
+
 
 var current_topic_index = 0;
 
@@ -507,7 +541,8 @@ function appendTopicToList(topic) {
         topic_title: topic.topic_title,
         topic_order: topic.topic_order
     });
-    inside_div.text(topic.topic_title);
+    inside_div.attr('title', topic.topic_title);
+    inside_div.text(topic.topic_order + 1);
     inside_div.click(selectTopic);
 
     var li_el = $('<li>');
@@ -531,13 +566,16 @@ function selectTopic(event, close_form) {
         // Force close topic title form
         toggleTopicTitleForm(null, true);
     }
+    if ($('#topic_delete_row').is(':visible')) {
+        toggleDeleteTopicConfirm(null, true);
+    }
     $('#topic_title').text($(this).data('topic_title'));
     topic_list.find('div').eq(current_topic_index).removeClass('topic_indicator_selected');
     current_topic_index = $(this).data('topic_order');
     $(this).addClass('topic_indicator_selected');
     // Calculate position of the topic list so the selected topic is centered
     var current_width = topic_list.width();
-    topic_list.css('left', current_width / 2 - 40 - current_topic_index * 70);
+    topic_list.css('left', current_width / 2 - 41 - current_topic_index * 66);
 }
 
 /**
@@ -552,18 +590,16 @@ function toggleTopicTitleForm(event, force_close, new_topic) {
     new_topic = (typeof new_topic !== 'undefined') ? new_topic : false;
 
     var topic_title = $('#topic_title');
-    var topic_title_div = topic_title.parent();
+    var topic_title_row = $('#topic_title_row');
     var topic_title_form = $('#topic_title_form');
-    var new_topic_button_div = $('#new_topic_button').parent();
-    var topic_title_before_div = $('#topic_title_before_div');
+    var topic_title_form_row = $('#topic_title_form_row');
     var title_input = topic_title_form.children('input[name=title]');
+    // var topic_delete_row = $('#topic_delete_row');
 
     if (force_close || topic_title_form.is(':visible')) {
-        topic_title_form.hide();
+        topic_title_form_row.hide();
         title_input.val('');
-        topic_title_before_div.show();
-        topic_title_div.show();
-        new_topic_button_div.show();
+        topic_title_row.show();
     } else {
         if (new_topic) {
             $('#save_topic_title').off('click').click(addLectureTopic);
@@ -573,11 +609,9 @@ function toggleTopicTitleForm(event, force_close, new_topic) {
             title_input.val(topic_title.text().trim());
         }
         title_input.attr('placeholder', 'Topic title');
-        topic_title_before_div.hide();
-        topic_title_div.hide();
-        new_topic_button_div.hide();
+        topic_title_row.hide();
         topic_title_form.children('input[name=order]').hide();
-        topic_title_form.show();
+        topic_title_form_row.show();
         title_input.focus();
     }
 }
@@ -623,6 +657,54 @@ function renameLectureTopic(event) {
 }
 
 /**
+ * Delete the currently selected lecture topic
+ *
+ * @param event         Click event
+ */
+function deleteLectureTopic(event) {
+    var current_topic = $('#topic_list').find('div').eq(current_topic_index);
+    var URL = '/lectures/' + lecture_pin + '/topics/' + current_topic.data('topic_id') + '/';
+
+    csrfDELETE(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+            if (current_topic_index > 0) current_topic_index--;
+            populateTopicList();
+        }
+    });
+}
+
+/**
+ * Toggle delete topic confirmation dialogue
+ *
+ * @param event         Click event
+ * @param force_close   Force the confirmation to be closed
+ */
+function toggleDeleteTopicConfirm(event, force_close) {
+    force_close = (typeof force_close !== 'undefined') ? force_close : false;
+    var topic_delete_row = $('#topic_delete_row');
+    var topic_title_row = $('#topic_title_row');
+    var delete_topic_title = $('#delete_topic_title');
+    var current_topic = $('#topic_list').find('div').eq(current_topic_index);
+
+    if (force_close || topic_delete_row.is(':visible')) {
+        topic_delete_row.hide();
+        topic_title_row.show();
+        delete_topic_title.html('');
+    } else {
+        topic_title_row.hide();
+        delete_topic_title.html('<span>')
+            .text('Delete topic with title "' + current_topic.data('topic_title') + '"?')
+            .css({
+                'animation-name': 'warning_text2',
+                'animation-duration': '2s',
+                'animation-iteration-count': 'infinite'
+            });
+        topic_delete_row.show();
+    }
+}
+
+/**
  * Reset volume for lecture
  */
 function lectureResetVolume() {
@@ -663,7 +745,7 @@ function getPace() {
             $('#pace_downvotes').empty()
             $('#pace_downvotes').append(data.lecture.lecture_pace_down)
         }
-    })
+    });
 }
 
 /**
@@ -677,7 +759,7 @@ function getVolume() {
             $('#volume_upvotes').empty().append(data.lecture.lecture_volume_up);
             $('#volume_downvotes').empty().append(data.lecture.lecture_volume_down);
         }
-    })
+    });
 }
 
 /**
@@ -844,3 +926,5 @@ function forwardToStatPage() {
     $('#course_overview_page').hide();
     $('#stat_page').show();
 }
+
+

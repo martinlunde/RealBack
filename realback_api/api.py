@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.db.models import Max
 from django.utils import timezone
 from . import models, forms
 
@@ -117,9 +118,12 @@ class LectureTopics(View):
                     },
                 })
 
-            topic_count = models.LectureTopic.objects.filter(lecture=lecture).count()
+            max_topic_order = models.LectureTopic.objects.filter(lecture=lecture).aggregate(Max('order'))['order__max']
+            if max_topic_order is None:
+                # Set to -1 if no topics exist since we add 1 later
+                max_topic_order = -1
             topic = form.save(commit=False)
-            topic.order = topic_count  # Zero indexed so set to count
+            topic.order = max_topic_order + 1
             topic.lecture = lecture
             topic.save()
             return JsonResponse({
@@ -205,6 +209,7 @@ class LectureTopicDetails(View):
             })
 
         topic.delete()
+        # TODO Reorder topics after topic is deleted
         return JsonResponse({
             'success': True,
             'lecture_topic_id': topic_id,
@@ -253,9 +258,11 @@ class LectureQuestions(View):
         url_param = request.GET
         sort_order = url_param.get('order', '')
         allowed_orders = {'votes': ['-votes', '-timestamp'], 'latest': ['-timestamp']}
+        allowed_filters = {'votes': {'lecture__pin': pin, 'active': True}, 'latest': {'lecture__pin': pin}}
+        query_filter = allowed_filters.get(sort_order, {'lecture__pin': pin, 'active': True})
         sort_order = allowed_orders.get(sort_order, ['-votes', '-timestamp'])
 
-        question_list = models.Question.objects.filter(lecture__pin=pin).order_by(*sort_order)
+        question_list = models.Question.objects.filter(**query_filter).order_by(*sort_order)
 
         return JsonResponse({
             'success': True,
@@ -749,7 +756,7 @@ class LectureResetVolume(View):
         lecture.reset_volume()
         return JsonResponse({
             'success': True,
-            'lecture_volume': lecture.volume,
+            'lecture': lecture.as_dict(),
         })
 
     @method_decorator(login_required)
@@ -774,9 +781,48 @@ class LectureResetPace(View):
         lecture.reset_pace()
         return JsonResponse({
             'success': True,
-            'lecture': lecture.pace,
+            'lecture': lecture.as_dict(),
         })
 
     @method_decorator(login_required)
     def post(self, request):
         """ Nothing goes here """
+
+
+class QuestionActive(View):
+    @method_decorator(login_required)
+    def get(self, request, pin=None, question_id=None):
+        """ Gets question active status """
+        try:
+            question = models.Question.objects.get(id=question_id, lecture__pin=pin)
+        except models.Question.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Question does not exist for this id'],
+                },
+            })
+
+        return JsonResponse({
+            'success': True,
+            'question': question.active,
+        })
+
+    @method_decorator(login_required)
+    def post(self, request, pin=None, question_id=None):
+        """ Changes question active status to False"""
+        try:
+            question = models.Question.objects.get(id=question_id, lecture__pin=pin, lecture__course__user=request.user)
+        except models.Question.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Question does not exist for this id'],
+                },
+            })
+
+        question.set_inactive()
+        return JsonResponse({
+            'success': True,
+            'question': question.active,
+        })

@@ -744,6 +744,31 @@ function getPace() {
             $('#pace_upvotes').append(data.lecture.lecture_pace_up)
             $('#pace_downvotes').empty()
             $('#pace_downvotes').append(data.lecture.lecture_pace_down)
+            if (data.lecture.lecture_pace_down > data.lecture.lecture_pace_up){
+                $('#pace_up').children('span').first().removeClass('glyphicon-menu-up');
+                $('#pace_up').children('span').first().removeClass('glyphicon-minus');
+                $('#pace_up').children('span').first().addClass('glyphicon-menu-down');
+                $('#pace_up').children('span').css({
+                    'margin-left': '0px'
+                });
+            }
+            if (data.lecture.lecture_pace_down < data.lecture.lecture_pace_up){
+                $('#pace_up').children('span').first().removeClass('glyphicon-menu-down');
+                $('#pace_up').children('span').first().removeClass('glyphicon-minus');
+                $('#pace_up').children('span').first().addClass('glyphicon-menu-up');
+                $('#pace_up').children('span').css({
+                    'margin-left': '0px'
+                });
+            }
+            if (data.lecture.lecture_pace_down == data.lecture.lecture_pace_up){
+                $('#pace_up').children('span').first().removeClass('glyphicon-menu-down');
+                $('#pace_up').children('span').first().removeClass('glyphicon-menu-up');
+                $('#pace_up').children('span').first().addClass('glyphicon-minus');
+                $('#pace_up').children('span').css({
+                    'margin-left': '-2px'
+                });
+            }
+
         }
     });
 }
@@ -759,6 +784,31 @@ function getVolume() {
             $('#volume_upvotes').empty().append(data.lecture.lecture_volume_up);
             $('#volume_downvotes').empty().append(data.lecture.lecture_volume_down);
         }
+        if (data.lecture.lecture_volume_down > data.lecture.lecture_volume_up){
+            $('#volume_up').children('span').first().removeClass('glyphicon-menu-up');
+            $('#volume_up').children('span').first().removeClass('glyphicon-minus');
+            $('#volume_up').children('span').first().addClass('glyphicon-menu-down');
+            $('#volume_up').children('span').css({
+                'margin-left': '0px'
+            });
+        }
+        if (data.lecture.lecture_volume_down < data.lecture.lecture_volume_up){
+            $('#volume_up').children('span').first().removeClass('glyphicon-menu-down');
+            $('#volume_up').children('span').first().removeClass('glyphicon-minus');
+            $('#volume_up').children('span').first().addClass('glyphicon-menu-up');
+            $('#volume_up').children('span').css({
+                'margin-left': '0px'
+            });
+        }
+        if (data.lecture.lecture_volume_down == data.lecture.lecture_volume_up){
+            $('#volume_up').children('span').first().removeClass('glyphicon-menu-down');
+            $('#volume_up').children('span').first().removeClass('glyphicon-menu-up');
+            $('#volume_up').children('span').first().addClass('glyphicon-minus');
+            $('#volume_up').children('span').css({
+                'margin-left': '-2px'
+            });
+        }
+
     });
 }
 

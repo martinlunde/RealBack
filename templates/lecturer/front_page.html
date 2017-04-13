@@ -16,13 +16,13 @@
             </a>
         </div>
         <div class="footerMenu">
-            <div class="col-xs-7 col-sm-8 col-md-7"></div>
+            <div class="col-xs-6 col-sm-7 col-md-6"></div>
             <div class="col-xs-2 col-sm-2 col-md-2">
                 {% if request.user.is_authenticated %}
                     <span class="item lecture_title">{{ request.user.email }}</span>
                 {% endif %}
             </div>
-            <div class="col-xs-1 col-sm-1 col-md-1">
+            <div class="col-xs-2 col-sm-2 col-md-2">
                  <a href="/logout/" class="logout item lecture_title">LOGOUT</a>
             </div>
         </div>
@@ -155,8 +155,8 @@
                 <div class="col-md-12">
                     <div class="big-box small-top-margin">
                         <div class="row">
-                            <div class="col-xs-2"></div>
-                            <div class="col-xs-8">
+{#                            <div class="col-xs-2"></div>#}
+                            <div class="col-xs-10">
                                 <h3 class="did-you-h3">TOPICS OF LECTURE</h3>
                             </div>
                             <div class="col-xs-2 text-right">
@@ -175,9 +175,9 @@
                                     <span class="glyphicon glyphicon-minus glyphwhite"></span>
                                     DEL</button>
                             </div>
-                            <div class="col-md-8" id="topic_title_parent">
-                                <h4 id="topic_title" title="Change topic title"></h4>
-                                <span id="topic_title_glyph" class="glyphicon glyphicon-edit"
+                            <div id="topic_title_parent" class="col-md-8 topic_title_parent">
+                                <h4 id="topic_title" title="Change topic title" class="topic_title pointer_cursor"></h4>
+                                <span id="topic_title_glyph" class="glyphicon glyphicon-edit topic_title pointer_cursor"
                                       title="Change topic title"></span>
                             </div>
                             <div id="new_topic_button_parent" class="col-md-2 topic_button_right">
@@ -211,8 +211,8 @@
                                     <span class="glyphicon glyphicon-remove glyphwhite"></span>
                                 </button>
                             </div>
-                            <div id="delete_topic_title_parent" class="col-md-8">
-                                <h4 id="delete_topic_title"></h4>
+                            <div id="delete_topic_title_parent" class="col-md-8 topic_title_parent">
+                                <h4 id="delete_topic_title" class="topic_title"></h4>
                             </div>
                             <div class="col-md-2 topic_button_right">
                                 <button type="button" id="confirm_delete_topic" title="Confirm delete"

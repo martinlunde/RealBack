@@ -99,6 +99,7 @@ class LectureTopics(View):
         topic_list = models.LectureTopic.objects.filter(lecture__pin=pin).order_by('order')
         return JsonResponse({
             'success': True,
+            'lecture': topic_list[0].lecture.as_dict() if len(topic_list) > 0 else None,
             'lecture_topics': [topic.as_dict() for topic in topic_list],
         })
 
@@ -244,6 +245,33 @@ class LectureTopicUnderstanding(View):
         return JsonResponse({
             'success': False,
             'errors': form.errors,
+        })
+
+
+class LectureTopicActive(View):
+    @method_decorator(login_required)
+    def post(self, request, pin=None, topic_id=None):
+        """ Set topic as active topic """
+
+        try:
+            topic = models.LectureTopic.objects.get(
+                id=topic_id,
+                lecture__pin=pin,
+                lecture__course__user=request.user
+            )
+        except models.LectureTopic.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'errors': {
+                    'message': ['Topic ID does not exist for this lecture and user'],
+                },
+            })
+
+        topic.lecture.active_topic_index = topic.order
+        topic.lecture.save()
+        return JsonResponse({
+            'success': True,
+            'lecture': topic.lecture.as_dict(),
         })
 
 

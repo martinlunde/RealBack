@@ -1,5 +1,6 @@
 
 from django.db import models, IntegrityError, transaction
+from django.db.models import F
 from django.utils import timezone
 from django.core import validators
 from random import choice
@@ -83,6 +84,7 @@ class Lecture(models.Model):
             'rating': self.rating,
             'rating_active': self.rating_active,
             'rating_amount': self.rating_amount,
+            'active_topic_index': self.active_topic_index,
         }
 
     def reset_pace(self):
@@ -104,6 +106,14 @@ class LectureTopic(models.Model):
     title = models.CharField(max_length=50, validators=[validators.MinLengthValidator(3)])
     understanding = models.IntegerField(default=0)
     order = models.PositiveIntegerField(default=0)
+
+    def delete(self, *args, **kwargs):
+        super(LectureTopic, self).delete(*args, **kwargs)
+        self.reorder_consecutive_orders()
+
+    def reorder_consecutive_orders(self):
+        LectureTopic.objects.filter(lecture=self.lecture, order__gt=self.order)\
+            .order_by('order').update(order=F('order') - 1)
 
     def as_dict(self):
         return {

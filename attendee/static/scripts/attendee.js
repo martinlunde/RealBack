@@ -94,7 +94,11 @@ function populateTopicList() {
             topic_list.empty();
 
             for (var i = 0; i < data.lecture_topics.length; i++) {
-                appendTopicToList(data.lecture_topics[i], topic_list);
+                var topic = data.lecture_topics[i];
+                var topic_div = appendTopicToList(topic, topic_list, understandTopic);
+                if (understood_topics.hasOwnProperty(topic.topic_id) && understood_topics[topic.topic_id]) {
+                    topic_div.addClass('topic_indicator_understood');
+                }
             }
 
             var current_topic_div = topic_list.find('div').eq(data.lecture.active_topic_index);
@@ -104,6 +108,41 @@ function populateTopicList() {
             topic_list.css('left', calculateTopicListPosition(topic_list.width(), data.lecture.active_topic_index));
         }
     });
+}
+
+var understood_topics = {};
+
+/**
+ * Indicate that a topic is understood
+ *
+ * @param event     Click event
+ */
+function understandTopic(event) {
+    var topic_div = $(this);
+    var topic_id = topic_div.data('topic_id');
+    var URL = '/lectures/' + lecture_pin + '/topics/' + topic_id + '/understanding/';
+    var topic_understanding_form = $('#topic_understanding_form');
+    var understood;
+
+    if (understood_topics.hasOwnProperty(topic_id) && understood_topics[topic_id]) {
+        understood = false;
+        topic_understanding_form.children('input[name=understanding]').prop('checked', understood);
+    } else {
+        understood = true;
+        topic_understanding_form.children('input[name=understanding]').prop('checked', understood);
+    }
+
+    csrfPOST(URL, topic_understanding_form, function (data) {
+        console.log(data);
+        if (data.success) {
+            understood_topics[topic_id] = understood;
+            if (understood) {
+                topic_div.addClass('topic_indicator_understood');
+            } else {
+                topic_div.removeClass('topic_indicator_understood');
+            }
+        }
+    })
 }
 
 /**

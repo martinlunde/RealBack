@@ -442,6 +442,10 @@ h1 {
     height: 65px;
 }
 
+.topic_indicator_understood {
+    background-color: #cfcfcf;
+}
+
 .topic_title_parent {
     height: 32px;
     text-align: center;

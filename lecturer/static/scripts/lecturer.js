@@ -383,6 +383,7 @@ function refreshLecturePage() {
     populateTopQuestionsLecturePage();
     getPace();
     getVolume();
+    populateTopicList();
 }
 
 /**
@@ -468,7 +469,9 @@ function populateTopicList() {
             topic_list.empty();
 
             for (var i = 0; i < data.lecture_topics.length; i++) {
-                appendTopicToList(data.lecture_topics[i], topic_list, selectTopic);
+                var topic = data.lecture_topics[i];
+                var topic_div = appendTopicToList(topic, topic_list, selectTopic);
+                topic_div.text(topic.topic_understanding);
             }
 
             $('#topic_title').text('');

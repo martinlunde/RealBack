@@ -13,6 +13,7 @@ def index(request):
         'question_form': question_form,
         'volume_form': volume_form,
         'pace_form': pace_form,
+        'topic_understanding_form': forms.TopicUnderstandingForm(),
     })
 
 

@@ -76,6 +76,11 @@
                     <ul id="topic_list"></ul>
                 </div>
 
+                <form id="topic_understanding_form">
+                    {% csrf_token %}
+                    {{ topic_understanding_form.understanding }}
+                </form>
+
                 <div id="topic_title_row" class="row">
                     <div class="col-md-2"></div>
                     <div id="topic_title_parent" class="col-md-8 topic_title_parent">

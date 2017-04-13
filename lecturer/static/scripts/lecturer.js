@@ -39,6 +39,9 @@ $(document).ready(function () {
         }
     };
 
+    $("#topic_list").sortable();
+    $("#topic_list").disableSelection();
+
     updateCourseList();
 });
 

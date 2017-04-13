@@ -384,42 +384,7 @@ fieldset[disabled] .btn-custom.active {
     float: right;
 }
 
-@media (max-width: 991px) {
-    #lecture_pin {
-        float:none;
-        text-align: center;
-    }
 
-    .bottom_aligned {
-        margin-top: 70px;
-    }
-}
-
-@media (max-width: 780px) {
-
-    #lecture_title h1 {
-        font-size: 20px;
-    }
-
-    .wraptext {
-        word-wrap: break-word;
-        margin-top: 6px;
-        position: relative;
-    }
-
-    .bars .btn-lecturer-stats {
-        float: left;
-    }
-
-    .lecturer-button-div {
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    .bars {
-        height: auto;
-    }
-}
 
 /* Topic list related styles */
 
@@ -480,4 +445,56 @@ fieldset[disabled] .btn-custom.active {
 
 .move_right {
     right:-11.5px;
+}
+
+.h_line_lec {
+    width: 80%;
+    height: 1px;
+    background-color: black;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    top:100px;
+    z-index: 0;
+}
+
+@media (max-width: 991px) {
+    #lecture_pin {
+        float:none;
+        text-align: center;
+    }
+
+    .bottom_aligned {
+        margin-top: 70px;
+    }
+
+    .h_line_lec {
+        top:90px;
+    }
+}
+
+@media (max-width: 780px) {
+
+    #lecture_title h1 {
+        font-size: 20px;
+    }
+
+    .wraptext {
+        word-wrap: break-word;
+        margin-top: 6px;
+        position: relative;
+    }
+
+    .bars .btn-lecturer-stats {
+        float: left;
+    }
+
+    .lecturer-button-div {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .bars {
+        height: auto;
+    }
 }

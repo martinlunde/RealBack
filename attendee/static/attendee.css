@@ -227,6 +227,7 @@ body, html {
 .big-box {
     margin-top: 90px;
     margin-bottom: 10px;
+    z-index: -2;
 }
 
 .box {
@@ -413,6 +414,7 @@ h1 {
     list-style-type: none;
     position: relative;
     display: inline;
+    z-index: 1;
 }
 
 #topic_list_parent {
@@ -428,6 +430,7 @@ h1 {
 .topic_li_element {
     display: inline-block;
     vertical-align: middle;
+
 }
 
 .topic_indicator {
@@ -436,7 +439,7 @@ h1 {
     width: 50px;
     height: 50px;
     overflow: hidden;
-    /*background-color: #f2f2f2;*/
+    background-color: #f2f2f2;
     border: 1px solid #555555;
     border-radius: 50%;
     cursor: pointer;
@@ -472,4 +475,21 @@ h1 {
     position: relative;
     vertical-align: middle;
     top: 3px;
+}
+
+.h_line_att {
+    width: 80%;
+    height: 1px;
+    background-color: black;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    top:180px;
+    z-index: 0;
+}
+
+@media (max-width: 991px) {
+      .h_line_att {
+        top:90px;
+    }
 }

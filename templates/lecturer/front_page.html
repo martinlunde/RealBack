@@ -5,6 +5,7 @@
 {% block ex-head %}
     <script src="{% static 'scripts/lecturer.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'lecturer.css' %}">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -168,7 +169,8 @@
                         </div>
 
                         <div id="topic_list_parent" class="row">
-                            <ul id="topic_list"></ul>
+                            <ul id="topic_list" class="all-slides"></ul>
+                            <div class="h_line_lec"></div>
                         </div>
 
                         <div id="topic_title_row" class="row">

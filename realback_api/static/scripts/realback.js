@@ -77,3 +77,45 @@ function csrfDELETE(URL, success) {
         success: success
     });
 }
+
+/**
+ * Append a topic to the topic list
+ *
+ * @param topic             The topic to be appended
+ * @param topic_list        The list to append topic to
+ * @param click_callback    Callback on clicking the topic item
+ */
+function appendTopicToList(topic, topic_list, click_callback) {
+    var inside_div = $('<div>');
+    inside_div.addClass('topic_indicator');
+    inside_div.data({
+        topic_id: topic.topic_id,
+        topic_title: topic.topic_title,
+        topic_order: topic.topic_order
+    });
+    inside_div.attr('title', topic.topic_title);
+    inside_div.text(topic.topic_order + 1);
+    // Register click event only if a callback is supplied
+    if (typeof click_callback === 'function') {
+        inside_div.click(click_callback);
+    }
+
+    var li_el = $('<li>');
+    li_el.addClass('topic_li_element');
+    li_el.append(inside_div);
+    topic_list.append(li_el);
+    return inside_div;
+}
+
+/**
+ * Calculate left position of topic list to center selected topic
+ *
+ * @param current_width         Width of the list element
+ * @param current_topic_index   Index of currently selected topic
+ * @returns {number}            Left position
+ */
+function calculateTopicListPosition(current_width, current_topic_index) {
+    // half of list element width subtracting half of selected topic div width subtracting
+    // count of topics left of selected multiplied by width of non-selected topic elements
+    return current_width / 2 - 41 - current_topic_index * 66;
+}

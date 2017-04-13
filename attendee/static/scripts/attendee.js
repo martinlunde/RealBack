@@ -66,7 +66,8 @@ function updatePageContents(lecture) {
     getQuestions();
     checkReset();
     checkEnd();
-    // TODO update other contents
+    populateTopicList();
+
     // Lecture details
     if (typeof lecture === 'undefined') {
         var URL = '/lectures/' + lecture_pin + '/';
@@ -82,14 +83,77 @@ function updatePageContents(lecture) {
 }
 
 /**
+ * Populate topic list
+ */
+function populateTopicList() {
+    var URL = '/lectures/' + lecture_pin + '/topics/';
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+            var topic_list = $('#topic_list');
+            topic_list.empty();
+
+            for (var i = 0; i < data.lecture_topics.length; i++) {
+                var topic = data.lecture_topics[i];
+                var topic_div = appendTopicToList(topic, topic_list, understandTopic);
+                if (understood_topics.hasOwnProperty(topic.topic_id) && understood_topics[topic.topic_id]) {
+                    topic_div.addClass('topic_indicator_understood');
+                }
+            }
+
+            var current_topic_div = topic_list.find('div').eq(data.lecture.active_topic_index);
+            $('#topic_title').text(current_topic_div.data('topic_title'));
+            current_topic_div.addClass('topic_indicator_selected');
+            // Center selected topic
+            topic_list.css('left', calculateTopicListPosition(topic_list.width(), data.lecture.active_topic_index));
+        }
+    });
+}
+
+var understood_topics = {};
+
+/**
+ * Indicate that a topic is understood
+ *
+ * @param event     Click event
+ */
+function understandTopic(event) {
+    var topic_div = $(this);
+    var topic_id = topic_div.data('topic_id');
+    var URL = '/lectures/' + lecture_pin + '/topics/' + topic_id + '/understanding/';
+    var topic_understanding_form = $('#topic_understanding_form');
+    var understood;
+
+    if (understood_topics.hasOwnProperty(topic_id) && understood_topics[topic_id]) {
+        understood = false;
+        topic_understanding_form.children('input[name=understanding]').prop('checked', understood);
+    } else {
+        understood = true;
+        topic_understanding_form.children('input[name=understanding]').prop('checked', understood);
+    }
+
+    csrfPOST(URL, topic_understanding_form, function (data) {
+        console.log(data);
+        if (data.success) {
+            understood_topics[topic_id] = understood;
+            if (understood) {
+                topic_div.addClass('topic_indicator_understood');
+            } else {
+                topic_div.removeClass('topic_indicator_understood');
+            }
+        }
+    })
+}
+
+/**
  * Get list of questions for lecture
  */
 function getQuestions() {
     var api_url = '/lectures/' + lecture_pin + '/questions/';
+
     $.getJSON(api_url, function (data) {
         //console.log(data);
         if (data.success) {
-            // TODO Update question list
             // Empty list of existing questions
             $("#question_list").empty();
             // Add questions to list
@@ -98,17 +162,18 @@ function getQuestions() {
                 var list_element = $("<li>");
                 var upvote_button = $("<button>");
                 var glyphicon_up = $("<span>");
-                glyphicon_up.attr({
-                    class: 'glyphicon glyphicon-menu-up glyph-upvote'
-                });
-                upvote_button.attr({
+                var upvote_count = $("<div>");
+                glyphicon_up.addClass('glyphicon glyphicon-menu-up glyph-upvote');
+                upvote_count.addClass('upvote_count');
+                upvote_count.text(question.question_votes);
+                upvote_button.addClass('upvote-button').attr({
                     type: 'button',
-                    class: 'upvote-button',
+                    title: 'Up-vote this question',
                     onclick: 'upvoteQuestion.call(this)',
                     value: question.question_id
                 });
                 upvote_button.append(glyphicon_up);
-                upvote_button.append(question.question_votes);
+                upvote_button.append(upvote_count);
                 list_element.append(upvote_button);
                 list_element.append('- ' + question.question_text);
                 $("#question_list").append(list_element);

@@ -437,7 +437,8 @@ function refreshLecturePage() {
     populateTopQuestionsLecturePage();
     getPace();
     getVolume();
-};
+    populateTopicList();
+}
 
 /**
  * Fill in recent questions in lecture page
@@ -452,7 +453,7 @@ function populateRecentQuestionsLecturePage() {
           for (var i = 0; i < data.questions.length; i++) {
               var question = data.questions[i];
               var list_element = $("<li>");
-              list_element.append(' ' + question.question_text);
+              list_element.append(question.question_text);
               $("#question_list_recent").append(list_element);
           }
         }
@@ -472,20 +473,21 @@ function populateTopQuestionsLecturePage() {
           for (var i = 0; i < Math.min(5, data.questions.length); i++) {
              var question = data.questions[i];
              var list_element = $("<li>");
-             var upvote_button = $("<button>");
-             var glyphicon_up = $("<span>");
-             glyphicon_up.attr({
-                 class: 'glyphicon glyphicon-remove'
-             });
-             upvote_button.attr({
+             var close_button = $("<button>");
+             var glyphicon_remove = $("<span>");
+             var upvote_count = $("<div>");
+             glyphicon_remove.addClass('glyphicon glyphicon-remove glyph-upvote');
+             upvote_count.addClass('upvote_count');
+             upvote_count.text(question.question_votes);
+             close_button.addClass('upvote-button').attr({
                  type: 'button',
-                 class: 'upvote-button',
+                 title: 'Remove this question',
                  onclick: 'activeQuestion.call(this)',
                  value: question.question_id
              });
-             upvote_button.append(glyphicon_up);
-             upvote_button.append(question.question_votes);
-             list_element.append(upvote_button);
+             close_button.append(glyphicon_remove);
+             close_button.append(upvote_count);
+             list_element.append(close_button);
              list_element.append('- ' + question.question_text);
              $("#question_list_top").append(list_element);
           }
@@ -521,38 +523,17 @@ function populateTopicList() {
             topic_list.empty();
 
             for (var i = 0; i < data.lecture_topics.length; i++) {
-                appendTopicToList(data.lecture_topics[i]);
+                var topic = data.lecture_topics[i];
+                var topic_div = appendTopicToList(topic, topic_list, selectTopic);
+                topic_div.text(topic.topic_understanding);
             }
 
             $('#topic_title').text('');
+            current_topic_index = data.lecture.active_topic_index;
             var current_topic_div = topic_list.find('div').eq(current_topic_index);
             current_topic_div.click();
         }
     });
-}
-
-/**
- * Append a topic to the topic list
- *
- * @param topic     The topic to be appended
- */
-function appendTopicToList(topic) {
-    var inside_div = $('<div>');
-    inside_div.addClass('topic_indicator');
-    inside_div.data({
-        topic_id: topic.topic_id,
-        topic_title: topic.topic_title,
-        topic_order: topic.topic_order
-    });
-    inside_div.attr('title', topic.topic_title);
-    inside_div.text(topic.topic_order + 1);
-    inside_div.click(selectTopic);
-
-    var li_el = $('<li>');
-    li_el.addClass('topic_li_element');
-    li_el.append(inside_div);
-    $('#topic_list').append(li_el);
-    return inside_div;
 }
 
 /**
@@ -564,21 +545,46 @@ function appendTopicToList(topic) {
 function selectTopic(event, close_form) {
     close_form = (typeof close_form !== 'undefined') ? close_form : true;
 
-    var topic_list = $('#topic_list');
     if (close_form) {
         // Force close topic title form
         toggleTopicTitleForm(null, true);
     }
     if ($('#topic_delete_row').is(':visible')) {
+        // If confirm delete dialog is open, close it
         toggleDeleteTopicConfirm(null, true);
     }
+
+    var topic_list = $('#topic_list');
     $('#topic_title').text($(this).data('topic_title'));
     topic_list.find('div').eq(current_topic_index).removeClass('topic_indicator_selected');
-    current_topic_index = $(this).data('topic_order');
+    var new_topic_index = $(this).data('topic_order');
+
+    if (current_topic_index !== new_topic_index) {
+        setActiveTopic($(this).data('topic_id'));
+        current_topic_index = new_topic_index;
+    }
+
     $(this).addClass('topic_indicator_selected');
-    // Calculate position of the topic list so the selected topic is centered
-    var current_width = topic_list.width();
-    topic_list.css('left', current_width / 2 - 41 - current_topic_index * 66);
+    // Center selected topic
+    topic_list.css('left', calculateTopicListPosition(topic_list.width(), current_topic_index));
+}
+
+/**
+ * Store a topic as active topic for lecture
+ *
+ * @param topic_id          ID of the topic to set as active
+ * @param callback_maybe    A callback to be executed on success
+ */
+function setActiveTopic(topic_id, callback_maybe) {
+    var URL = '/lectures/' + lecture_pin + '/topics/' + topic_id + '/active/';
+    csrfPOST(URL, $('<form>'), function (data) {
+        console.log(data);
+        if (data.success) {
+            if (typeof callback_maybe === 'function') {
+                callback_maybe(data);
+            }
+        }
+    });
 }
 
 /**
@@ -630,8 +636,9 @@ function addLectureTopic(event) {
     csrfPOST(URL, $('#topic_title_form'), function (data) {
         console.log(data);
         if (data.success) {
+            var topic_list = $('#topic_list');
             $('#topic_title_input').val('').attr('placeholder', 'Add another topic?');
-            var topic_div = appendTopicToList(data.lecture_topic);
+            var topic_div = appendTopicToList(data.lecture_topic, topic_list, selectTopic);
             selectTopic.call(topic_div, null, false);
         }
     });
@@ -672,7 +679,9 @@ function deleteLectureTopic(event) {
         console.log(data);
         if (data.success) {
             if (current_topic_index > 0) current_topic_index--;
+            setActiveTopic($('#topic_list').find('div').eq(current_topic_index).data('topic_id'));
             populateTopicList();
+            toggleDeleteTopicConfirm(null, true);
         }
     });
 }

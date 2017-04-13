@@ -32,6 +32,7 @@ urlpatterns = [
 
             url(r'^$', api.LectureTopicDetails.as_view(), name='lecture_topic_details'),
             url(r'^understanding/$', api.LectureTopicUnderstanding.as_view(), name='lecture_topic_understanding'),
+            url(r'^active/$', api.LectureTopicActive.as_view(), name='lecture_topic_active')
 
         ])),
         url(r'^reset/', include([

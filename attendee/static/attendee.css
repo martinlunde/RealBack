@@ -351,6 +351,24 @@ body, html {
     text-transform: inherit;
 }
 
+.center {
+    text-align: center;
+}
+
+.transp_btn {
+  background-color: white;
+  border:none;
+}
+
+.glyph-rate {
+  color:#007d70;
+}
+
+.modal-body {
+  margin-bottom: 25px;
+  margin-top: 25px;
+}
+
 @media screen and (max-width: 768px) {
   .fit-vol-cont {
     margin-top: 25px;

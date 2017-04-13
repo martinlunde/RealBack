@@ -117,10 +117,6 @@ fieldset[disabled] .btn-custom.active {
     margin-bottom: 10px;
 }
 
-.center {
-    text-align: center;
-}
-
 .bars {
     position: relative;
     border-radius: 10px;

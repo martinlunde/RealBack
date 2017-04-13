@@ -366,6 +366,21 @@ function checkEnd() {
     });
 }
 
+$( document ).ready(function() {
+    $(".transp_btn").mouseover(function() {
+        for (i = 1; i <= parseInt(this.name); i++) {
+            console.log("span[name="+i+"]");
+            $('span[name=' + i + "]").addClass('glyphicon-star');
+            $('span[name=' + i + "]").removeClass('glyphicon-star-empty');
+        }
+    });
+
+    $(".transp_btn").mouseleave(function() {
+        $(".transp_btn").children('span').removeClass('glyphicon-star');
+        $(".transp_btn").children('span').addClass('glyphicon-star-empty');
+    });
+})
+
 function rate(rating) {
     var form_action = '/lectures/' + lecture_pin + '/rate/';
     var form = $('<form>');
@@ -380,3 +395,4 @@ function rate(rating) {
         }
     });
 }
+

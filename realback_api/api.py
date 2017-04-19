@@ -787,10 +787,6 @@ class LectureResetVolume(View):
             'lecture': lecture.as_dict(),
         })
 
-    @method_decorator(login_required)
-    def post(self, request):
-        """ Nothing goes here """
-
 
 class LectureResetPace(View):
     @method_decorator(login_required)
@@ -811,10 +807,6 @@ class LectureResetPace(View):
             'success': True,
             'lecture': lecture.as_dict(),
         })
-
-    @method_decorator(login_required)
-    def post(self, request):
-        """ Nothing goes here """
 
 
 class QuestionActive(View):

@@ -162,6 +162,37 @@ class ApiTestCase(TestCase):
         decoded = json.loads(response.content)
         self.assertEqual(decoded['success'], True)
 
+    def testLectureVolumeGet(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+
+        """Test if passing"""
+        response = c.get('/lectures/' + lecture.pin + '/volume/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if failing"""
+        response = c.get('/lectures/' + '7FSA6C' + '/volume/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+    def testLectureVolumePost(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+
+        """Test if passing"""
+        response = c.post('/lectures/' + lecture.pin + '/volume/', {'volume': True})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
 
 class ModelTestCase(TestCase):
     def test_generate_pin(self):

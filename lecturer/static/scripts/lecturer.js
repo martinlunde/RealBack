@@ -396,7 +396,6 @@ function populateLecturePage() {
             }
             if ($(window).width() > 700) {
                 if (data.lecture.lecture_title.length > 29) {
-                    console.log("HOI");
                     $('#lecture_title').children('h1').first().css({
                         'font-size': '22px',
                         'margin-top':'25px'
@@ -417,7 +416,6 @@ function populateLecturePage() {
                     });
                 }
             } else {
-                console.log("HOooooI");
                 $('#lecture_title').children('h1').first().css({
                         'font-size': '20px',
                         'margin-top':'25px'

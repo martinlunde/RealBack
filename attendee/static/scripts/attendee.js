@@ -434,7 +434,6 @@ function checkEnd() {
 $( document ).ready(function() {
     $(".transp_btn").mouseover(function() {
         for (i = 1; i <= parseInt(this.name); i++) {
-            console.log("span[name="+i+"]");
             $('span[name=' + i + "]").addClass('glyphicon-star');
             $('span[name=' + i + "]").removeClass('glyphicon-star-empty');
         }

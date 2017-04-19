@@ -87,12 +87,6 @@ class LectureDetails(View):
         })
 
 
-class LectureLeave(View):
-    def get(self, request, pin=None):
-        """ Leave a lecture """
-        pass
-
-
 class LectureTopics(View):
     def get(self, request, pin=None):
         """ Read list of lecture topics """

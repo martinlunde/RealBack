@@ -12,7 +12,6 @@ urlpatterns = [
 
         url(r'^$', api.LectureDetails.as_view(), name='lecture_details'),
         url(r'^join/$', api.LectureDetails.as_view(), {'join': True}, name='lecture_join'),
-        url(r'^leave/$', api.LectureLeave.as_view(), name='lecture_leave'),
         url(r'^questions/$', api.LectureQuestions.as_view(), name='lecture_questions'),
         url(r'^questions/(?P<question_id>[0-9]+)/', include([
 

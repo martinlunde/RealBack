@@ -286,6 +286,86 @@ class ApiTestCase(TestCase):
         decoded = json.loads(response.content)
         self.assertEqual(decoded['success'], True)
 
+    def testLectureTopics(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+        topic = models.LectureTopic(lecture=lecture, title="engineering")
+        topic.save()
+
+        response = c.get('/lectures/' + lecture.pin + '/topics/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/', {'title': 'this is a topic'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + '714HSB' + '/topics/', {'title': 'this is a topic'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/', {'nope': 'this is a topic'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.get('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.get('/lectures/' + lecture.pin + '/topics/' + str(500) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/',
+                          {'title': 'this is a topic', 'order': 1})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/',
+                          {'nope': 'this is a topic'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(500) + '/',
+                          {'title': 'this is a topic', 'order': 1})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/understanding/',
+                          {'understanding': True})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(500) + '/understanding/',
+                          {'understanding': True})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/understanding/',
+                          {'nope': True})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/active/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(500) + '/active/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.delete('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.delete('/lectures/' + lecture.pin + '/topics/' + str(500) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
 
 class ModelTestCase(TestCase):
     def test_generate_pin(self):

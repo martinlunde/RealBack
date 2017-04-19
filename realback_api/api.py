@@ -87,12 +87,6 @@ class LectureDetails(View):
         })
 
 
-class LectureLeave(View):
-    def get(self, request, pin=None):
-        """ Leave a lecture """
-        pass
-
-
 class LectureTopics(View):
     def get(self, request, pin=None):
         """ Read list of lecture topics """
@@ -787,10 +781,6 @@ class LectureResetVolume(View):
             'lecture': lecture.as_dict(),
         })
 
-    @method_decorator(login_required)
-    def post(self, request):
-        """ Nothing goes here """
-
 
 class LectureResetPace(View):
     @method_decorator(login_required)
@@ -811,10 +801,6 @@ class LectureResetPace(View):
             'success': True,
             'lecture': lecture.as_dict(),
         })
-
-    @method_decorator(login_required)
-    def post(self, request):
-        """ Nothing goes here """
 
 
 class QuestionActive(View):

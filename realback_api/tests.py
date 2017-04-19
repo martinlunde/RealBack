@@ -1,7 +1,370 @@
 
-from django.test import TestCase
+from django.test import Client, TestCase
 from . import models
 from django.contrib.auth import get_user_model
+import json
+
+c = Client()
+
+
+class ApiTestCase(TestCase):
+    """The different API tests will check if our api is returning proper json responses or returning correct
+    error messages based on the situation. The comments below will therefore only be a pointer to if the test
+    exists for testing pass or fail of a request."""
+
+    """Testing course creation, deletion and update"""
+    def testNewCourse(self):
+        get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+
+        """Test if passing"""
+        c.post('/courses/', {'title': 'TDT4140'})
+        response = c.get('/courses/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if failing"""
+        response = c.post('/courses/', {'titleteas': 'TDT4140'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+    def testCourseDetailGet(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+
+        """Test if passing"""
+        response = c.get('/courses/' + str(course.id) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if failing"""
+        response = c.get('/courses/' + str(500) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+    def testCourseDetailPost(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+
+        """Test if passing"""
+        c.post('/courses/' + str(course.id) + '/', {'title': 'TDT4140'})
+        response = c.get('/courses/' + str(course.id) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if failing"""
+        response = c.post('/courses/' + str(course.id) + '/', {'nope': 'TDT4140'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        """Test if failing"""
+        response = c.post('/courses/' + str(500) + '/', {'title': 'TDT4140'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+    def testCourseDetailDelete(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4180")
+        course.save()
+
+        """Test if passing"""
+        response = c.delete('/courses/' + str(course.id) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if failing"""
+        response = c.delete('/courses/' + str(500) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+    def testLectureDetail(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+
+        response = c.get('/lectures/' + lecture.pin + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+    def testLectureDetailFalse(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+
+        response = c.get('/lectures/' + lecture.pin + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+    """Testing CourseLecture creation and updates"""
+    def testCourseLectureGet(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+
+        """Test if passing"""
+        response = c.get('/courses/' + str(course.id) + '/lectures/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+    def testCourseLecturePostCreation(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+
+        """Test if passing"""
+        response = c.post('/courses/' + str(course.id) + '/lectures/', {'title': 'lecture1'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['lecture']['lecture_title'], 'lecture1')
+
+        """Test if failing"""
+        response = c.post('/courses/' + str(500) + '/lectures/', {'title': 'lecture1'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+    def testLectureStats(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+
+        """Test if passing"""
+        response = c.get('/courses/' + str(course.id) + '/stats/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+    def testLectureResetVolumeAndPace(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+
+        """Test if volume reset is passing"""
+        response = c.get('/lectures/' + lecture.pin + '/reset/volume/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if pace reset is passing"""
+        response = c.get('/lectures/' + lecture.pin + '/reset/pace/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+    def testLectureVolumeGet(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+
+        """Test if passing"""
+        response = c.get('/lectures/' + lecture.pin + '/volume/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if failing"""
+        response = c.get('/lectures/' + '7FSA6C' + '/volume/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+    def testLectureVolumePost(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+
+        """Test if passing"""
+        response = c.post('/lectures/' + lecture.pin + '/volume/', {'volume': True})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+    def testLectureRating(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+
+        """Test if passing"""
+        response = c.post('/lectures/' + lecture.pin + '/rate/', {'rating': 4})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if failing"""
+        response = c.post('/lectures/' + '714HSB' + '/rate/', {'rating': 4})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        """Test if passing"""
+        response = c.get('/lectures/' + lecture.pin + '/reset_rating/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if failing"""
+        response = c.get('/lectures/' + '714HSB' + '/reset_rating/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+    def testLectureTimer(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+
+        """Test if passing"""
+        response = c.get('/lectures/' + lecture.pin + '/timer/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if failing"""
+        response = c.get('/lectures/' + '714HSB' + '/timer/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        """Test if passing"""
+        response = c.get('/lectures/' + lecture.pin + '/start_timer/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if failing"""
+        response = c.get('/lectures/' + '714HSB' + '/start_timer/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        """Test if passing"""
+        response = c.get('/lectures/' + lecture.pin + '/stop_timer/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if failing"""
+        response = c.get('/lectures/' + '714HSB' + '/stop_timer/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+    def testLectureQuestions(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+        question = models.Question(lecture=lecture, text="Why is the sky blue?")
+        question.save()
+
+        response = c.get('/lectures/' + lecture.pin + '/questions/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + lecture.pin + '/questions/', {'text': 'what is this?'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + '714HSB' + '/questions/', {'text': 'what is this?'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        """Questions votes"""
+        response = c.post('/lectures/' + lecture.pin + '/questions/' + str(question.id) + '/vote/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+    def testLectureTopics(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+        topic = models.LectureTopic(lecture=lecture, title="engineering")
+        topic.save()
+
+        response = c.get('/lectures/' + lecture.pin + '/topics/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/', {'title': 'this is a topic'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + '714HSB' + '/topics/', {'title': 'this is a topic'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/', {'nope': 'this is a topic'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.get('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.get('/lectures/' + lecture.pin + '/topics/' + str(500) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/',
+                          {'title': 'this is a topic', 'order': 1})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/',
+                          {'nope': 'this is a topic'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(500) + '/',
+                          {'title': 'this is a topic', 'order': 1})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/understanding/',
+                          {'understanding': True})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(500) + '/understanding/',
+                          {'understanding': True})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/understanding/',
+                          {'nope': True})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/active/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.post('/lectures/' + lecture.pin + '/topics/' + str(500) + '/active/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+        response = c.delete('/lectures/' + lecture.pin + '/topics/' + str(topic.id) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        response = c.delete('/lectures/' + lecture.pin + '/topics/' + str(500) + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
 
 
 class ModelTestCase(TestCase):

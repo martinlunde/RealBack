@@ -9,3 +9,4 @@ include =
         emailauth/forms.py
         lecturer/forms.py
         realback_api/forms.py
+        realback_api/api.py

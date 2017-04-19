@@ -139,7 +139,26 @@ class ApiTestCase(TestCase):
         lecture = models.Lecture(course=course, title="Lecture1")
         lecture.save()
 
+        """Test if passing"""
         response = c.get('/courses/' + str(course.id) + '/stats/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+    def testLectureResetVolumeAndPace(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+        lecture = models.Lecture(course=course, title="Lecture1")
+        lecture.save()
+
+        """Test if volume reset is passing"""
+        response = c.get('/lectures/' + lecture.pin + '/reset/volume/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+        """Test if pace reset is passing"""
+        response = c.get('/lectures/' + lecture.pin + '/reset/pace/')
         decoded = json.loads(response.content)
         self.assertEqual(decoded['success'], True)
 

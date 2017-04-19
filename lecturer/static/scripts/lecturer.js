@@ -39,6 +39,9 @@ $(document).ready(function () {
         }
     };
 
+    $("#topic_list").sortable();
+    $("#topic_list").disableSelection();
+
     updateCourseList();
 });
 
@@ -47,7 +50,7 @@ var viewStateCallbacks = {
     'backToCourseList': backToCourseList,
     'forwardToLecturePage': forwardToLecturePage,
     'forwardToStatPage': forwardToStatPage
-};
+}
 
 /**
  * Go back to course overview from lecture page or statistics page
@@ -378,7 +381,59 @@ function forwardToLecturePage() {
 /**
  * Lecture page contents that should be refreshed continuously
  */
+function populateLecturePage() {
+    var URL = '/lectures/'+ lecture_pin + '/';
+
+    $.getJSON(URL, function (data) {
+        console.log(data);
+        if (data.success) {
+            $('#lecture_title').children('h1').first().text(data.lecture.lecture_title).append(
+                ' <span class="glyphicon glyphicon-edit glyph-align-with-text"></span>');
+
+            if ($('#lecture_page_body').is(':visible')) {
+                $('#lecture_pin').children('h2').first().text(data.lecture.lecture_pin).append(
+                    '<span class="glyphicon glyphicon-resize-full glyph-font-size-20"></span>');
+            }
+            if ($(window).width() > 700) {
+                if (data.lecture.lecture_title.length > 29) {
+                    $('#lecture_title').children('h1').first().css({
+                        'font-size': '22px',
+                        'margin-top':'25px'
+                    });
+                    $('#lecture_title').children('h1').children('span').css({
+                        'font-size': '18px'
+                    });
+                    $('#lecture_pin').css({
+                        'margin-top':'-5px'
+                    })
+                } else {
+                    $('#lecture_title').children('h1').first().css({
+                        'font-size': '36px',
+                        'margin-top':'20px'
+                    });
+                    $('#lecture_title').children('h1').children('span').css({
+                        'font-size': '25px'
+                    });
+                }
+            } else {
+                $('#lecture_title').children('h1').first().css({
+                        'font-size': '20px',
+                        'margin-top':'25px'
+                    });
+                    $('#lecture_title').children('h1').children('span').css({
+                        'font-size': '20px'
+                    });
+                    $('#lecture_pin').css({
+                        'margin-top':'-5px',
+                        'font-size': '18px'
+                    })
+            }
+        }
+    });
+}
+
 function refreshLecturePage() {
+    populateLecturePage();
     populateRecentQuestionsLecturePage();
     populateTopQuestionsLecturePage();
     getPace();
@@ -702,8 +757,33 @@ function getPace() {
             $('#pace_upvotes').append(data.lecture.lecture_pace_up)
             $('#pace_downvotes').empty()
             $('#pace_downvotes').append(data.lecture.lecture_pace_down)
+            if (data.lecture.lecture_pace_down > data.lecture.lecture_pace_up){
+                $('#pace_up').children('span').first().removeClass('glyphicon-menu-up');
+                $('#pace_up').children('span').first().removeClass('glyphicon-minus');
+                $('#pace_up').children('span').first().addClass('glyphicon-menu-down');
+                $('#pace_up').children('span').css({
+                    'margin-left': '0px'
+                });
+            }
+            if (data.lecture.lecture_pace_down < data.lecture.lecture_pace_up){
+                $('#pace_up').children('span').first().removeClass('glyphicon-menu-down');
+                $('#pace_up').children('span').first().removeClass('glyphicon-minus');
+                $('#pace_up').children('span').first().addClass('glyphicon-menu-up');
+                $('#pace_up').children('span').css({
+                    'margin-left': '0px'
+                });
+            }
+            if (data.lecture.lecture_pace_down == data.lecture.lecture_pace_up){
+                $('#pace_up').children('span').first().removeClass('glyphicon-menu-down');
+                $('#pace_up').children('span').first().removeClass('glyphicon-menu-up');
+                $('#pace_up').children('span').first().addClass('glyphicon-minus');
+                $('#pace_up').children('span').css({
+                    'margin-left': '-2px'
+                });
+            }
+
         }
-    })
+    });
 }
 
 /**
@@ -717,7 +797,32 @@ function getVolume() {
             $('#volume_upvotes').empty().append(data.lecture.lecture_volume_up);
             $('#volume_downvotes').empty().append(data.lecture.lecture_volume_down);
         }
-    })
+        if (data.lecture.lecture_volume_down > data.lecture.lecture_volume_up){
+            $('#volume_up').children('span').first().removeClass('glyphicon-menu-up');
+            $('#volume_up').children('span').first().removeClass('glyphicon-minus');
+            $('#volume_up').children('span').first().addClass('glyphicon-menu-down');
+            $('#volume_up').children('span').css({
+                'margin-left': '0px'
+            });
+        }
+        if (data.lecture.lecture_volume_down < data.lecture.lecture_volume_up){
+            $('#volume_up').children('span').first().removeClass('glyphicon-menu-down');
+            $('#volume_up').children('span').first().removeClass('glyphicon-minus');
+            $('#volume_up').children('span').first().addClass('glyphicon-menu-up');
+            $('#volume_up').children('span').css({
+                'margin-left': '0px'
+            });
+        }
+        if (data.lecture.lecture_volume_down == data.lecture.lecture_volume_up){
+            $('#volume_up').children('span').first().removeClass('glyphicon-menu-down');
+            $('#volume_up').children('span').first().removeClass('glyphicon-menu-up');
+            $('#volume_up').children('span').first().addClass('glyphicon-minus');
+            $('#volume_up').children('span').css({
+                'margin-left': '-2px'
+            });
+        }
+
+    });
 }
 
 /**
@@ -884,3 +989,5 @@ function forwardToStatPage() {
     $('#course_overview_page').hide();
     $('#stat_page').show();
 }
+
+

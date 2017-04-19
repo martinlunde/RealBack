@@ -85,7 +85,7 @@ fieldset[disabled] .btn-custom.active {
 .content_lecturer_landingpage {
     background-color: #ebebeb;
     position: absolute;
-    top:100px;
+    top:80px;
     width: 100%;
     left: 50%;
     transform: translateX(-50%);
@@ -104,7 +104,7 @@ fieldset[disabled] .btn-custom.active {
     width: 200px;
 }
 
-#course_form, #course_form_button, #change_lecture_title_form {
+#course_form, #change_lecture_title_form {
 
     margin-bottom: 10px;
 }
@@ -115,10 +115,6 @@ fieldset[disabled] .btn-custom.active {
 
 .row_margin {
     margin-bottom: 10px;
-}
-
-.center {
-    text-align: center;
 }
 
 .bars {
@@ -336,14 +332,14 @@ fieldset[disabled] .btn-custom.active {
 }
 
 .sound-box-content {
-    position: absolute;
-    top:80px;
+    top:25px;
 }
 
 .number-huge {
     font-size: 30px;
     margin-top: 10px;
     text-align: center;
+    padding: 0px;
 }
 
 .middle {
@@ -372,27 +368,23 @@ fieldset[disabled] .btn-custom.active {
     float: right;
 }
 
-@media (max-width: 780px) {
-
-    .wraptext {
-        word-wrap: break-word;
-        margin-top: 6px;
-        position: relative;
+.red_text {
+    color: #EE6352;
 }
 
-    .bars .btn-lecturer-stats {
-        float: left;
-    }
-
-    .lecturer-button-div {
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    .bars {
-        height: auto;
-    }
+.move_left {
+    left: -5px;
 }
+
+.remove-padding {
+    padding: 0px;
+}
+
+.logout {
+    float: right;
+}
+
+
 
 /* Topic list related styles */
 
@@ -438,4 +430,71 @@ fieldset[disabled] .btn-custom.active {
 #save_topic_title {
     border-radius: 0 8px 8px 0;
     right: 5px;
+}
+
+.glyph-small {
+    font-size: 10px;
+    position: absolute;
+    left:0px;
+    top:25px;
+}
+
+.glyph-small-up-adjust {
+    top:27px;
+}
+
+.move_right {
+    right:-11.5px;
+}
+
+.h_line_lec {
+    width: 80%;
+    height: 1px;
+    background-color: black;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    top:100px;
+    z-index: 0;
+}
+
+@media (max-width: 991px) {
+    #lecture_pin {
+        float:none;
+        text-align: center;
+    }
+
+    .bottom_aligned {
+        margin-top: 70px;
+    }
+
+    .h_line_lec {
+        top:90px;
+    }
+}
+
+@media (max-width: 780px) {
+
+    #lecture_title h1 {
+        font-size: 20px;
+    }
+
+    .wraptext {
+        word-wrap: break-word;
+        margin-top: 6px;
+        position: relative;
+    }
+
+    .bars .btn-lecturer-stats {
+        float: left;
+    }
+
+    .lecturer-button-div {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .bars {
+        height: auto;
+    }
 }

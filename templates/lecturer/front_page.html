@@ -5,25 +5,30 @@
 {% block ex-head %}
     <script src="{% static 'scripts/lecturer.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'lecturer.css' %}">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 {% endblock %}
 
 {% block content %}
 <div id="landingpage_lecturer">
-    <header class="header col-xs-12 col-sm-12 col-md-12">
-        <div class="col-xs-2 col-sm-1 col-md-2">
-            <a href="/">
-                <img class="logo" src="{% static 'images/realbackLogoHuge.png' %}">
-            </a>
-        </div>
-        <div class="footerMenu">
-            <div class="col-xs-6 col-sm-7 col-md-6"></div>
-            <div class="col-xs-2 col-sm-2 col-md-2">
-                {% if request.user.is_authenticated %}
-                    <span class="item lecture_title">{{ request.user.email }}</span>
-                {% endif %}
+    <header class="header">
+        <div class="row">
+            <div class="col-xs-2">
+                <a href="/">
+                    <img class="logo" src="{% static 'images/realbackLogoHuge.png' %}">
+                </a>
             </div>
-            <div class="col-xs-2 col-sm-2 col-md-2">
-                 <a href="/logout/" class="logout item lecture_title">LOGOUT</a>
+            <div class="footerMenu col-xs-10">
+                <div class="row">
+                    <div class="col-xs-5 col-md-8"></div>
+                    <div class="col-xs-4 col-md-3">
+                        {% if request.user.is_authenticated %}
+                            <span class="item lecture_title">{{ request.user.email }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-xs-3 col-md-1">
+                         <a href="/logout/" class="logout item lecture_title">LOGOUT</a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -40,8 +45,6 @@
                 <button type="button" id="new_course_button" class="btn btn-custom btn-lecturer btn-success">
                     <span class="glyphicon glyphicon-plus glyphwhite"></span>
                 New course </button>
-            </div>
-            <div class="row">
                 <form id="course_form" style="display: none;">
                     <div>
                     {% csrf_token %}
@@ -104,7 +107,7 @@
                 </li>
             </ul>
 
-            <div id="course_list" class="">
+            <div id="course_list">
             </div>
         </div>
         <div class="col-md-1 col-lg-2"></div>
@@ -155,7 +158,6 @@
                 <div class="col-md-12">
                     <div class="big-box small-top-margin">
                         <div class="row">
-{#                            <div class="col-xs-2"></div>#}
                             <div class="col-xs-10">
                                 <h3 class="did-you-h3">TOPICS OF LECTURE</h3>
                             </div>
@@ -165,7 +167,8 @@
                         </div>
 
                         <div id="topic_list_parent" class="row">
-                            <ul id="topic_list"></ul>
+                            <ul id="topic_list" class="all-slides"></ul>
+                            <div class="h_line_lec"></div>
                         </div>
 
                         <div id="topic_title_row" class="row">
@@ -225,51 +228,63 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-md-3">
                         <div class="box col-sm-12">
                             <div class="row">
-                                <div class="col-xs-10">
+                                <div class="col-xs-8">
                                     <h3 class="soundlevel">PACE</h3>
                                 </div>
-                                <div class="col-xs-2 text-right">
+                                <div class="col-xs-4 text-right">
                                     <span class="glyphicon glyphicon-forward glyph-center"></span>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="sound-box-content col-xs-10">
+                                <div class="sound-box-content col-xs-12">
                                     <div class="row">
-                                        <div class="number-huge col-xs-3" id="pace_upvotes">0</div>
-                                        <div class="col-xs-6 middle">
-                                            <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="lectureResetPace()">
-                                                <h1 class="glyphicon glyphicon-menu-up glyph-up"></h1>
+                                        <div class="col-xs-3 move_right">
+                                            <span class="glyphicon glyphicon-menu-up glyph-small glyph-small-up-adjust"></span>
+                                            <p class="number-huge" id="pace_upvotes">0</p> 
+                                        </div>
+                                        <div class="col-xs-6 middle remove-padding">
+                                            <button type="button" id="pace_up" class="glyphicon vol-btn" onclick="lectureResetPace()">
+                                                <span class="glyphicon glyphicon-minus glyph-up"></span>
                                             </button>
                                         </div>
-                                        <div class="number-huge col-xs-3"id="pace_downvotes">0</div>
+                                        <div class="col-xs-3">
+                                            <span class="glyphicon glyphicon-menu-down glyph-small"></span>
+                                            <p class="number-huge" id="pace_downvotes">0</p> 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-md-3">
                         <div class="box col-sm-12">
                             <div class="row">
-                                <div class="col-xs-10">
+                                <div class="col-xs-8">
                                     <h3 class="soundlevel">SOUND</h3>
                                 </div>
-                                <div class="col-xs-2 text-right">
+                                <div class="col-xs-4 text-right">
                                     <span class="glyphicon glyphicon-volume-up glyph-center"></span>
                                 </div>
                                 <div class="row">
-                                    <div class="sound-box-content col-xs-10">
+                                    <div class="sound-box-content col-xs-12">
                                         <div class="row">
-                                            <div class="number-huge col-xs-3" id="volume_upvotes">0</div>
-                                            <div class="col-xs-6 middle">
+                                            <div class="col-xs-3 move_right">
+                                                <span class="glyphicon glyphicon-menu-up glyph-small glyph-small-up-adjust"></span>
+                                                <p class="number-huge" id="volume_upvotes">0</p> 
+                                            </div>
+                                            <div class="col-xs-6 middle remove-padding">
                                                 <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="lectureResetVolume()">
-                                                    <h1 class="glyphicon glyphicon-menu-up glyph-up"></h1>
+                                                    <span class="glyphicon glyphicon-minus glyph-up"></span>
                                                 </button>
                                             </div>
-                                            <div class="number-huge col-xs-3" id="volume_downvotes">0</div>
+                                            <div class="col-xs-3">
+                                                <span class="glyphicon glyphicon-menu-down glyph-small"></span>
+                                                <p class="number-huge" id="volume_downvotes">0</p> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -277,7 +292,7 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         <div class="box box-nomargin-top col-sm-12">
                             <div class="row">
                                 <div class="col-xs-10">
@@ -288,15 +303,14 @@
                                 </div>
                             </div>
                             <div class="row" id="asked_questions">
-                                          <ul id="question_list_top">
-                                          </ul>
+                                <ul id="question_list_top"></ul>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         <div class="box col-sm-12">
                             <div class="row">
                                 <div class="col-xs-10">
@@ -311,7 +325,7 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         <div class="box box-nomargin col-sm-12">
                             <div class="row">
                                 <div class="col-xs-10">
@@ -319,8 +333,7 @@
                                 </div>
                             </div>
                             <div class="row" id="asked_questions">
-                                          <ul id="question_list_recent">
-                                          </ul>
+                                <ul id="question_list_recent"></ul>
                             </div>
                         </div>
                     </div>
@@ -331,12 +344,22 @@
 
 <!-- STATISTICS PAGE -->
 
-    <div class="content_lecturer_landingpage col-md-12" id="course_overview_page">
-    <div id="stat_page" class="row" style="display: none">
-        <button type="button" class="btn" onclick="pageBackButton()">
-            <span class="glyphicon glyphicon-arrow-left glyphwhite"></span> BACK
-        </button>
+    <div class="content_lecturer_landingpage col-md-12" id="stat_page" style="display: none">
         <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-custom btn-lecturer btn-success vertical-align" onclick="pageBackButton()">
+                    <span class="glyphicon glyphicon-arrow-left glyphwhite move_left"></span>BACK
+                </button>
+            </div>
+            <div class="col-md-4">
+                <h1 class="center">STATISTICS</h1>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2"></div>
             <div class="col-md-4">
                 <h3>Attendee count</h3>
                 <canvas id="countChart" width="400" height="400"></canvas>
@@ -345,13 +368,17 @@
                 <h3>Lecture Activity</h3>
                 <canvas id="activityChart" width="400" height="400"></canvas>
             </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
             <div class="col-md-4">
                 <h3>Questions per lecture</h3>
                 <canvas id="questionPie" width="400" height="400"></canvas>
             </div>
-            <script src="{% static 'scripts/statCharts.js' %}"></script>
+            <div class="col-md-6"></div>
         </div>
-    </div>
+        <script src="{% static 'scripts/statCharts.js' %}"></script>
     </div>
 
 </div>

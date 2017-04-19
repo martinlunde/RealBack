@@ -33,7 +33,20 @@ class FormTests(TestCase):
 
     def test_register_by_post(self):
         # Testing register trough post-request
-        self.assertEqual(c.post('/register/', {'username': 'test@test.com',
-                                               'password1': 'test1234',
-                                               'password2': 'test1234'}
-                                ).status_code, 200)
+        get_response = c.get('/register/')
+        print(get_response.status_code)
+        post_response_wrong = c.post('/register/', {
+            'username': 'testuser@test.com',
+            'password1': 'test1234',
+            'password2': 'test1234',
+        })
+        print(post_response_wrong.status_code)
+        post_response = c.post('/register/', {
+            'email': 'test@test.com',
+            'password1': 'testPass1234',
+            'password2': 'testPass1234',
+        })
+        print(post_response.status_code)
+        self.assertEqual(get_response.status_code, 200)
+        self.assertNotEqual(post_response_wrong.status_code, 302)
+        self.assertEqual(post_response.status_code, 302)

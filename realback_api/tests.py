@@ -12,6 +12,7 @@ class ApiTestCase(TestCase):
     error messages based on the situation. The comments below will therefore only be a pointer to if the test
     exists for testing pass or fail of a request."""
 
+    """Testing course creation, deletion and update"""
     def testNewCourse(self):
         get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
         c.login(username='test@test.com', password='kNouYH8J3KjJH3')
@@ -99,6 +100,34 @@ class ApiTestCase(TestCase):
         lecture = models.Lecture(course=course, title="Lecture1")
 
         response = c.get('/lectures/' + lecture.pin + '/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], False)
+
+    """Testing CourseLecture creation and updates"""
+    def testCourseLectureGet(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+
+        """Test if passing"""
+        response = c.get('/courses/' + str(course.id) + '/lectures/')
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['success'], True)
+
+    def testCourseLecturePostCreation(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c.login(username='test@test.com', password='kNouYH8J3KjJH3')
+        course = models.Course(user=user, title="TDT4145")
+        course.save()
+
+        """Test if passing"""
+        response = c.post('/courses/' + str(course.id) + '/lectures/', {'title': 'lecture1'})
+        decoded = json.loads(response.content)
+        self.assertEqual(decoded['lecture']['lecture_title'], 'lecture1')
+
+        """Test if failing"""
+        response = c.post('/courses/' + str(500) + '/lectures/', {'title': 'lecture1'})
         decoded = json.loads(response.content)
         self.assertEqual(decoded['success'], False)
 

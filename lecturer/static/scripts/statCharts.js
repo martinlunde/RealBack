@@ -2,6 +2,7 @@ function createCharts(course_id) {
     var ctx = $("#countChart");
     var ctx2 = $("#activityChart");
     var ctx3 = $("#questionPie");
+    var ctx4 = $("#ratingChart");
     var attendees_list_count = [];
     var lecture_list = [];
     var URL = '/courses/' + String(course_id) + '/stats/';
@@ -90,6 +91,29 @@ function createCharts(course_id) {
                     datasets: [{
                         label: '# of activity-points',
                         data: questionCount_list,
+                        backgroundColor: ["#00665B"],
+                        borderColor: ["#007d70"],
+                        borderWidth: 2,
+                    }]
+                },
+            });
+
+            //--------Lecture Ratings--------//
+            var lecture_ratings = [];
+
+                for (count in data.rating) {
+                    lecture_ratings.push(data.rating[count]);
+                };
+                lecture_ratings.reverse();
+                console.log(lecture_ratings);
+
+                var ratingChart = new Chart(ctx4, {
+                type: 'line',
+                data: {
+                    labels: lectures,
+                    datasets: [{
+                        label: '# of activity-points',
+                        data: lecture_ratings,
                         backgroundColor: ["#00665B"],
                         borderColor: ["#007d70"],
                         borderWidth: 2,

@@ -752,12 +752,16 @@ class LectureStats(View):
         question_count = {}
         for lecture in lecture_list:
             question_count[lecture.title] = models.Question.objects.filter(lecture=lecture).count()
+        ratings = {}
+        for lecture in lecture_list:
+            ratings[lecture.title] = lecture.rating
         return JsonResponse({
             'success': True,
             'attendee_count': attendees,
             'course_id': course_id,
             'lecture_activity': activity,
             'question_count': question_count,
+            'ratings': ratings,
         })
 
 

@@ -101,8 +101,8 @@ function createCharts(course_id) {
             //--------Lecture Ratings--------//
             var lecture_ratings = [];
 
-                for (count in data.rating) {
-                    lecture_ratings.push(data.rating[count]);
+                for (rating in data.ratings) {
+                    lecture_ratings.push(data.ratings[rating]);
                 };
                 lecture_ratings.reverse();
                 console.log(lecture_ratings);

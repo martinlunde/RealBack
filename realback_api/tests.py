@@ -407,6 +407,50 @@ class ModelTestCase(TestCase):
         self.assertEqual(lecture_values['lecture_title'], lecture.title)
         self.assertEqual(lecture_values['lecture_start_time'], lecture.start_datetime)
 
+    def test_lecture_save(self):
+        """ Test if Lecture saves correctly to db """
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        c1 = models.Course(user=user)
+        c1.save()
+        c1.refresh_from_db()
+        l1 = models.Lecture(course=c1)
+        l1.save()
+        l1.refresh_from_db()
+        title = 'Test1'
+        l2 = models.Lecture(course=c1,
+                            title=title,
+                            pin=l1.pin)
+        l2.save()
+        l2.refresh_from_db()
+        self.assertNotEqual(l2.pin, l1.pin)
+        self.assertEqual(l2.title, title)
+
+    def test_lecture_and_course_creation(self):
+        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
+        test_course = models.Course(user=user, title="TDT4140")
+        test_course.save()
+
+        test_lecture = models.Lecture(course=test_course, title="Lecture1")
+        test_lecture.paceup = 5
+        test_lecture.pacedown = 3
+        test_lecture.volumeup = 4
+        test_lecture.volumedown = 7
+        test_lecture.save()
+        test_lecture.refresh_from_db()
+
+        # Test if lectures and courses are created correctly, and if the relevant functions are
+        # working as intended.
+        self.assertEqual(test_course.title, "TDT4140")
+        self.assertEqual(test_lecture.title, "Lecture1")
+        self.assertEqual(test_lecture.course, test_course)
+        test_lecture.reset_pace()
+        test_lecture.reset_volume()
+        test_lecture.refresh_from_db()
+        self.assertEqual(test_lecture.paceup, 0)
+        self.assertEqual(test_lecture.pacedown, 0)
+        self.assertEqual(test_lecture.volumeup, 0)
+        self.assertEqual(test_lecture.volumedown, 0)
+
     def test_return_question(self):
         user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
         course = models.Course(user=user, title="TDT4110")
@@ -418,40 +462,6 @@ class ModelTestCase(TestCase):
         self.assertEqual(question_values['question_text'], question.text)
         self.assertEqual(question_values['question_votes'], question.votes)
 
-    def test_lecture_save(self):
-        """ Test if Lecture saves correctly to db """
-        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
-        c1 = models.Course(user=user)
-        c1.save()
-        l1 = models.Lecture(course=c1)
-        l1.save()
-        title = 'Test1'
-        l2 = models.Lecture(course=c1,
-                            title=title,
-                            pin=l1.pin)
-        l2.save()
-        self.assertNotEqual(l2.pin, l1.pin)
-        self.assertEqual(l2.title, title)
-
-    def test_lecture_and_course_creation(self):
-        user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
-        test_course = models.Course(user=user, title="TDT4140")
-        test_course.save()
-
-        pin = models._generate_pin()
-        test_lecture = models.Lecture(course=test_course, title="Lecture1", pin=pin)
-        test_lecture.save()
-
-        # Test if lectures and courses are created correctly, and if the relevant functions are
-        # working as intended.
-        self.assertEqual(test_course.title, "TDT4140")
-        self.assertEqual(test_lecture.title, "Lecture1")
-        self.assertEqual(test_lecture.course, test_course)
-        # test_lecture.reset_pace()
-        # test_lecture.reset_volume()
-        # self.assertEqual(test_lecture.pace, 0)
-        # self.assertEqual(test_lecture.volume, 0)
-
     def test_questions(self):
         user = get_user_model().objects.create_user('test_user', 'test@test.com', 'kNouYH8J3KjJH3')
         course = models.Course(user=user, title="TDT4140")
@@ -461,8 +471,13 @@ class ModelTestCase(TestCase):
 
         test_questions = models.Question(lecture=lecture, text="Why is the sky blue?")
         test_questions.save()
+        test_questions.refresh_from_db()
 
         # Test if questions attributes are functioning as intended.
         self.assertEqual(test_questions.lecture, lecture)
         self.assertEqual(test_questions.text, "Why is the sky blue?")
         self.assertEqual(test_questions.votes, 0)
+        self.assertEqual(test_questions.active, True)
+        test_questions.set_inactive()
+        test_questions.refresh_from_db()
+        self.assertEqual(test_questions.active, False)

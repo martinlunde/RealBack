@@ -89,7 +89,7 @@ function createCharts(course_id) {
                 data: {
                     labels: lectures,
                     datasets: [{
-                        label: '# of activity-points',
+                        label: '# of questions',
                         data: questionCount_list,
                         backgroundColor: ["#00665B"],
                         borderColor: ["#007d70"],
@@ -112,7 +112,7 @@ function createCharts(course_id) {
                 data: {
                     labels: lectures,
                     datasets: [{
-                        label: '# of activity-points',
+                        label: '# of stars',
                         data: lecture_ratings,
                         backgroundColor: ["#00665B"],
                         borderColor: ["#007d70"],

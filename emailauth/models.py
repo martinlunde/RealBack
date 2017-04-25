@@ -11,6 +11,7 @@ class User(AbstractUser):
         Use RealBack.settings.AUTH_USER_MODEL on import
         and django.contrib.auth.get_user_model() on runtime
     """
-    # email = models.EmailField(unique=True)
-    # USERNAME_FIELD = 'email'
-    pass
+    email = models.EmailField('E-mail address', unique=True)
+    username = models.CharField('username', max_length=150, default='username')
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']

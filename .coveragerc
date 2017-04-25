@@ -1,0 +1,12 @@
+# .coveragerc to control coverage.py
+[run]
+include =
+        realback_api/models.py
+        emailauth/models.py
+        lecturer/views.py
+        attendee/views.py
+        emailauth/views.py
+        emailauth/forms.py
+        lecturer/forms.py
+        realback_api/forms.py
+        realback_api/api.py

@@ -2,10 +2,390 @@
 {% extends '../base.html' %}
 {% load static %}
 
-{% block content %}
-  <a href="course/new">new course</a>
-  {% for course in course_list%}
-  <h3><a href="{{ course.title }}">{{ course.title }}</a></h3>
-  <h4>{{ course.description }}</h4>
-  {% endfor %}
+{% block ex-head %}
+    <script src="{% static 'scripts/lecturer.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'lecturer.css' %}">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 {% endblock %}
+
+{% block content %}
+<div id="landingpage_lecturer">
+    <header class="header">
+        <div class="row">
+            <div class="col-xs-2">
+                <a href="/">
+                    <img class="logo" src="{% static 'images/realbackLogoHuge.png' %}">
+                </a>
+            </div>
+            <div class="footerMenu col-xs-10">
+                <div class="row">
+                    <div class="col-xs-5 col-md-8"></div>
+                    <div class="col-xs-4 col-md-3">
+                        {% if request.user.is_authenticated %}
+                            <span class="item lecture_title">{{ request.user.email }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-xs-3 col-md-1">
+                         <a href="/logout/" class="logout item lecture_title">LOGOUT</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+<!-- COURSE OVERVIEW PAGE -->
+
+    <div class="content_lecturer_landingpage col-md-12" id="course_overview_page">
+        <div class="col-md-12">
+            <h1 class="center">OVERVIEW</h1>
+        </div>
+        <div class="col-md-1 col-lg-2"></div>
+        <div class="col-md-10 col-lg-8">
+            <div class="row row_margin">
+                <button type="button" id="new_course_button" class="btn btn-custom btn-lecturer btn-success">
+                    <span class="glyphicon glyphicon-plus glyphwhite"></span>
+                New course </button>
+                <form id="course_form" style="display: none;">
+                    <div>
+                    {% csrf_token %}
+                    <button type="button" id="course_form_back" class="btn btn-custom btn-success">
+                        <span class="glyphicon glyphicon-remove glyphwhite"></span>
+                    </button>
+                    {{ course_form.title }}
+                    <div id="course_error_message"></div>
+                    <button type="submit" class="btn btn-custom btn-success" id="course_form_button">
+                        <span class="glyphicon glyphicon-ok glyphwhite glyph_move_center"></span>
+                    </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="prototype_course_div" class="bar-content" style="display: none;">
+                <div class="bars bars-hover">
+                <span class="wraptext">
+                    <span class="glyphicon glyphicon-menu-right"></span>
+                </span>
+                    <div class="lecturer-button-div">
+                        <button type="button" class="btn btn-lecturer-stats btn-success new_button">
+                            <div>
+                                <span class="glyphicon glyphicon-plus lecturer-glyph"></span>
+                                <p>NEW</p>
+                            </div>
+
+                        <button type="button" class="btn btn-lecturer-stats btn-success stat_button">
+                            <div>
+                                <span class="glyphicon glyphicon-signal lecturer-glyph"></span>
+                                <p>STAT</p>
+                            </div>
+                        </button>
+
+                        <button type="button" class="btn btn-lecturer-stats btn-success del_button">
+                            <div>
+                                <span class="glyphicon glyphicon-minus lecturer-glyph"></span>
+                                <p>DEL</p>
+                            </div>
+                        </button>
+
+
+
+                        </button>
+                    </div>
+                </div>
+
+                <ul class="list-group-custom bars bars-gray" style="display: none;">
+                    <div class="list-group-item-custom empty_lecture_list">
+                        Nothing here! Press NEW to create a lecture</div></ul>
+            </div>
+
+            <ul id="prototype_lecture_list" style="display: none;">
+                <li class="list-group-item-custom" onclick="showLecturePage.call(this)">
+                    <span></span>
+                    <button type="button" class="btn lecture-del-button">
+                        <span class="glyphicon glyphicon-minus lecturer-glyph-del"></span>
+                        <p>DEL</p>
+                    </button>
+                </li>
+            </ul>
+
+            <div id="course_list">
+            </div>
+        </div>
+        <div class="col-md-1 col-lg-2"></div>
+    </div>
+
+<!-- LECTURE PAGE -->
+
+    <div id="lecture_page" class="row content_lecturer_landingpage" style="display: none;">
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="button"
+                            class="btn btn-custom btn-lecturer btn-success vertical-align"
+                            onclick="pageBackButton()">
+                        <span class="glyphicon glyphicon-arrow-left glyphwhite"></span> BACK
+                    </button>
+                </div>
+
+                <div class="col-md-6">
+                    <div id="lecture_title" class="center">
+                        <h1></h1>
+                    </div>
+
+                    <form id="change_lecture_title_form" style="display: none;">
+                        {% csrf_token %}
+                        <button type="submit" id="change_lecture_title_button" class="btn btn-success">
+                            <span class="glyphicon glyphicon-ok glyphwhite"></span>
+                        </button>
+                        {{ lecture_form.title }}
+                        <button type="button" id="cancel_change_lecture_title" class="btn btn-success">
+                            <span class="glyphicon glyphicon-remove glyphwhite"></span>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="col-md-3">
+                    <div id="lecture_pin">
+                        <h2 class="mono_font bottom_aligned"></h2>
+                    </div>
+                </div>
+            </div>
+
+            <div id="lecture_pin_large" class="row vertical-align center" style="display: none;">
+                <span id="lecture_pin_large_text" class="mono_font giant_font"></span>
+            </div>
+
+            <div id="lecture_page_body" class="row">
+                <div class="col-md-12">
+                    <div class="big-box small-top-margin">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <h3 class="did-you-h3">TOPICS OF LECTURE</h3>
+                            </div>
+                            <div class="col-xs-2 text-right">
+                                    <span class="glyphicon glyphicon-record glyph-center"></span>
+                            </div>
+                        </div>
+
+                        <div id="topic_list_parent" class="row">
+                            <ul id="topic_list" class="all-slides"></ul>
+                            <div class="h_line_lec"></div>
+                        </div>
+
+                        <div id="topic_title_row" class="row">
+                            <div class="col-md-2" id="topic_title_before_div">
+                                <button type="button" id="delete_topic_button" title="Delete topic"
+                                        class="btn btn-success topic_button">
+                                    <span class="glyphicon glyphicon-minus glyphwhite"></span>
+                                    DEL</button>
+                            </div>
+                            <div id="topic_title_parent" class="col-md-8 topic_title_parent">
+                                <h4 id="topic_title" title="Change topic title" class="topic_title pointer_cursor"></h4>
+                                <span id="topic_title_glyph" class="glyphicon glyphicon-edit topic_title pointer_cursor"
+                                      title="Change topic title"></span>
+                            </div>
+                            <div id="new_topic_button_parent" class="col-md-2 topic_button_right">
+                                <button type="button" id="new_topic_button" title="New topic"
+                                        class="btn btn-success topic_button">
+                                    <span class="glyphicon glyphicon-plus glyphwhite"></span>
+                                    NEW</button>
+                            </div>
+                        </div>
+                        <div id="topic_title_form_row" class="row" style="display: none;">
+                            <div class="col-md-12">
+                                <form id="topic_title_form">
+                                    <button type="button" class="btn btn-success"
+                                            id="cancel_topic_title" title="Cancel">
+                                        <span class="glyphicon glyphicon-remove glyphwhite"></span>
+                                    </button>
+                                    {% csrf_token %}
+                                    {{ topic_form.title }}
+                                    {{ topic_form.order }}
+                                    <button type="submit" class="btn btn-success"
+                                            id="save_topic_title" title="Save">
+                                        <span class="glyphicon glyphicon-ok glyphwhite"></span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="topic_delete_row" class="row" style="display: none;">
+                            <div class="col-md-2">
+                                <button type="button" id="cancel_delete_topic" title="Cancel delete"
+                                        class="btn btn-success topic_button">
+                                    <span class="glyphicon glyphicon-remove glyphwhite"></span>
+                                </button>
+                            </div>
+                            <div id="delete_topic_title_parent" class="col-md-8 topic_title_parent">
+                                <h4 id="delete_topic_title" class="topic_title"></h4>
+                            </div>
+                            <div class="col-md-2 topic_button_right">
+                                <button type="button" id="confirm_delete_topic" title="Confirm delete"
+                                        class="btn btn-success topic_button">
+                                    <span class="glyphicon glyphicon-ok glyphwhite"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="box col-sm-12">
+                            <div class="row">
+                                <div class="col-xs-8">
+                                    <h3 class="soundlevel">PACE</h3>
+                                </div>
+                                <div class="col-xs-4 text-right">
+                                    <span class="glyphicon glyphicon-forward glyph-center"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="sound-box-content col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-3 move_right">
+                                            <span class="glyphicon glyphicon-menu-up glyph-small glyph-small-up-adjust"></span>
+                                            <p class="number-huge" id="pace_upvotes">0</p> 
+                                        </div>
+                                        <div class="col-xs-6 middle remove-padding">
+                                            <button type="button" id="pace_up" class="glyphicon vol-btn" onclick="lectureResetPace()">
+                                                <span class="glyphicon glyphicon-minus glyph-up"></span>
+                                            </button>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <span class="glyphicon glyphicon-menu-down glyph-small"></span>
+                                            <p class="number-huge" id="pace_downvotes">0</p> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="box col-sm-12">
+                            <div class="row">
+                                <div class="col-xs-8">
+                                    <h3 class="soundlevel">SOUND</h3>
+                                </div>
+                                <div class="col-xs-4 text-right">
+                                    <span class="glyphicon glyphicon-volume-up glyph-center"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="sound-box-content col-xs-12">
+                                        <div class="row">
+                                            <div class="col-xs-3 move_right">
+                                                <span class="glyphicon glyphicon-menu-up glyph-small glyph-small-up-adjust"></span>
+                                                <p class="number-huge" id="volume_upvotes">0</p> 
+                                            </div>
+                                            <div class="col-xs-6 middle remove-padding">
+                                                <button type="button" id="volume_up" class="glyphicon vol-btn" onclick="lectureResetVolume()">
+                                                    <span class="glyphicon glyphicon-minus glyph-up"></span>
+                                                </button>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <span class="glyphicon glyphicon-menu-down glyph-small"></span>
+                                                <p class="number-huge" id="volume_downvotes">0</p> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="box box-nomargin-top col-sm-12">
+                            <div class="row">
+                                <div class="col-xs-10">
+                                    <h3 class="soundlevel">TOP QUESTIONS</h3>
+                                </div>
+                                <div class="col-xs-2 text-right">
+                                    <span class="glyphicon glyphicon-question-sign glyph-center"></span>
+                                </div>
+                            </div>
+                            <div class="row" id="asked_questions">
+                                <ul id="question_list_top"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="box col-sm-12">
+                            <div class="row">
+                                <div class="col-xs-10">
+                                    <h3 class="soundlevel">TIME OF LECTURE</h3>
+                                </div>
+                                <div class="col-xs-2 text-right">
+                                    <span class="glyphicon glyphicon-forward glyph-center"></span>
+                                </div>
+                                <h1 class="center time-size" id="stopWatch">00:00:00</h1>
+                                <button type="button" class="btn btn-success timer-button" id="timerToggleButton" onclick="timerController()">START</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="box box-nomargin col-sm-12">
+                            <div class="row">
+                                <div class="col-xs-10">
+                                    <h3 class="soundlevel">RECENT QUESTIONS</h3>
+                                </div>
+                            </div>
+                            <div class="row" id="asked_questions">
+                                <ul id="question_list_recent"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- STATISTICS PAGE -->
+
+    <div class="content_lecturer_landingpage col-md-12" id="stat_page" style="display: none">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-custom btn-lecturer btn-success vertical-align" onclick="pageBackButton()">
+                    <span class="glyphicon glyphicon-arrow-left glyphwhite move_left"></span>BACK
+                </button>
+            </div>
+            <div class="col-md-4">
+                <h1 class="center">STATISTICS</h1>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <h3>Attendee count</h3>
+                <canvas id="countChart" width="400" height="400"></canvas>
+            </div>
+            <div class="col-md-4">
+                <h3>Lecture Activity</h3>
+                <canvas id="activityChart" width="400" height="400"></canvas>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <h3>Questions per lecture</h3>
+                <canvas id="questionPie" width="400" height="400"></canvas>
+            </div>
+            <div class="col-md-4">
+                <h3>Lecture Ratings</h3>
+                <canvas id="ratingChart" width="400" height="400"></canvas>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <script src="{% static 'scripts/statCharts.js' %}"></script>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block footer %} {% endblock %}

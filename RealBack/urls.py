@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^lecturer/', include('lecturer.urls')),
     url(r'^', include('attendee.urls')),
+    url(r'^', include('realback_api.urls')),
     url(r'^', include('django.contrib.auth.urls')),
     url(r'^register/$', auth_views.register, name='register')
 ]

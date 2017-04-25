@@ -19,3 +19,7 @@ def index(request):
 
 def about_us(request):
     return render(request, 'attendee/about_us.html', {})
+
+
+def help_page(request):
+    return render(request, 'attendee/help.html', {})

@@ -15,18 +15,22 @@ Our software requires that you install Python 3.6.0
 or newer.
 
 step 1 (clone repository):
+```
 git clone https://github.com/martinlunde/RealBack
-
+```
 step 2 (move into directory):
+```
 cd realback
-
+```
 step 3 (install requirements):
+```
 pip install -r requirements.txt
-
+```
 step 4 (run server):
+```
 python manage.py runserver
-
-step 5 (open browser):
+```
+step 5 (open browser):<br/>
 The server will then be running on port 8000:
 http://localhost:8000
 
